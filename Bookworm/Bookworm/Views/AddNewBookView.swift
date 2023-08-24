@@ -27,11 +27,7 @@ struct AddNewBookView: View {
                 }
                 
                 Section("Book Review:") {
-                    Picker("Rating", selection: $viewModel.rating) {
-                        ForEach(0..<6) {
-                            Text(String($0))
-                        }
-                    }
+                    Rating(rating: $viewModel.rating)
                     
                     ZStack {
                         if viewModel.review.count == 0 {

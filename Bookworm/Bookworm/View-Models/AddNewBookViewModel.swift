@@ -11,7 +11,7 @@ extension AddNewBookView {
     class AddNewBookViewModel: ObservableObject {
         @Published var title = ""
         @Published var author = ""
-        @Published var rating = 3
+        @Published var rating = 0
         @Published var genre = "Fantasy"
         @Published var review = ""
         
