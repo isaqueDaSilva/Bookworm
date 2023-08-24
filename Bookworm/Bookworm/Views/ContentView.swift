@@ -8,14 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: []) var books: FetchedResults<Book>
+    
+    @StateObject var viewModel = ContentView.ContentViewViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            List {
+                Text("Book count: \(books.count)")
+            }
+            .navigationTitle("Bookworm")
+            .toolbar {
+                Button(action: {
+                    viewModel.showingAddBookView.toggle()
+                }, label: {
+                    Label("Add New Book", systemImage: "plus")
+                })
+            }
+            .sheet(isPresented: $viewModel.showingAddBookView) {
+                AddNewBookView()
+            }
         }
-        .padding()
     }
 }
 
