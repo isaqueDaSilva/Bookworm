@@ -14,6 +14,8 @@
 		7E1A51502A9690620091EFE7 /* BookwormTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1A514F2A9690620091EFE7 /* BookwormTests.swift */; };
 		7E1A515A2A9690620091EFE7 /* BookwormUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1A51592A9690620091EFE7 /* BookwormUITests.swift */; };
 		7E1A515C2A9690620091EFE7 /* BookwormUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1A515B2A9690620091EFE7 /* BookwormUITestsLaunchTests.swift */; };
+		7E96AE1C2A97EA2A00DDB589 /* Bookworm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7E96AE1A2A97EA2A00DDB589 /* Bookworm.xcdatamodeld */; };
+		7E96AE1E2A97EB0A00DDB589 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E96AE1D2A97EB0A00DDB589 /* DataController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		7E1A51552A9690620091EFE7 /* BookwormUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BookwormUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E1A51592A9690620091EFE7 /* BookwormUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookwormUITests.swift; sourceTree = "<group>"; };
 		7E1A515B2A9690620091EFE7 /* BookwormUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookwormUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		7E96AE1B2A97EA2A00DDB589 /* Bookworm.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Bookworm.xcdatamodel; sourceTree = "<group>"; };
+		7E96AE1D2A97EB0A00DDB589 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DataController.swift; path = Bookworm/DataController.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +99,9 @@
 			isa = PBXGroup;
 			children = (
 				7E1A513E2A9690610091EFE7 /* BookwormApp.swift */,
-				7E1A51402A9690610091EFE7 /* ContentView.swift */,
+				7E96AE192A97E9F100DDB589 /* View-Models */,
+				7E96AE182A97E9E800DDB589 /* Views */,
+				7E96AE172A97E9DE00DDB589 /* Data */,
 				7E1A51422A9690620091EFE7 /* Assets.xcassets */,
 				7E1A51442A9690620091EFE7 /* Preview Content */,
 			);
@@ -125,6 +131,30 @@
 				7E1A515B2A9690620091EFE7 /* BookwormUITestsLaunchTests.swift */,
 			);
 			path = BookwormUITests;
+			sourceTree = "<group>";
+		};
+		7E96AE172A97E9DE00DDB589 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				7E96AE1D2A97EB0A00DDB589 /* DataController.swift */,
+				7E96AE1A2A97EA2A00DDB589 /* Bookworm.xcdatamodeld */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		7E96AE182A97E9E800DDB589 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7E1A51402A9690610091EFE7 /* ContentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7E96AE192A97E9F100DDB589 /* View-Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View-Models";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,6 +288,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E1A51412A9690610091EFE7 /* ContentView.swift in Sources */,
+				7E96AE1E2A97EB0A00DDB589 /* DataController.swift in Sources */,
+				7E96AE1C2A97EA2A00DDB589 /* Bookworm.xcdatamodeld in Sources */,
 				7E1A513F2A9690610091EFE7 /* BookwormApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -583,6 +615,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		7E96AE1A2A97EA2A00DDB589 /* Bookworm.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				7E96AE1B2A97EA2A00DDB589 /* Bookworm.xcdatamodel */,
+			);
+			currentVersion = 7E96AE1B2A97EA2A00DDB589 /* Bookworm.xcdatamodel */;
+			path = Bookworm.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 7E1A51332A9690610091EFE7 /* Project object */;
 }
