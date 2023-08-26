@@ -8,17 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) var moc
-    @FetchRequest(sortDescriptors: []) var books: FetchedResults<Book>
-    
-    @StateObject var viewModel = ContentView.ContentViewViewModel()
+    @StateObject var viewModel = ContentViewModel()
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(books) { book in
+                ForEach(viewModel.savedBook) { book in
                     NavigationLink(destination: {
-                        Text(book.title ?? "Unknown Title")
+                        DetailView(book: book)
                     }, label: {
                         HStack {
                             EmojiRating(rating: book.rating)
@@ -26,14 +23,21 @@ struct ContentView: View {
                         }
                     })
                 }
+                .onDelete(perform: viewModel.deleteBook)
             }
             .navigationTitle("Bookworm")
             .toolbar {
-                Button(action: {
-                    viewModel.showingAddBookView.toggle()
-                }, label: {
-                    Label("Add New Book", systemImage: "plus")
-                })
+                ToolbarItem(placement: .navigationBarLeading) {
+                    EditButton()
+                }
+                
+                ToolbarItem {
+                    Button(action: {
+                        viewModel.showingAddBookView.toggle()
+                    }, label: {
+                        Label("Add New Book", systemImage: "plus")
+                    })
+                }
             }
             .sheet(isPresented: $viewModel.showingAddBookView) {
                 AddNewBookView()

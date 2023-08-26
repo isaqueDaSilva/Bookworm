@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct AddNewBookView: View {
-    @Environment(\.managedObjectContext) var moc
     @Environment(\.dismiss) var dismiss
-    
     @StateObject var viewModel = AddNewBookViewModel()
+    @ObservedObject var contentViewModel = ContentViewModel()
     var body: some View {
         NavigationView {
             Form {
@@ -56,15 +55,7 @@ struct AddNewBookView: View {
             }
             .toolbar {
                 Button("Save") {
-                    let newBook = Book(context: moc)
-                    newBook.id = UUID()
-                    newBook.title = viewModel.title
-                    newBook.author = viewModel.author
-                    newBook.genre = viewModel.genre
-                    newBook.review = viewModel.review
-                    newBook.rating = Int16(viewModel.rating)
-                    
-                    try? moc.save()
+                    contentViewModel.addBook(title: viewModel.title, author: viewModel.author, rating: viewModel.rating, genre: viewModel.genre, review: viewModel.review)
                     dismiss()
                 }
             }
