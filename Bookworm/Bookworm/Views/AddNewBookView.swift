@@ -9,8 +9,7 @@ import SwiftUI
 
 struct AddNewBookView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject var viewModel = AddNewBookViewModel()
-    @ObservedObject var contentViewModel = ContentViewModel()
+    @StateObject var viewModel = ContentViewModel()
     var body: some View {
         NavigationView {
             Form {
@@ -55,7 +54,7 @@ struct AddNewBookView: View {
             }
             .toolbar {
                 Button("Save") {
-                    contentViewModel.addBook(title: viewModel.title, author: viewModel.author, rating: viewModel.rating, genre: viewModel.genre, review: viewModel.review)
+                    viewModel.addBook()
                     dismiss()
                 }
             }

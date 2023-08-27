@@ -7,8 +7,8 @@
 
 import Foundation
 
-extension DetailView {
-    class DetailViewModel: ObservableObject {
-        @Published var showingAlert = false
-    }
-}
+//extension DetailView {
+//    class DetailViewModel: ObservableObject {
+//        @Published var showingAlert = false
+//    }
+//}

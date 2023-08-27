@@ -6,15 +6,15 @@
 //
 
 import Foundation
-
-extension AddNewBookView {
-    class AddNewBookViewModel: ObservableObject {
-        @Published var title = ""
-        @Published var author = ""
-        @Published var rating = 0
-        @Published var genre = "Fantasy"
-        @Published var review = ""
-        
-        let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poety", "Romance", "Thriller"]
-    }
-}
+//
+//extension AddNewBookView {
+//    class AddNewBookViewModel: ObservableObject {
+//        @Published var title = ""
+//        @Published var author = ""
+//        @Published var rating = 0
+//        @Published var genre = "Fantasy"
+//        @Published var review = ""
+//        
+//        let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poety", "Romance", "Thriller"]
+//    }
+//}

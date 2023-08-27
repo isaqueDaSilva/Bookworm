@@ -1,16 +1,17 @@
 //
-//  DetailView.swift
-//  Bookworm
+//  DetailsView.swift
+//  Bookworms
 //
-//  Created by Isaque da Silva on 25/08/23.
+//  Created by Isaque da Silva on 26/08/23.
 //
 
 import SwiftUI
 
-struct DetailView: View {
+struct DetailsView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject var viewModel = ContentViewModel()
-    let book: Book
+    @ObservedObject var bookwormViewModel: BookwormViewModel
+    @StateObject var viewModel = DetailViewModel()
+    let book: Books
     
     var body: some View {
         ScrollView {
@@ -19,8 +20,8 @@ struct DetailView: View {
                     .resizable()
                     .scaledToFit()
                 
-                Text(book.genre ?? "Fantasy")
-                    .font(.caption.bold())
+                Text(book.genre?.uppercased() ?? "FANTASY")
+                    .font(.caption)
                     .fontWeight(.black)
                     .padding(8)
                     .foregroundColor(.white)
@@ -28,29 +29,36 @@ struct DetailView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .offset(x: -5, y: -5)
             }
-            
-            Text(book.author?.uppercased() ?? "UNKNOWN")
-                .font(.largeTitle.bold())
-                .foregroundColor(.secondary)
+            VStack {
+                Text(book.author ?? "Unknown author")
+                    .font(.largeTitle)
+                    .foregroundColor(.secondary)
+                
+                Text("In: \(viewModel.dateFormatter.string(from: book.releaseData ?? Date.now))")
+                    .font(.headline.bold())
+            }
             
             Text(book.review ?? "No Review")
                 .padding()
             
             Rating(rating: .constant(Int(book.rating)))
                 .font(.title)
+            
         }
-        .navigationTitle(book.title ?? "Unknown")
+        .navigationTitle(book.title ?? "Unknown Book")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            Button(action: {
-                viewModel.showingAlert = true
-            }, label: {
-                Label("Delete Book", systemImage: "trash")
-            })
+            Button {
+                viewModel.deleteCurrentBookAlert = true
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+
         }
-        .alert("Delete Book", isPresented: $viewModel.showingAlert) {
+        .alert("Delete Book", isPresented: $viewModel.deleteCurrentBookAlert) {
             Button("Delete", role: .destructive) {
-                viewModel.deleteCurrentBook(book)
+                bookwormViewModel.deleteCurrentBook(book)
+                dismiss()
             }
             Button("Cancel", role: .cancel) { }
         } message: {

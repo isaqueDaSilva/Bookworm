@@ -5,14 +5,26 @@
 //  Created by Isaque da Silva on 24/08/23.
 //
 
-import Foundation
 import CoreData
+import Foundation
 
 class ContentViewModel: ObservableObject {
     let container: NSPersistentContainer
     
     @Published var savedBook = [Book]()
     @Published var showingAddBookView = false
+    
+    //add new book
+    @Published var title = ""
+    @Published var author = ""
+    @Published var rating = 1
+    @Published var genre = "Fantasy"
+    @Published var review = ""
+    let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poety", "Romance", "Thriller"]
+    
+    // details view
+    @Published var showingAlert = false
+    
     
     func fetchBook() {
         let request = NSFetchRequest<Book>(entityName: "Book")
@@ -33,7 +45,7 @@ class ContentViewModel: ObservableObject {
         }
     }
     
-    func addBook(title: String, author: String, rating: Int, genre: String, review: String) {
+    func addBook() {
         let newBook = Book(context: container.viewContext)
         newBook.id = UUID()
         newBook.title = title
