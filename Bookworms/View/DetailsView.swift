@@ -20,7 +20,7 @@ struct DetailsView: View {
                     .resizable()
                     .scaledToFit()
                 
-                Text(book.wrappedGenre)
+                Text(book.wrappedGenre.uppercased())
                     .font(.caption)
                     .fontWeight(.black)
                     .padding(8)
