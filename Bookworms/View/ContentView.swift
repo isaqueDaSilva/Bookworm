@@ -20,7 +20,7 @@ struct ContentView: View {
                         } label: {
                             HStack {
                                 EmojiRating(rating: book.rating)
-                                Text(book.title ?? "")
+                                Text(book.wrappedTitle)
                                     .foregroundColor(viewModel.textColor(book.rating))
                             }
                         }

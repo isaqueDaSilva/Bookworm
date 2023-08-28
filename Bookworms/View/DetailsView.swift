@@ -16,11 +16,11 @@ struct DetailsView: View {
     var body: some View {
         ScrollView {
             ZStack(alignment: .bottomTrailing) {
-                Image(book.genre ?? "Fantasy")
+                Image(book.wrappedGenre)
                     .resizable()
                     .scaledToFit()
                 
-                Text(book.genre?.uppercased() ?? "FANTASY")
+                Text(book.wrappedGenre)
                     .font(.caption)
                     .fontWeight(.black)
                     .padding(8)
@@ -30,15 +30,15 @@ struct DetailsView: View {
                     .offset(x: -5, y: -5)
             }
             VStack {
-                Text(book.author ?? "Unknown author")
+                Text(book.wrappedAuthor)
                     .font(.largeTitle)
                     .foregroundColor(.secondary)
                 
-                Text("In: \(viewModel.dateFormatter.string(from: book.releaseData ?? Date.now))")
+                Text("In: \(viewModel.dateFormatter.string(from: book.wrappedReleaseDate))")
                     .font(.headline.bold())
             }
             
-            Text(book.review ?? "No Review")
+            Text(book.wrappedReview)
                 .padding()
             
             Rating(rating: .constant(Int(book.rating)))
