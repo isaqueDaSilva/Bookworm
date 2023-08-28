@@ -45,7 +45,7 @@ struct DetailsView: View {
                 .font(.title)
             
         }
-        .navigationTitle(book.title ?? "Unknown Book")
+        .navigationTitle(book.wrappedTitle)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             Button {
