@@ -25,8 +25,10 @@ class BookwormViewModel: ObservableObject {
     
     func saveBook() {
         do {
-            try container.viewContext.save()
-            fetchBook()
+            if container.viewContext.hasChanges {
+                try container.viewContext.save()
+                fetchBook()
+            }
         } catch {
             fatalError("Falied to save book in Data Model. Error: \(error)")
         }

@@ -8,5 +8,10 @@
         <attribute name="releaseData" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="review" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="title"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
 </model>

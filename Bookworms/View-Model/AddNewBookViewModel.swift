@@ -15,6 +15,7 @@ extension AddNewBookView {
         @Published var genre = "Fantasy"
         @Published var review = ""
         @Published var rating = 1
+        @Published var showingAlert = false
         
         let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
         
