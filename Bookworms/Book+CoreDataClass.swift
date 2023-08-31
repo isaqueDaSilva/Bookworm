@@ -10,6 +10,6 @@ import Foundation
 import CoreData
 
 @objc(Books)
-public class Books: NSManagedObject {
+public class Book: NSManagedObject {
 
 }

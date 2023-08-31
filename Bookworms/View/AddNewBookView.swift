@@ -9,7 +9,6 @@ import SwiftUI
 
 struct AddNewBookView: View {
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var bookwormViewModel: BookwormViewModel
     @StateObject var viewModel = AddNewBookViewModel()
     var body: some View {
         NavigationView {
@@ -56,7 +55,7 @@ struct AddNewBookView: View {
                 if viewModel.isValid {
                     ToolbarItem {
                         Button {
-                            bookwormViewModel.addBook(title: viewModel.title, author: viewModel.author, releaseData: viewModel.releaseData, genre: viewModel.genre, review: viewModel.review, rating: viewModel.rating)
+                            viewModel.addBook()
                             dismiss()
                         } label: {
                             Text("OK")

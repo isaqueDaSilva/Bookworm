@@ -9,9 +9,8 @@ import SwiftUI
 
 struct DetailsView: View {
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var bookwormViewModel: BookwormViewModel
     @StateObject var viewModel = DetailViewModel()
-    let book: Books
+    let book: Book
     
     var body: some View {
         ScrollView {
@@ -57,7 +56,7 @@ struct DetailsView: View {
         }
         .alert("Delete Book", isPresented: $viewModel.deleteCurrentBookAlert) {
             Button("Delete", role: .destructive) {
-                bookwormViewModel.deleteCurrentBook(book)
+                viewModel.deleteCurrentBook(book)
                 dismiss()
             }
             Button("Cancel", role: .cancel) { }

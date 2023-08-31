@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var bookwormViewModel = BookwormViewModel()
     @StateObject var viewModel = ContentViewModel()
     var body: some View {
         NavigationView {
             List {
                 Section {
-                    ForEach(bookwormViewModel.savedBooks) { book in
+                    ForEach(viewModel.savedBooks) { book in
                         NavigationLink {
-                            DetailsView(bookwormViewModel: bookwormViewModel, book: book)
+                            DetailsView(book: book)
                         } label: {
                             HStack {
                                 EmojiRating(rating: book.rating)
@@ -25,7 +24,7 @@ struct ContentView: View {
                             }
                         }
                     }
-                    .onDelete(perform: bookwormViewModel.deleteBook)
+                    .onDelete(perform: viewModel.deleteBook)
                 }
             }
             .navigationTitle("Bookworm")
@@ -43,7 +42,7 @@ struct ContentView: View {
                 }
             }
             .sheet(isPresented: $viewModel.showingAddNewBook) {
-                AddNewBookView(bookwormViewModel: bookwormViewModel)
+                AddNewBookView()
             }
         }
     }

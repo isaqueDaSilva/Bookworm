@@ -1,8 +1,8 @@
 //
 //  AddNewBookViewModel.swift
-//  Bookworms
+//  Bookworm
 //
-//  Created by Isaque da Silva on 26/08/23.
+//  Created by Isaque da Silva on 31/08/23.
 //
 
 import CoreData
@@ -10,11 +10,11 @@ import Foundation
 
 extension AddNewBookView {
     class AddNewBookViewModel: ObservableObject {
-        let manager = CoreDataManager.shared
+        let manager = CoreDataMananger.shared
         
         @Published var title = ""
         @Published var author = ""
-        @Published var releaseData = Date.now
+        @Published var releaseDate = Date.now
         @Published var genre = "Fantasy"
         @Published var review = ""
         @Published var rating = 1
@@ -31,15 +31,15 @@ extension AddNewBookView {
         }
         
         func addBook() {
-            let newBook = Book(context: manager.context)
+            let newBook = Books(context: manager.context)
             newBook.id = UUID()
             newBook.title = title
             newBook.author = author
-            newBook.releaseData = releaseData
+            newBook.releaseDate = releaseDate
             newBook.genre = genre
             newBook.review = review
             newBook.rating = Int16(rating)
-            manager.saveBook()
+            manager.save()
         }
     }
 }
