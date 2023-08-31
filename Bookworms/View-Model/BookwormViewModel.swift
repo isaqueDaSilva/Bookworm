@@ -15,7 +15,9 @@ class BookwormViewModel: ObservableObject {
     
     func fetchBook() {
         let request = NSFetchRequest<Books>(entityName: "Books")
+        let sort = NSSortDescriptor(keyPath: \Books.title, ascending: true)
         
+        request.sortDescriptors = [sort]
         do{
             savedBooks = try container.viewContext.fetch(request)
         } catch {
