@@ -11,6 +11,8 @@
 		7E600A5A2AA144FB00422D2C /* Author+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E600A562AA144FB00422D2C /* Author+CoreDataProperties.swift */; };
 		7E600A5B2AA144FB00422D2C /* Books+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E600A572AA144FB00422D2C /* Books+CoreDataClass.swift */; };
 		7E600A5C2AA144FB00422D2C /* Books+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E600A582AA144FB00422D2C /* Books+CoreDataProperties.swift */; };
+		7E600A602AA17ECD00422D2C /* EmojiRating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E600A5F2AA17ECD00422D2C /* EmojiRating.swift */; };
+		7E600A622AA17EDA00422D2C /* RatingStar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E600A612AA17EDA00422D2C /* RatingStar.swift */; };
 		7E62D9CB2AA04A81007A4F52 /* BookwormApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E62D9CA2AA04A81007A4F52 /* BookwormApp.swift */; };
 		7E62D9CF2AA04A83007A4F52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E62D9CE2AA04A83007A4F52 /* Assets.xcassets */; };
 		7E62D9D22AA04A83007A4F52 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E62D9D12AA04A83007A4F52 /* Preview Assets.xcassets */; };
@@ -29,6 +31,8 @@
 		7E600A562AA144FB00422D2C /* Author+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Author+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		7E600A572AA144FB00422D2C /* Books+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Books+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		7E600A582AA144FB00422D2C /* Books+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Books+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		7E600A5F2AA17ECD00422D2C /* EmojiRating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiRating.swift; sourceTree = "<group>"; };
+		7E600A612AA17EDA00422D2C /* RatingStar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingStar.swift; sourceTree = "<group>"; };
 		7E62D9C72AA04A81007A4F52 /* Bookworm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bookworm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E62D9CA2AA04A81007A4F52 /* BookwormApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookwormApp.swift; sourceTree = "<group>"; };
 		7E62D9CE2AA04A83007A4F52 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -54,6 +58,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7E600A5E2AA17EA600422D2C /* UI Components */ = {
+			isa = PBXGroup;
+			children = (
+				7E600A5F2AA17ECD00422D2C /* EmojiRating.swift */,
+				7E600A612AA17EDA00422D2C /* RatingStar.swift */,
+			);
+			path = "UI Components";
+			sourceTree = "<group>";
+		};
 		7E62D9BE2AA04A81007A4F52 = {
 			isa = PBXGroup;
 			children = (
@@ -61,6 +74,7 @@
 				7E62D9D82AA04AE2007A4F52 /* Model */,
 				7E62D9D92AA04AEA007A4F52 /* View */,
 				7E62D9DA2AA04AF2007A4F52 /* View-Model */,
+				7E600A5E2AA17EA600422D2C /* UI Components */,
 				7E62D9C82AA04A81007A4F52 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -201,6 +215,8 @@
 				7E600A592AA144FB00422D2C /* Author+CoreDataClass.swift in Sources */,
 				7E62D9E22AA04B5A007A4F52 /* BooksViewModel.swift in Sources */,
 				7E62D9E62AA04B7B007A4F52 /* BookDetailsViewModel.swift in Sources */,
+				7E600A622AA17EDA00422D2C /* RatingStar.swift in Sources */,
+				7E600A602AA17ECD00422D2C /* EmojiRating.swift in Sources */,
 				7E62D9E42AA04B6B007A4F52 /* AddNewBookViewModel.swift in Sources */,
 				7E62D9DC2AA04B2C007A4F52 /* BooksView.swift in Sources */,
 				7E62D9CB2AA04A81007A4F52 /* BookwormApp.swift in Sources */,
