@@ -37,7 +37,7 @@ extension Books {
     }
     
     public var wrappedReview: String {
-        title ?? "No Review"
+        review ?? "No Review"
     }
 }
 

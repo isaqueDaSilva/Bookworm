@@ -12,5 +12,13 @@
         <attribute name="review" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <relationship name="author" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Author" inverseName="book" inverseEntity="Author"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="title"/>
+            </uniquenessConstraint>
+            <uniquenessConstraint>
+                <constraint value="author"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
 </model>

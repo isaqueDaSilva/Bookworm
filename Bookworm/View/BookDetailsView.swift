@@ -45,22 +45,22 @@ struct BookDetailsView: View {
         }
         .navigationTitle(book.wrappedTitle)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            Button{
-                viewModel.deleteCurrentBookAlert = true
-            } label: {
-                Label("Delete", systemImage: "trash")
-            }
-        }
-        .alert("Delete Book", isPresented: $viewModel.deleteCurrentBookAlert) {
-            Button("Delete", role: .destructive) {
-                viewModel.deleteCurrentBook(book)
-                dismiss()
-            }
-            
-            Button("Cancel", role: .cancel) { }
-        } message: {
-            Text("Are you sure you want to delete this book?")
-        }
+//        .toolbar {
+//            Button{
+//                viewModel.deleteCurrentBookAlert = true
+//            } label: {
+//                Label("Delete", systemImage: "trash")
+//            }
+//        }
+//        .alert("Delete Book", isPresented: $viewModel.deleteCurrentBookAlert) {
+//            Button("Delete", role: .destructive) {
+//                viewModel.deleteCurrentBook(book)
+//                dismiss()
+//            }
+//
+//            Button("Cancel", role: .cancel) { }
+//        } message: {
+//            Text("Are you sure you want to delete this book?")
+//        }
     }
 }

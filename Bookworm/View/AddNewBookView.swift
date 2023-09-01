@@ -38,6 +38,27 @@ struct AddNewBookView: View {
                 }
             }
             .navigationTitle("Add New Book")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                if viewModel.isValid {
+                    ToolbarItem {
+                        Button("OK") {
+                            viewModel.addBook()
+                            dismiss()
+                        }
+                    }
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        HStack {
+                            Image(systemName: "chevron.left")
+                            Text("Back")
+                        }
+                    }
+                }
+            }
         }
     }
 }

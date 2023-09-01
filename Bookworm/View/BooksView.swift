@@ -12,24 +12,19 @@ struct BooksView: View {
     var body: some View {
         NavigationView {
             VStack {
-                if viewModel.filter != .all {
+                if viewModel.filter == .genre {
                     Picker("Select", selection: $viewModel.text) {
-                        if viewModel.filter == .author {
-                            ForEach(viewModel.books) { author in
-                                Text(author.author?.wrappedName ?? "Unknown Author")
-                            }
+                        ForEach(viewModel.genres, id: \.self) {
+                            Text($0)
                         }
-                        
-                        if viewModel.filter == .genre {
-                            ForEach(viewModel.genres, id: \.self) {
-                                Text($0)
-                            }
-                        }
-                        
-                        if viewModel.filter == .ratingEqual || viewModel.filter == .ratingGreaterThan || viewModel.filter == .ratingLessThan {
-                            ForEach(viewModel.rating, id: \.self) {
-                                Text($0)
-                            }
+                    }
+                    .pickerStyle(.segmented)
+                }
+                
+                if viewModel.filter == .ratingEqual {
+                    Picker("Select", selection: $viewModel.text) {
+                        ForEach(viewModel.rating, id: \.self) {
+                            Text($0)
                         }
                     }
                     .pickerStyle(.segmented)
@@ -38,17 +33,25 @@ struct BooksView: View {
                 List {
                     ForEach(viewModel.search) { book in
                         NavigationLink {
-                            Text(book.wrappedTitle)
+                            BookDetailsView(book: book)
                         } label: {
-                            VStack {
-                                Text(book.wrappedTitle)
-                                Text(book.author?.wrappedName ?? "Unknown Author")
+                            HStack {
+                                EmojiRating(rating: book.rating)
+                                VStack(alignment: .leading) {
+                                    Text(book.wrappedTitle)
+                                        .font(.title3.bold())
+                                        .foregroundColor(viewModel.textColor(book.rating))
+                                    Text(book.author?.wrappedName ?? "Unknown Author")
+                                        .font(.headline.bold())
+                                        .foregroundColor(.black.opacity(0.4))
+                                }
                             }
                         }
                         
                     }
                     .onDelete(perform: viewModel.deleteBook)
                 }
+                .listStyle(.plain)
             }
             .padding()
             .navigationTitle("Bookworm")
@@ -76,6 +79,9 @@ struct BooksView: View {
                         }
                     }
                 }
+            }
+            .sheet(isPresented: $viewModel.showingAddNewBook) {
+                AddNewBookView()
             }
         }
     }
