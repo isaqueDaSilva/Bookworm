@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E600A592AA144FB00422D2C /* Author+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E600A552AA144FB00422D2C /* Author+CoreDataClass.swift */; };
+		7E600A5A2AA144FB00422D2C /* Author+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E600A562AA144FB00422D2C /* Author+CoreDataProperties.swift */; };
+		7E600A5B2AA144FB00422D2C /* Books+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E600A572AA144FB00422D2C /* Books+CoreDataClass.swift */; };
+		7E600A5C2AA144FB00422D2C /* Books+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E600A582AA144FB00422D2C /* Books+CoreDataProperties.swift */; };
 		7E62D9CB2AA04A81007A4F52 /* BookwormApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E62D9CA2AA04A81007A4F52 /* BookwormApp.swift */; };
 		7E62D9CF2AA04A83007A4F52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E62D9CE2AA04A83007A4F52 /* Assets.xcassets */; };
 		7E62D9D22AA04A83007A4F52 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E62D9D12AA04A83007A4F52 /* Preview Assets.xcassets */; };
@@ -17,12 +21,14 @@
 		7E62D9E42AA04B6B007A4F52 /* AddNewBookViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E62D9E32AA04B6B007A4F52 /* AddNewBookViewModel.swift */; };
 		7E62D9E62AA04B7B007A4F52 /* BookDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E62D9E52AA04B7B007A4F52 /* BookDetailsViewModel.swift */; };
 		7E62D9E92AA04B8E007A4F52 /* Bookworm.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7E62D9E72AA04B8E007A4F52 /* Bookworm.xcdatamodeld */; };
-		7E62D9EC2AA04DC6007A4F52 /* Books+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E62D9EA2AA04DC6007A4F52 /* Books+CoreDataClass.swift */; };
-		7E62D9ED2AA04DC6007A4F52 /* Books+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E62D9EB2AA04DC6007A4F52 /* Books+CoreDataProperties.swift */; };
 		7E62D9EF2AA04ED7007A4F52 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E62D9EE2AA04ED7007A4F52 /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7E600A552AA144FB00422D2C /* Author+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Author+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		7E600A562AA144FB00422D2C /* Author+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Author+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		7E600A572AA144FB00422D2C /* Books+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Books+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		7E600A582AA144FB00422D2C /* Books+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Books+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		7E62D9C72AA04A81007A4F52 /* Bookworm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bookworm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E62D9CA2AA04A81007A4F52 /* BookwormApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookwormApp.swift; sourceTree = "<group>"; };
 		7E62D9CE2AA04A83007A4F52 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -34,8 +40,6 @@
 		7E62D9E32AA04B6B007A4F52 /* AddNewBookViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewBookViewModel.swift; sourceTree = "<group>"; };
 		7E62D9E52AA04B7B007A4F52 /* BookDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailsViewModel.swift; sourceTree = "<group>"; };
 		7E62D9E82AA04B8E007A4F52 /* Bookworm.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Bookworm.xcdatamodel; sourceTree = "<group>"; };
-		7E62D9EA2AA04DC6007A4F52 /* Books+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Books+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		7E62D9EB2AA04DC6007A4F52 /* Books+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Books+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		7E62D9EE2AA04ED7007A4F52 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -90,8 +94,10 @@
 		7E62D9D82AA04AE2007A4F52 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				7E62D9EA2AA04DC6007A4F52 /* Books+CoreDataClass.swift */,
-				7E62D9EB2AA04DC6007A4F52 /* Books+CoreDataProperties.swift */,
+				7E600A552AA144FB00422D2C /* Author+CoreDataClass.swift */,
+				7E600A562AA144FB00422D2C /* Author+CoreDataProperties.swift */,
+				7E600A572AA144FB00422D2C /* Books+CoreDataClass.swift */,
+				7E600A582AA144FB00422D2C /* Books+CoreDataProperties.swift */,
 				7E62D9E72AA04B8E007A4F52 /* Bookworm.xcdatamodeld */,
 				7E62D9EE2AA04ED7007A4F52 /* CoreDataManager.swift */,
 			);
@@ -189,15 +195,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E62D9DE2AA04B3A007A4F52 /* AddNewBookView.swift in Sources */,
+				7E600A5C2AA144FB00422D2C /* Books+CoreDataProperties.swift in Sources */,
+				7E600A5A2AA144FB00422D2C /* Author+CoreDataProperties.swift in Sources */,
 				7E62D9E92AA04B8E007A4F52 /* Bookworm.xcdatamodeld in Sources */,
+				7E600A592AA144FB00422D2C /* Author+CoreDataClass.swift in Sources */,
 				7E62D9E22AA04B5A007A4F52 /* BooksViewModel.swift in Sources */,
 				7E62D9E62AA04B7B007A4F52 /* BookDetailsViewModel.swift in Sources */,
 				7E62D9E42AA04B6B007A4F52 /* AddNewBookViewModel.swift in Sources */,
 				7E62D9DC2AA04B2C007A4F52 /* BooksView.swift in Sources */,
-				7E62D9ED2AA04DC6007A4F52 /* Books+CoreDataProperties.swift in Sources */,
 				7E62D9CB2AA04A81007A4F52 /* BookwormApp.swift in Sources */,
-				7E62D9EC2AA04DC6007A4F52 /* Books+CoreDataClass.swift in Sources */,
 				7E62D9E02AA04B4A007A4F52 /* BookDetailsView.swift in Sources */,
+				7E600A5B2AA144FB00422D2C /* Books+CoreDataClass.swift in Sources */,
 				7E62D9EF2AA04ED7007A4F52 /* CoreDataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

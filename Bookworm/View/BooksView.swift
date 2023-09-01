@@ -11,19 +11,41 @@ struct BooksView: View {
     @StateObject var viewModel = BooksViewModel()
     var body: some View {
         NavigationView {
-            List {
-                ForEach(viewModel.books) { book in
-                    NavigationLink {
-                        Text(book.wrappedTitle)
-                    } label: {
-                        VStack {
-                            Text(book.wrappedTitle)
-                            Text(book.wrappedAuthor)
+            VStack {
+                if viewModel.filter != .all {
+                    Picker("Select", selection: $viewModel.text) {
+                        if viewModel.filter == .author {
+                            ForEach(viewModel.books) { author in
+                                Text(author.author?.wrappedName ?? "Unknown Author")
+                            }
+                        }
+                        
+                        if viewModel.filter == .genre {
+                            ForEach(viewModel.genres, id: \.self) {
+                                Text($0)
+                            }
+                        }
+                        
+                        if viewModel.filter == .ratingEqual || viewModel.filter == .ratingGreaterThan || viewModel.filter == .ratingLessThan {
+                            
                         }
                     }
-
                 }
-                .onDelete(perform: viewModel.deleteBook)
+                
+                List {
+                    ForEach(viewModel.search) { book in
+                        NavigationLink {
+                            Text(book.wrappedTitle)
+                        } label: {
+                            VStack {
+                                Text(book.wrappedTitle)
+                                Text(book.author?.wrappedName ?? "Unknown Author")
+                            }
+                        }
+                        
+                    }
+                    .onDelete(perform: viewModel.deleteBook)
+                }
             }
             .navigationTitle("Bookworm")
             .toolbar {

@@ -34,7 +34,8 @@ extension AddNewBookView {
             let newBook = Books(context: manager.context)
             newBook.id = UUID()
             newBook.title = title
-            newBook.author = author
+            newBook.author = Author(context: manager.context)
+            newBook.author?.name = author
             newBook.releaseDate = releaseDate
             newBook.genre = genre
             newBook.review = review

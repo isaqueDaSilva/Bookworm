@@ -16,42 +16,35 @@ extension BooksView {
         @Published var books = [Books]()
         @Published var showingAddNewBook = false
         @Published var ascendingChoice = true
-        @Published var filter: Filter = .author
+        @Published var filter: Filter = .all
         @Published var text = ""
         
-        var filtering: String {
-            var filterScript = ""
-            
-            if filter == .author {
-                filterScript = "author == %@"
+        let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
+        var search: [Books] {
+            books.filter { book in
+                var filtering = false
+                if filter == .all {
+                    filtering = !book.wrappedTitle.contains(text)
+                }
+                if filter == .author {
+                    filtering = ((book.author?.wrappedName.contains(text)) != nil)
+                }
+                if filter == .genre {
+                    filtering = book.wrappedGenre.contains(text)
+                }
+                if filter == .ratingEqual || filter == .ratingGreaterThan || filter == .ratingLessThan {
+                    filtering = String(book.rating).contains(text)
+                }
+                return filtering
             }
-            
-            if filter == .genre {
-                filterScript = "genre == %@"
-            }
-            
-            if filter == .ratingEqual {
-                filterScript = "rating == %@"
-            }
-            
-            if filter == .ratingGreaterThan {
-                filterScript = "rating > %@"
-            }
-            
-            if filter == .ratingLessThan {
-                filterScript = "rating < %@"
-            }
-            return filterScript
         }
         
-        let ascendingOrder = [true, false]
         func fetchBooks() {
             let request = NSFetchRequest<Books>(entityName: "Books")
-            let sort = NSSortDescriptor(keyPath: \Books.author, ascending: ascendingChoice)
-            let filter = NSPredicate(format: filtering, text)
+
+            //let filter = NSPredicate(format: filtering, text)
             
-            request.sortDescriptors = [sort]
-            request.predicate = filter
+           // request.predicate = filter
             do {
                 books = try manager.context.fetch(request)
             } catch let error {
@@ -84,6 +77,7 @@ extension BooksView {
 }
 
 enum Filter: String, CaseIterable {
+    case all = "All"
     case author = "Author"
     case genre = "Genre"
     case ratingEqual = "Rating Equal to"

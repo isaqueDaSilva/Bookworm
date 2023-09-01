@@ -16,32 +16,28 @@ extension Books {
         return NSFetchRequest<Books>(entityName: "Books")
     }
 
-    @NSManaged public var id: UUID?
-    @NSManaged public var title: String?
-    @NSManaged public var author: String?
-    @NSManaged public var releaseDate: Date?
     @NSManaged public var genre: String?
+    @NSManaged public var id: UUID?
     @NSManaged public var rating: Int16
+    @NSManaged public var releaseDate: Date?
     @NSManaged public var review: String?
+    @NSManaged public var title: String?
+    @NSManaged public var author: Author?
     
     public var wrappedTitle: String {
         title ?? "Unknown Title"
-    }
-    
-    public var wrappedAuthor: String {
-        author ?? "Unknown Author"
-    }
-    
-    public var wrappedReleaseDate: Date {
-        releaseDate ?? Date.now
     }
     
     public var wrappedGenre: String {
         genre ?? "Unknown Genre"
     }
     
+    public var wrappedReleaseDate: Date {
+        releaseDate ?? Date.now
+    }
+    
     public var wrappedReview: String {
-        review ?? "No Review"
+        title ?? "No Review"
     }
 }
 
