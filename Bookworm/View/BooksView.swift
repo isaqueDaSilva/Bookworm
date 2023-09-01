@@ -27,9 +27,12 @@ struct BooksView: View {
                         }
                         
                         if viewModel.filter == .ratingEqual || viewModel.filter == .ratingGreaterThan || viewModel.filter == .ratingLessThan {
-                            
+                            ForEach(viewModel.rating, id: \.self) {
+                                Text($0)
+                            }
                         }
                     }
+                    .pickerStyle(.segmented)
                 }
                 
                 List {
@@ -47,6 +50,7 @@ struct BooksView: View {
                     .onDelete(perform: viewModel.deleteBook)
                 }
             }
+            .padding()
             .navigationTitle("Bookworm")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

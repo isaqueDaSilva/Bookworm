@@ -20,6 +20,7 @@ extension BooksView {
         @Published var text = ""
         
         let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
+        let rating = ["1", "2", "3", "4", "5"]
         var search: [Books] {
             books.filter { book in
                 var filtering = false
@@ -41,10 +42,6 @@ extension BooksView {
         
         func fetchBooks() {
             let request = NSFetchRequest<Books>(entityName: "Books")
-
-            //let filter = NSPredicate(format: filtering, text)
-            
-           // request.predicate = filter
             do {
                 books = try manager.context.fetch(request)
             } catch let error {
