@@ -15,16 +15,8 @@ class CoreDataMananger: ObservableObject {
     
     var books = [Books]()
     
-    @Published var isSorting = false
-    @Published var ascending = true
-    
     func fetchBooks() {
         let request = NSFetchRequest<Books>(entityName: "Books")
-        
-        if isSorting {
-            let sort = NSSortDescriptor(keyPath: \Books.title, ascending: ascending)
-            request.sortDescriptors = [sort]
-        }
         
         do {
             books = try context.fetch(request)
