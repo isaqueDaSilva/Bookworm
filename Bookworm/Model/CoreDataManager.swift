@@ -8,7 +8,7 @@
 import CoreData
 import Foundation
 
-class CoreDataMananger: ObservableObject {
+class CoreDataMananger {
     static let shared = CoreDataMananger()
     let container: NSPersistentContainer
     let context: NSManagedObjectContext

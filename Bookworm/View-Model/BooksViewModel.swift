@@ -15,7 +15,7 @@ extension BooksView {
         
         @Published var showingAddNewBook = false
         @Published var ascendingChoice = true
-        @Published var filter: Filter = .all
+        @AppStorage("Filter") var filter: Filter = .all
         @Published var text = ""
         
         let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
