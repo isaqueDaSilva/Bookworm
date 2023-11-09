@@ -9,19 +9,49 @@ import Foundation
 
 extension BookDetailsView {
     class BookDetailsViewModel: ObservableObject {
-        let manager = CoreDataMananger.shared
+        let manager = BooksMananger.shared
         
         @Published var deleteCurrentBookAlert = false
         
-        var dateFormatter: DateFormatter {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .long
-            return formatter
+        private let book: Books
+        private var onChange: () -> Void
+        
+        var bookTitle: String {
+            book.wrappedTitle
         }
         
-        func deleteCurrentBook(_ book: Books) {
-            manager.context.delete(book)
-            manager.save()
+        var bookGenre: String {
+            book.wrappedGenre
+        }
+        
+        var bookAuthor: String {
+            book.author?.wrappedName ?? "Unknown Author"
+        }
+        
+        var bookReleaseDate: String {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .long
+            return formatter.string(from: book.wrappedReleaseDate)
+        }
+        
+        var bookReview: String {
+            book.wrappedReview
+        }
+        
+        var bookRating: Int {
+            Int(book.rating)
+        }
+        
+        func delete() {
+            Task { @MainActor in 
+                await manager.delete(book)
+                onChange()
+            }
+        }
+        
+        init(book: Books, onChange: @escaping () -> Void) {
+            self.book = book
+            self.onChange = onChange
         }
     }
 }

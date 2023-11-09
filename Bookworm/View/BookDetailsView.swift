@@ -8,17 +8,16 @@
 import SwiftUI
 
 struct BookDetailsView: View {
-    @Environment(\.dismiss) var dismiss
-    @StateObject var viewModel = BookDetailsViewModel()
-    let book: Books
+    @StateObject var viewModel: BookDetailsViewModel
+    
     var body: some View {
         ScrollView {
             ZStack(alignment: .bottomTrailing) {
-                Image(book.wrappedGenre)
+                Image(viewModel.bookGenre)
                     .resizable()
                     .scaledToFit()
                 
-                Text(book.wrappedGenre.uppercased())
+                Text(viewModel.bookGenre.uppercased())
                     .font(.caption)
                     .fontWeight(.black)
                     .padding(8)
@@ -29,38 +28,39 @@ struct BookDetailsView: View {
             }
             
             VStack {
-                Text(book.author?.wrappedName ?? "Unknown Author")
+                Text(viewModel.bookAuthor)
                     .font(.largeTitle)
                     .foregroundColor(.secondary)
                 
-                Text("In: \(viewModel.dateFormatter.string(from: book.wrappedReleaseDate))")
+                Text("In: \(viewModel.bookReleaseDate)")
                     .font(.headline.bold())
                 
-                Text(book.wrappedReview)
+                Text(viewModel.bookReview)
                     .font(.headline.bold())
                     .padding()
                 
-                RatingStars(rating: .constant(Int(book.rating)))
+                RatingStars(rating: .constant(viewModel.bookRating))
             }
         }
-        .navigationTitle(book.wrappedTitle)
+        .navigationTitle(viewModel.bookTitle)
         .navigationBarTitleDisplayMode(.inline)
-//        .toolbar {
-//            Button{
-//                viewModel.deleteCurrentBookAlert = true
-//            } label: {
-//                Label("Delete", systemImage: "trash")
-//            }
-//        }
-//        .alert("Delete Book", isPresented: $viewModel.deleteCurrentBookAlert) {
-//            Button("Delete", role: .destructive) {
-//                viewModel.deleteCurrentBook(book)
-//                dismiss()
-//            }
-//
-//            Button("Cancel", role: .cancel) { }
-//        } message: {
-//            Text("Are you sure you want to delete this book?")
-//        }
+        .toolbar {
+            Button {
+                viewModel.deleteCurrentBookAlert = true
+            } label: {
+                Image(systemName: "trash")
+            }
+        }
+        .alert("Delete this Book", isPresented: $viewModel.deleteCurrentBookAlert) {
+            Button("Delete", role: .destructive, action: viewModel.delete)
+            Button("Cancel", role: .cancel, action: {})
+        } message: {
+            Text("Are you sure you want to delete this book?")
+        }
+
+    }
+    
+    init(book: Books, onChange: @escaping () -> Void) {
+        _viewModel = StateObject(wrappedValue: BookDetailsViewModel(book: book, onChange: onChange))
     }
 }

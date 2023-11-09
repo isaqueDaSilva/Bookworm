@@ -10,6 +10,7 @@ import SwiftUI
 struct AddNewBookView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var viewModel = AddNewBookViewModel()
+    
     var body: some View {
         NavigationView {
             Form {

@@ -5,60 +5,90 @@
 //  Created by Isaque da Silva on 31/08/23.
 //
 
-import CoreData
 import Foundation
 import SwiftUI
 
 extension BooksView {
     class BooksViewModel: ObservableObject {
-        let manager = CoreDataMananger.shared
+        let manager = BooksMananger.shared
         
+        @Published var books = [Books]()
+        @Published var authorList = [String]()
+        @Published var genres = [String]()
         @Published var showingAddNewBook = false
         @Published var ascendingChoice = true
         @AppStorage("Filter") var filter: Filter = .all
         @Published var text = ""
         
-        let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
-        let rating = ["1", "2", "3", "4", "5"]
-        
-        var search: [Books] {
-            let books = manager.books
-            
-            if filter == .all {
-                return books
+        var choiceText: [String] {
+            switch filter {
+            case .all:
+                return []
+            case .ascendingOrder:
+                return []
+            case .genre:
+                return self.genres
+            case .ratingEqual:
+                return ["1", "2", "3", "4", "5"]
+            case .authors:
+                return self.authorList
             }
-            
-            if filter == .ascendingOrder {
-                return books.sorted { $0.wrappedTitle < $1.wrappedTitle }
-            }
-            
-//            if filter == .author {
-//                return books.filter { ($0.author?.wrappedName.contains(text) != nil) }
-//            }
-            
-            if filter == .genre {
-                return books.filter { $0.wrappedGenre.contains(text) }
-            }
-            
-            if filter == .ratingEqual {
-                return books.filter { String($0.rating).contains(text) }
-            }
-            
-            return books
         }
         
+        var search: [Books] {
+            switch filter {
+            case .all:
+                return books
+            case .ascendingOrder:
+                return books.sorted { $0.wrappedTitle < $1.wrappedTitle }
+            case .genre:
+                return books.filter { $0.wrappedGenre.contains(text) }
+            case .ratingEqual:
+                return books.filter { String($0.rating).contains(text) }
+            case .authors:
+                return books.filter { $0.author!.wrappedName.contains(text) }
+            }
+        }
         
-        func deleteBook(at indexSet: IndexSet) {
-            guard let index = indexSet.first else { return }
-            
-            let book = manager.books[index]
-            manager.context.delete(book)
-            manager.save()
+        func getBooks() {
+            Task { @MainActor in
+                await manager.fetchBooks()
+                self.books = await manager.books
+                getAuthorList()
+                getGenreList()
+            }
+        }
+        
+        func getAuthorList() {
+            var authors = [String]()
+            books.forEach { book in
+                if !authors.contains(book.author!.wrappedName) {
+                    authors.append(book.author!.wrappedName)
+                }
+            }
+            self.authorList = authors
+        }
+        
+        func getGenreList() {
+            var genresList = [String]()
+            books.forEach { book in
+                if !genresList.contains(book.wrappedGenre) {
+                    genresList.append(book.wrappedGenre)
+                }
+            }
+            self.genres = genresList
+        }
+        
+        func delete(at indexSet: IndexSet) {
+            Task { @MainActor in
+                guard let index = indexSet.first else { return }
+                let book = books[index]
+                await manager.delete(book)
+            }
         }
         
         func textColor(_ rating: Int16) -> Color {
             var color: Color = .green
-            
             if rating <= 2 {
                 color = .red
             } else if rating > 2 && rating < 5 {
@@ -66,20 +96,11 @@ extension BooksView {
             } else if rating == 5 {
                 color = .green
             }
-            
             return color
         }
         
         init() {
-            manager.fetchBooks()
+            getBooks()
         }
     }
-}
-
-enum Filter: String, CaseIterable {
-    case all = "All"
-    case ascendingOrder = "Ascending Order"
-//    case author = "Author"
-    case genre = "Genre"
-    case ratingEqual = "Rating Equal to"
 }

@@ -5,12 +5,11 @@
 //  Created by Isaque da Silva on 31/08/23.
 //
 
-import CoreData
 import Foundation
 
 extension AddNewBookView {
     class AddNewBookViewModel: ObservableObject {
-        let manager = CoreDataMananger.shared
+        let manager = BooksMananger.shared
         
         @Published var title = ""
         @Published var author = ""
@@ -31,16 +30,9 @@ extension AddNewBookView {
         }
         
         func addBook() {
-            let newBook = Books(context: manager.context)
-            newBook.id = UUID()
-            newBook.title = title
-            newBook.author = Author(context: manager.context)
-            newBook.author?.name = author
-            newBook.releaseDate = releaseDate
-            newBook.genre = genre
-            newBook.review = review
-            newBook.rating = Int16(rating)
-            manager.save()
+            Task { @MainActor in 
+                await manager.addNewBook(title: title, author: author, releaseDate: releaseDate,genre: genre, review: review,rating: rating)
+            }
         }
     }
 }

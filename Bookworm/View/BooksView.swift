@@ -9,31 +9,23 @@ import SwiftUI
 
 struct BooksView: View {
     @StateObject var viewModel = BooksViewModel()
+    
     var body: some View {
         NavigationView {
-            VStack {
-                if viewModel.filter == .genre {
+            List {
+                if viewModel.filter == .genre || viewModel.filter == .ratingEqual || viewModel.filter == .authors {
                     Picker("Select", selection: $viewModel.text) {
-                        ForEach(viewModel.genres, id: \.self) {
+                        ForEach(viewModel.choiceText, id: \.self) {
                             Text($0)
                         }
                     }
                     .pickerStyle(.segmented)
                 }
                 
-                if viewModel.filter == .ratingEqual {
-                    Picker("Select", selection: $viewModel.text) {
-                        ForEach(viewModel.rating, id: \.self) {
-                            Text($0)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                }
-                
-                List {
+                Section {
                     ForEach(viewModel.search) { book in
                         NavigationLink {
-                            BookDetailsView(book: book)
+                            BookDetailsView(book: book, onChange: viewModel.getBooks)
                         } label: {
                             HStack {
                                 EmojiRating(rating: book.rating)
@@ -49,11 +41,10 @@ struct BooksView: View {
                         }
                         
                     }
-                    .onDelete(perform: viewModel.deleteBook)
+                    .onDelete(perform: viewModel.delete)
                 }
                 .listStyle(.plain)
             }
-            .padding()
             .navigationTitle("Bookworm")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -80,7 +71,7 @@ struct BooksView: View {
                     }
                 }
             }
-            .sheet(isPresented: $viewModel.showingAddNewBook) {
+            .sheet(isPresented: $viewModel.showingAddNewBook, onDismiss: viewModel.getBooks) {
                 AddNewBookView()
             }
         }
