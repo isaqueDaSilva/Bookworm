@@ -9,12 +9,10 @@ import CoreData
 import Foundation
 
 actor BooksMananger {
-    static let shared = BooksMananger()
-    
     let container: NSPersistentContainer
     let context: NSManagedObjectContext
     
-    var books = [Books]()
+    var books: [Books]
     
     private func save() {
         do {
@@ -29,7 +27,7 @@ actor BooksMananger {
         let request = NSFetchRequest<Books>(entityName: "Books")
         
         do {
-            books = try context.fetch(request)
+            self.books = try context.fetch(request)
         } catch let error {
             print("Error to fetching Books in Core Data. Error: \(error)")
         }
@@ -53,11 +51,13 @@ actor BooksMananger {
         save()
     }
     
-    private init() {
-        container = NSPersistentContainer(name: "Bookworm")
-        context = container.viewContext
+    init() {
+        self.books = []
         
-        container.loadPersistentStores { (description, error) in
+        self.container = NSPersistentContainer(name: "Bookworm")
+        self.context = container.viewContext
+        
+        self.container.loadPersistentStores { (description, error) in
             if let error = error {
                 print("Falied to load book. Error: \(error)")
             }

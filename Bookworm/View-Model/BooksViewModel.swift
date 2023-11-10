@@ -59,7 +59,7 @@ extension BooksView {
             }
         }
         
-        func getAuthorList() {
+        private func getAuthorList() {
             var authors = [String]()
             books.forEach { book in
                 if !authors.contains(book.author!.wrappedName) {
@@ -69,7 +69,7 @@ extension BooksView {
             self.authorList = authors
         }
         
-        func getGenreList() {
+        private func getGenreList() {
             var genresList = [String]()
             books.forEach { book in
                 if !genresList.contains(book.wrappedGenre) {
