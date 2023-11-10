@@ -9,9 +9,10 @@ import SwiftUI
 
 @main
 struct BookwormApp: App {
+    let manager = BooksMananger()
     var body: some Scene {
         WindowGroup {
-            BooksView()
+            BooksView(manager: manager)
         }
     }
 }

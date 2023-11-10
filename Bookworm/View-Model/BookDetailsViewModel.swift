@@ -9,7 +9,7 @@ import Foundation
 
 extension BookDetailsView {
     class BookDetailsViewModel: ObservableObject {
-        let manager = BooksMananger.shared
+        let manager: BooksMananger
         
         @Published var deleteCurrentBookAlert = false
         
@@ -49,7 +49,8 @@ extension BookDetailsView {
             }
         }
         
-        init(book: Books, onChange: @escaping () -> Void) {
+        init(manager: BooksMananger, book: Books, onChange: @escaping () -> Void) {
+            self.manager = manager
             self.book = book
             self.onChange = onChange
         }

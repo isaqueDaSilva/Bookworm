@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct BooksView: View {
-    @StateObject var viewModel = BooksViewModel()
+    @StateObject var viewModel: BooksViewModel
     
     var body: some View {
         NavigationView {
@@ -25,7 +25,7 @@ struct BooksView: View {
                 Section {
                     ForEach(viewModel.search) { book in
                         NavigationLink {
-                            BookDetailsView(book: book, onChange: viewModel.getBooks)
+                            BookDetailsView(manager: viewModel.manager, book: book, onChange: viewModel.getBooks)
                         } label: {
                             HStack {
                                 EmojiRating(rating: book.rating)
@@ -72,8 +72,12 @@ struct BooksView: View {
                 }
             }
             .sheet(isPresented: $viewModel.showingAddNewBook, onDismiss: viewModel.getBooks) {
-                AddNewBookView()
+                AddNewBookView(manager: viewModel.manager)
             }
         }
+    }
+    
+    init(manager: BooksMananger) {
+        _viewModel = StateObject(wrappedValue: BooksViewModel(manager: manager))
     }
 }

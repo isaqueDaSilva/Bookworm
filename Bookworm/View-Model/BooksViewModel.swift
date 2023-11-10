@@ -10,7 +10,7 @@ import SwiftUI
 
 extension BooksView {
     class BooksViewModel: ObservableObject {
-        let manager = BooksMananger.shared
+        let manager: BooksMananger
         
         @Published var books = [Books]()
         @Published var authorList = [String]()
@@ -99,7 +99,8 @@ extension BooksView {
             return color
         }
         
-        init() {
+        init(manager: BooksMananger) {
+            self.manager = manager
             getBooks()
         }
     }

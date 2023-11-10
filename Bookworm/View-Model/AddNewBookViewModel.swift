@@ -9,7 +9,7 @@ import Foundation
 
 extension AddNewBookView {
     class AddNewBookViewModel: ObservableObject {
-        let manager = BooksMananger.shared
+        let manager: BooksMananger
         
         @Published var title = ""
         @Published var author = ""
@@ -33,6 +33,10 @@ extension AddNewBookView {
             Task { @MainActor in 
                 await manager.addNewBook(title: title, author: author, releaseDate: releaseDate,genre: genre, review: review,rating: rating)
             }
+        }
+        
+        init(manager: BooksMananger) {
+            self.manager = manager
         }
     }
 }

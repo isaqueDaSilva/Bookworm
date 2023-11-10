@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddNewBookView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject var viewModel = AddNewBookViewModel()
+    @StateObject var viewModel: AddNewBookViewModel
     
     var body: some View {
         NavigationView {
@@ -61,5 +61,9 @@ struct AddNewBookView: View {
                 }
             }
         }
+    }
+    
+    init(manager: BooksMananger) {
+        _viewModel = StateObject(wrappedValue: AddNewBookViewModel(manager: manager))
     }
 }

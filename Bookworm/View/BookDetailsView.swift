@@ -60,7 +60,7 @@ struct BookDetailsView: View {
 
     }
     
-    init(book: Books, onChange: @escaping () -> Void) {
-        _viewModel = StateObject(wrappedValue: BookDetailsViewModel(book: book, onChange: onChange))
+    init(manager: BooksMananger, book: Books, onChange: @escaping () -> Void) {
+        _viewModel = StateObject(wrappedValue: BookDetailsViewModel(manager: manager, book: book, onChange: onChange))
     }
 }
