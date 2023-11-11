@@ -11,6 +11,8 @@ extension AddNewBookView {
     class AddNewBookViewModel: ObservableObject {
         let manager: BooksMananger
         
+        private var onSave: () -> Void
+        
         @Published var title = ""
         @Published var author = ""
         @Published var releaseDate = Date.now
@@ -32,11 +34,13 @@ extension AddNewBookView {
         func addBook() {
             Task { @MainActor in 
                 await manager.addNewBook(title: title, author: author, releaseDate: releaseDate,genre: genre, review: review,rating: rating)
+                onSave()
             }
         }
         
-        init(manager: BooksMananger) {
+        init(manager: BooksMananger, onSave: @escaping () -> Void) {
             self.manager = manager
+            self.onSave = onSave
         }
     }
 }

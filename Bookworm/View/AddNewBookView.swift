@@ -63,7 +63,7 @@ struct AddNewBookView: View {
         }
     }
     
-    init(manager: BooksMananger) {
-        _viewModel = StateObject(wrappedValue: AddNewBookViewModel(manager: manager))
+    init(manager: BooksMananger, onSave: @escaping () -> Void) {
+        _viewModel = StateObject(wrappedValue: AddNewBookViewModel(manager: manager, onSave: onSave))
     }
 }

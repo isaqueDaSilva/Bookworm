@@ -13,7 +13,7 @@ struct BooksView: View {
     var body: some View {
         NavigationView {
             List {
-                if viewModel.filter == .genre || viewModel.filter == .ratingEqual || viewModel.filter == .authors {
+                if viewModel.showingPicker {
                     Picker("Select", selection: $viewModel.text) {
                         ForEach(viewModel.choiceText, id: \.self) {
                             Text($0)
@@ -71,8 +71,8 @@ struct BooksView: View {
                     }
                 }
             }
-            .sheet(isPresented: $viewModel.showingAddNewBook, onDismiss: viewModel.getBooks) {
-                AddNewBookView(manager: viewModel.manager)
+            .sheet(isPresented: $viewModel.showingAddNewBook) {
+                AddNewBookView(manager: viewModel.manager, onSave: viewModel.getBooks)
             }
         }
     }

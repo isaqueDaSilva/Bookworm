@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Filter: String, CaseIterable {
+enum Filter: String, CaseIterable, Equatable {
     case all = "All"
     case ascendingOrder = "Ascending Order"
     case genre = "Genre"

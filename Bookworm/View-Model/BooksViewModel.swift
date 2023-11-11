@@ -20,6 +20,27 @@ extension BooksView {
         @AppStorage("Filter") var filter: Filter = .all
         @Published var text = ""
         
+        var showingPicker: Bool {
+            switch filter {
+            case .all, .ascendingOrder:
+                return false
+            case .genre:
+                if !genres.isEmpty {
+                    return true
+                } else {
+                    return false
+                }
+            case .ratingEqual:
+                return true
+            case .authors:
+                if !authorList.isEmpty {
+                    return true
+                } else {
+                    return false
+                }
+            }
+        }
+        
         var choiceText: [String] {
             switch filter {
             case .all:
@@ -84,6 +105,7 @@ extension BooksView {
                 guard let index = indexSet.first else { return }
                 let book = books[index]
                 await manager.delete(book)
+                self.getBooks()
             }
         }
         
