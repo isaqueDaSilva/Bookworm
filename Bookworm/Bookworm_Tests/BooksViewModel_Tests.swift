@@ -9,52 +9,40 @@ import XCTest
 @testable import Bookworm
 
 final class BooksViewModel_Tests: XCTestCase {
+    
+    var viewModel: BooksViewModel?
+    let manager = BooksMananger()
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        viewModel = BooksViewModel(manager: manager)
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        viewModel = nil
     }
     
-    func test_BooksViewModel_showingAddNewBook_shouldBeTrue() {
+    func test_BooksViewModel_displayAddNewBook_shouldBeDefiningShowingAddNewBookAsTrue() {
         // Given
-        let viewModel = BooksView.BooksViewModel(manager: BooksMananger())
+        
         // When
-        viewModel.showingAddNewBook = true
+        guard let viewModel = self.viewModel else { return }
+        
+        viewModel.displayAddNewBook()
         // Then
         XCTAssertTrue(viewModel.showingAddNewBook)
     }
     
-    func test_BooksViewModel_showingAddNewBook_shouldBeFalse() {
+    func test_BooksViewModel_showingAddNewBook_shouldBeInitializedAsFalse() {
         // Given
-        let viewModel = BooksView.BooksViewModel(manager: BooksMananger())
+        
         // When
-        viewModel.showingAddNewBook = false
+        guard let viewModel = self.viewModel else { return }
+        
         // Then
         XCTAssertFalse(viewModel.showingAddNewBook)
     }
     
-    func test_BooksViewModel_showingAddNewBook_shouldBeInjectedValue() {
-        // Given
-        let showingAddBook = Bool.random()
-        // When
-        let viewModel = BooksView.BooksViewModel(manager: BooksMananger())
-        viewModel.showingAddNewBook = showingAddBook
-        // Then
-        XCTAssertEqual(viewModel.showingAddNewBook, showingAddBook)
-    }
-
-    func test_BooksViewModel_showingAddNewBook_shouldBeInjectedValue_stress() {
-        for _ in 0..<100 {
-            // Given
-            let showingAddBook = Bool.random()
-            // When
-            let viewModel = BooksView.BooksViewModel(manager: BooksMananger())
-            viewModel.showingAddNewBook = showingAddBook
-            // Then
-            XCTAssertEqual(viewModel.showingAddNewBook, showingAddBook)
-        }
-    }
+    
 }

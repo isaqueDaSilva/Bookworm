@@ -46,7 +46,7 @@ struct BookDetailsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             Button {
-                viewModel.deleteCurrentBookAlert = true
+                viewModel.displayAlert()
             } label: {
                 Image(systemName: "trash")
             }
