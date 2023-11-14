@@ -16,7 +16,6 @@ extension BooksView {
         @Published var authorList = [String]()
         @Published var genres = [String]()
         @Published var showingAddNewBook = false
-        @Published var ascendingChoice = true
         @AppStorage("Filter") var filter: Filter = .all
         @Published var text = ""
         
@@ -69,6 +68,10 @@ extension BooksView {
             case .authors:
                 return books.filter { $0.author!.wrappedName.contains(text) }
             }
+        }
+        
+        func displayAddNewBook() {
+            showingAddNewBook = true
         }
         
         func getBooks() {

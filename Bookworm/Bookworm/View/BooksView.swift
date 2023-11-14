@@ -64,7 +64,7 @@ struct BooksView: View {
                         }
                         
                         Button {
-                            viewModel.showingAddNewBook = true
+                            viewModel.displayAddNewBook()
                         } label: {
                             Label("Add new Book", systemImage: "plus")
                         }
