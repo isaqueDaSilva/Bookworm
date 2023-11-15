@@ -8,15 +8,13 @@
 import CoreData
 import Foundation
 
-actor BooksMananger {
-    let container: NSPersistentContainer
-    let context: NSManagedObjectContext
-    
+class BooksMananger {
+    let stack: CoreDataService
     var books: [Books]
     
     private func save() {
         do {
-            try context.save()
+            try stack.context.save()
             fetchBooks()
         } catch let error {
             print("Falied to save book in Data Model. Error: \(error)")
@@ -27,17 +25,17 @@ actor BooksMananger {
         let request = NSFetchRequest<Books>(entityName: "Books")
         
         do {
-            self.books = try context.fetch(request)
+            self.books = try stack.context.fetch(request)
         } catch let error {
             print("Error to fetching Books in Core Data. Error: \(error)")
         }
     }
     
     func addNewBook(title: String, author: String, releaseDate: Date, genre: String, review: String, rating: Int) {
-        let newBook = Books(context: context)
+        let newBook = Books(context: stack.context)
         newBook.id = UUID()
         newBook.title = title
-        newBook.author = Author(context: context)
+        newBook.author = Author(context: stack.context)
         newBook.author?.name = author
         newBook.releaseDate = releaseDate
         newBook.genre = genre
@@ -47,22 +45,12 @@ actor BooksMananger {
     }
     
     func delete(_ book: Books) {
-        context.delete(book)
+        stack.context.delete(book)
         save()
     }
     
-    init() {
+    init(stack: CoreDataService) {
         self.books = []
-        
-        self.container = NSPersistentContainer(name: "Bookworm")
-        self.context = container.viewContext
-        
-        self.container.loadPersistentStores { (description, error) in
-            if let error = error {
-                print("Falied to load book. Error: \(error)")
-            }
-        }
-        
-        self.context.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
+        self.stack = stack
     }
 }

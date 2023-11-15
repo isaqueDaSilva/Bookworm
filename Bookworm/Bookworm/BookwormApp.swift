@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct BookwormApp: App {
-    let manager = BooksMananger()
+    let manager = BooksMananger(stack: CoreDataStack())
     var body: some Scene {
         WindowGroup {
             BooksView(manager: manager)

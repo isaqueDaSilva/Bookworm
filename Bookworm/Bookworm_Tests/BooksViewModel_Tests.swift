@@ -11,7 +11,7 @@ import XCTest
 final class BooksViewModel_Tests: XCTestCase {
     
     var viewModel: BooksViewModel?
-    let manager = BooksMananger()
+    let manager = BooksMananger(stack: CoreDataTestStack())
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
