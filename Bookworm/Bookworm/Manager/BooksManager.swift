@@ -8,7 +8,7 @@
 import CoreData
 import Foundation
 
-class BooksMananger {
+actor BooksMananger {
     let stack: CoreDataService
     var books: [Books]
     

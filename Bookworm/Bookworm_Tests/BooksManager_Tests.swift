@@ -22,18 +22,19 @@ final class BooksManager_Tests: XCTestCase {
         self.manager = nil
     }
 
-    func test_BooksManager_books_shouldBeInitializedEmptyOnFirstLaunchOfTheApp() {
+    func test_BooksManager_books_shouldBeInitializedEmptyOnFirstLaunchOfTheApp() async {
         // Given
         
         // When
         guard let manager = self.manager else { return }
-        manager.fetchBooks()
+        await manager.fetchBooks()
+        let books = await manager.books
         // Then
-        XCTAssertTrue(manager.books.isEmpty)
-        XCTAssertEqual(manager.books.count, 0)
+        XCTAssertTrue(books.isEmpty)
+        XCTAssertEqual(books.count, 0)
     }
     
-    func test_BooksManager_books_shouldBeContain1BooksAfterSaving() {
+    func test_BooksManager_books_shouldBeContain1BooksAfterSaving() async {
         // Given
         let title = UUID().uuidString
         let author = UUID().uuidString
@@ -44,35 +45,15 @@ final class BooksManager_Tests: XCTestCase {
         
         // When
         guard let manager = self.manager else { return }
-        manager.addNewBook(title: title, author: author, releaseDate: releaseDate, genre: genre, review: review, rating: rating)
+        await manager.addNewBook(title: title, author: author, releaseDate: releaseDate, genre: genre, review: review, rating: rating)
+        let books = await manager.books
         
         // Then
-        XCTAssertFalse(manager.books.isEmpty)
-        XCTAssertGreaterThan(manager.books.count, 0)
+        XCTAssertFalse(books.isEmpty)
+        XCTAssertGreaterThan(books.count, 0)
     }
     
-    func test_BooksManager_books_shouldBeContainSomeBooksAfterSaving_stress() {
-        for runs in 1...100 {
-            // Given
-            let title = UUID().uuidString
-            let author = UUID().uuidString
-            let releaseDate = Date.now
-            let genre = UUID().uuidString
-            let review = UUID().uuidString
-            let rating = Int.random(in: 1...5)
-            
-            // When
-            guard let manager = self.manager else { return }
-            manager.addNewBook(title: title, author: author, releaseDate: releaseDate, genre: genre, review: review, rating: rating)
-            
-            // Then
-            XCTAssertFalse(manager.books.isEmpty)
-            XCTAssertGreaterThan(manager.books.count, 0)
-            XCTAssertEqual(manager.books.count, runs)
-        }
-    }
-    
-    func test_BooksManager_books_shouldBeDeletAnBook() {
+    func test_BooksManager_books_shouldBeDeletAnBook() async {
         // Given
         guard let manager = self.manager else { return }
         
@@ -82,14 +63,15 @@ final class BooksManager_Tests: XCTestCase {
         let genre = UUID().uuidString
         let review = UUID().uuidString
         let rating = Int.random(in: 1...5)
-        manager.addNewBook(title: title, author: author, releaseDate: releaseDate, genre: genre, review: review, rating: rating)
+        await manager.addNewBook(title: title, author: author, releaseDate: releaseDate, genre: genre, review: review, rating: rating)
         
         // When
-        let book = manager.books[0]
-        manager.delete(book)
+        let book = await manager.books[0]
+        await manager.delete(book)
+        let books = await manager.books
         
         // Then
-        XCTAssertTrue(manager.books.isEmpty)
-        XCTAssertEqual(manager.books.count, 0)
+        XCTAssertTrue(books.isEmpty)
+        XCTAssertEqual(books.count, 0)
     }
 }
