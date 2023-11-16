@@ -14,7 +14,7 @@ class BooksViewModel: ObservableObject {
     @Published var books = [Books]()
     @Published var authorList = [String]()
     @Published var genres = [String]()
-    @Published var showingAddNewBook: Bool
+    @Published var showingAddNewBook = false
     @AppStorage("Filter") var filter: Filter = .all
     @Published var text = ""
     
@@ -125,7 +125,6 @@ class BooksViewModel: ObservableObject {
     
     init(manager: BooksMananger) {
         self.manager = manager
-        self.showingAddNewBook = false
         getBooks()
     }
 }

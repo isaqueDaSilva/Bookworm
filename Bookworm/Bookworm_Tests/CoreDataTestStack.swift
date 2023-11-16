@@ -5,6 +5,7 @@
 //  Created by Isaque da Silva on 14/11/23.
 //
 
+@testable import Bookworm
 import Foundation
 import CoreData
 
