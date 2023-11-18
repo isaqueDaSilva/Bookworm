@@ -12,29 +12,29 @@ class BookDetailsViewModel: ObservableObject {
     
     @Published var deleteCurrentBookAlert = false
     
-    private let book: Books
+    private let book: Book
     private var onChange: () -> Void
     
     var bookTitle: String {
-        book.wrappedTitle
+        book.title
     }
     
     var bookGenre: String {
-        book.wrappedGenre
+        book.genre
     }
     
     var bookAuthor: String {
-        book.author?.wrappedName ?? "Unknown Author"
+        book.author.name
     }
     
     var bookReleaseDate: String {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
-        return formatter.string(from: book.wrappedReleaseDate)
+        return formatter.string(from: book.releaseDate)
     }
     
     var bookReview: String {
-        book.wrappedReview
+        book.review
     }
     
     var bookRating: Int {
@@ -52,7 +52,7 @@ class BookDetailsViewModel: ObservableObject {
         }
     }
     
-    init(manager: BooksMananger, book: Books, onChange: @escaping () -> Void) {
+    init(manager: BooksMananger, book: Book, onChange: @escaping () -> Void) {
         self.manager = manager
         self.book = book
         self.onChange = onChange

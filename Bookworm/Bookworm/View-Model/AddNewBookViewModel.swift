@@ -20,8 +20,6 @@ class AddNewBookViewModel: ObservableObject {
     @Published var rating = 1
     @Published var showingAlert = false
     
-    let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
-    
     var isValid: Bool {
         if title.isEmpty || author.isEmpty || review.isEmpty {
             return false
@@ -30,9 +28,13 @@ class AddNewBookViewModel: ObservableObject {
         }
     }
     
+    var genres: [String] {
+        Book.genres
+    }
+    
     func addBook() {
         Task { @MainActor in
-            await manager.addNewBook(title: title, author: author, releaseDate: releaseDate,genre: genre, review: review,rating: rating)
+            await manager.addNewBook(title: title, authorName: author, releaseDate: releaseDate,genre: genre, review: review,rating: rating)
             onSave()
         }
     }

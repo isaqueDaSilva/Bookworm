@@ -9,48 +9,43 @@ import CoreData
 import Foundation
 
 actor BooksMananger {
-    let stack: CoreDataService
-    var books: [Books]
+    var books: [Book]
+    var path: URL
     
     private func save() {
         do {
-            try stack.context.save()
-            fetchBooks()
+            let data = try JSONEncoder().encode(self.books)
+            try data.write(to: path, options: [.atomic, .completeFileProtection])
         } catch let error {
-            print("Falied to save book in Data Model. Error: \(error)")
+            print("Falied to save data in FileManager. Error: \(error)")
         }
     }
     
     func fetchBooks() {
-        let request = NSFetchRequest<Books>(entityName: "Books")
-        
         do {
-            self.books = try stack.context.fetch(request)
+            let data = try Data(contentsOf: path)
+            let booksDecoded = try JSONDecoder().decode([Book].self, from: data)
+            self.books = booksDecoded
         } catch let error {
-            print("Error to fetching Books in Core Data. Error: \(error)")
+            self.books = []
+            print("Falied to fetch data in File Manager. Error: \(error)")
         }
     }
     
-    func addNewBook(title: String, author: String, releaseDate: Date, genre: String, review: String, rating: Int) {
-        let newBook = Books(context: stack.context)
-        newBook.id = UUID()
-        newBook.title = title
-        newBook.author = Author(context: stack.context)
-        newBook.author?.name = author
-        newBook.releaseDate = releaseDate
-        newBook.genre = genre
-        newBook.review = review
-        newBook.rating = Int16(rating)
+    func addNewBook(title: String, authorName: String, releaseDate: Date, genre: String, review: String, rating: Int) {
+        let newBook = Book(title: title, author: Author(name: authorName), releaseDate: releaseDate, genre: genre, review: review, rating: rating)
+        books.append(newBook)
         save()
     }
     
-    func delete(_ book: Books) {
-        stack.context.delete(book)
+    func delete(_ book: Book) {
+        guard let selectedBook = books.firstIndex(of: book) else { return }
+        books.remove(at: selectedBook)
         save()
     }
     
-    init(stack: CoreDataService) {
+    init(path: URL) {
         self.books = []
-        self.stack = stack
+        self.path = path
     }
 }

@@ -11,7 +11,7 @@ import SwiftUI
 class BooksViewModel: ObservableObject {
     let manager: BooksMananger
     
-    @Published var books = [Books]()
+    @Published var books = [Book]()
     @Published var authorList = [String]()
     @Published var genres = [String]()
     @Published var showingAddNewBook = false
@@ -54,18 +54,18 @@ class BooksViewModel: ObservableObject {
         }
     }
     
-    var search: [Books] {
+    var search: [Book] {
         switch filter {
         case .all:
             return books
         case .ascendingOrder:
-            return books.sorted { $0.wrappedTitle < $1.wrappedTitle }
+            return books.sorted { $0 < $1 }
         case .genre:
-            return books.filter { $0.wrappedGenre.contains(text) }
+            return books.filter { $0.genre.contains(text) }
         case .ratingEqual:
             return books.filter { String($0.rating).contains(text) }
         case .authors:
-            return books.filter { $0.author!.wrappedName.contains(text) }
+            return books.filter { $0.author.name.contains(text) }
         }
     }
     
@@ -85,8 +85,8 @@ class BooksViewModel: ObservableObject {
     private func getAuthorList() {
         var authors = [String]()
         books.forEach { book in
-            if !authors.contains(book.author!.wrappedName) {
-                authors.append(book.author!.wrappedName)
+            if !authors.contains(book.author.name) {
+                authors.append(book.author.name)
             }
         }
         self.authorList = authors
@@ -95,8 +95,8 @@ class BooksViewModel: ObservableObject {
     private func getGenreList() {
         var genresList = [String]()
         books.forEach { book in
-            if !genresList.contains(book.wrappedGenre) {
-                genresList.append(book.wrappedGenre)
+            if !genresList.contains(book.genre) {
+                genresList.append(book.genre)
             }
         }
         self.genres = genresList
@@ -111,7 +111,7 @@ class BooksViewModel: ObservableObject {
         }
     }
     
-    func textColor(_ rating: Int16) -> Color {
+    func textColor(_ rating: Int) -> Color {
         var color: Color = .green
         if rating <= 2 {
             color = .red

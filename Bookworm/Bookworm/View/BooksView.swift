@@ -30,10 +30,10 @@ struct BooksView: View {
                             HStack {
                                 EmojiRating(rating: book.rating)
                                 VStack(alignment: .leading) {
-                                    Text(book.wrappedTitle)
+                                    Text(book.title)
                                         .font(.title3.bold())
                                         .foregroundColor(viewModel.textColor(book.rating))
-                                    Text(book.author?.wrappedName ?? "Unknown Author")
+                                    Text(book.author.name)
                                         .font(.headline.bold())
                                         .foregroundColor(.black.opacity(0.4))
                                 }

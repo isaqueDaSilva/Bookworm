@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct BookwormApp: App {
-    let manager = BooksMananger(stack: CoreDataStack())
+    let manager = BooksMananger(path: FileManager.documentyDirectory.appending(path: "SavedBooks"))
     var body: some Scene {
         WindowGroup {
             BooksView(manager: manager)
