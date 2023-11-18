@@ -42,7 +42,7 @@ class BookDetailsViewModel: ObservableObject {
     }
     
     func displayAlert() {
-        deleteCurrentBookAlert = true
+        self.deleteCurrentBookAlert = true
     }
     
     func delete() {

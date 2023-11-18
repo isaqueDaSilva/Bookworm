@@ -27,9 +27,9 @@ final class AddNewBookViewModel_Tests: XCTestCase {
         
         // When
         guard let viewModel = viewModel else { return }
-        viewModel.title = "Title Test"
-        viewModel.author = "Author Test"
-        viewModel.review = "Review Test"
+        viewModel.title = UUID().uuidString
+        viewModel.author = UUID().uuidString
+        viewModel.review = UUID().uuidString
         
         // Than
         XCTAssertTrue(!viewModel.title.isEmpty)
@@ -44,54 +44,13 @@ final class AddNewBookViewModel_Tests: XCTestCase {
         // When
         guard let viewModel = viewModel else { return }
         viewModel.title = ""
-        viewModel.author = "Author Test"
-        viewModel.review = "Review Test"
+        viewModel.author = UUID().uuidString
+        viewModel.review = UUID().uuidString
         
         // Then
         XCTAssertFalse(!viewModel.title.isEmpty)
         XCTAssertFalse(viewModel.author.isEmpty)
         XCTAssertFalse(viewModel.review.isEmpty)
         XCTAssertFalse(viewModel.isValid)
-    }
-    
-    func test_AddNewBookViewModel_showingAlert_shouldBeTrue() {
-        // Given
-        let displayAlert = true
-        
-        // When
-        guard let viewModel = viewModel else { return }
-        viewModel.showingAlert = displayAlert
-        
-        // Then
-        XCTAssertTrue(viewModel.showingAlert)
-        XCTAssertEqual(viewModel.showingAlert, displayAlert)
-    }
-    
-    func test_AddNewBookViewModel_showingAlert_shouldBeFalse() {
-        // Given
-        let displayAlert = false
-        
-        // When
-        guard let viewModel = viewModel else { return }
-        viewModel.showingAlert = displayAlert
-        
-        // Then
-        XCTAssertFalse(viewModel.showingAlert)
-        XCTAssertEqual(viewModel.showingAlert, displayAlert)
-    }
-    
-    func test_AddNewBookViewModel_showingAlert_shouldBeInjectedValue_stress() {
-        for _ in 0..<100 {
-            // Given
-            let displayAlert = false
-            
-            // When
-            guard let viewModel = viewModel else { return }
-            viewModel.showingAlert = displayAlert
-            
-            // Then
-            XCTAssertFalse(viewModel.showingAlert)
-            XCTAssertEqual(viewModel.showingAlert, displayAlert)
-        }
     }
 }

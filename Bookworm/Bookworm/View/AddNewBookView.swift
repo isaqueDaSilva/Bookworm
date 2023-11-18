@@ -49,6 +49,7 @@ struct AddNewBookView: View {
                         }
                     }
                 }
+                
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
                         dismiss()
