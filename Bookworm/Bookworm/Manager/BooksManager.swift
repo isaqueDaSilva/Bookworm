@@ -34,6 +34,7 @@ actor BooksMananger {
     
     func addNewBook(title: String, authorName: String, releaseDate: Date, genre: String, review: String, rating: Int) {
         let newBook = Book(title: title, author: Author(name: authorName), releaseDate: releaseDate, genre: genre, review: review, rating: rating)
+        guard !books.contains(newBook) else { return }
         books.append(newBook)
         save()
     }
@@ -42,6 +43,21 @@ actor BooksMananger {
         guard let selectedBook = books.firstIndex(of: book) else { return }
         books.remove(at: selectedBook)
         save()
+    }
+    
+    func addBookForTest() {
+        self.books = [Book.bookExemple]
+        save()
+    }
+    
+    func addBookListForTest() {
+        self.books = Book.bookListExemples
+        save()
+    }
+    
+    func removeAllBooksForTest() {
+        self.books.removeAll()
+        self.save()
     }
     
     init(path: URL) {
