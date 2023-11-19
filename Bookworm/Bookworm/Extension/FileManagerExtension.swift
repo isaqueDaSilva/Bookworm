@@ -12,4 +12,7 @@ extension FileManager {
         let path = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return path[0]
     }
+    static var documentsDirectoryForTests: URL {
+        FileManager.default.temporaryDirectory
+    }
 }
