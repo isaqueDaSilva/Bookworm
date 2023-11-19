@@ -10,19 +10,24 @@ import XCTest
 
 final class BooksManager_Tests: XCTestCase {
 
+    var pathTemporary = FileManager.documentsDirectoryForTests.appending(path: "SavedTestBooks")
     var manager: BooksMananger?
     
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        self.manager = BooksMananger(stack: CoreDataTestStack())
+        self.manager = BooksMananger(path: pathTemporary)
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        self.manager = nil
+        Task {
+            guard let manager = manager else { return }
+            await manager.removeAllBooksForTest()
+            self.manager = nil
+        }
     }
 
-    func test_BooksManager_books_shouldBeInitializedEmptyOnFirstLaunchOfTheApp() async {
+    func test_BooksManager_fetchBooks_shouldBeInitializedEmptyOnFirstLaunchOfTheApp() async {
         // Given
         
         // When
@@ -34,38 +39,59 @@ final class BooksManager_Tests: XCTestCase {
         XCTAssertEqual(books.count, 0)
     }
     
-    func test_BooksManager_books_shouldBeContain1BooksAfterSaving() async {
+    func test_BooksManager_fetchBooks_shouldBe1BookSavedInFileMangerAfterRelaunchApp() async {
         // Given
-        let title = UUID().uuidString
-        let author = UUID().uuidString
-        let releaseDate = Date.now
-        let genre = UUID().uuidString
-        let review = UUID().uuidString
-        let rating = Int.random(in: 1...5)
         
         // When
         guard let manager = self.manager else { return }
-        await manager.addNewBook(title: title, author: author, releaseDate: releaseDate, genre: genre, review: review, rating: rating)
+        await manager.addBookForTest()
+        await manager.fetchBooks()
         let books = await manager.books
         
         // Then
         XCTAssertFalse(books.isEmpty)
         XCTAssertGreaterThan(books.count, 0)
+        XCTAssertEqual(books.count, 1)
     }
     
-    func test_BooksManager_books_shouldBeDeletAnBook() async {
+    func test_BooksManager_fetchBooks_shouldBe10BooksSavedInFileManagerAfterRelauchApp() async {
         // Given
-        guard let manager = self.manager else { return }
-        
-        let title = UUID().uuidString
-        let author = UUID().uuidString
-        let releaseDate = Date.now
-        let genre = UUID().uuidString
-        let review = UUID().uuidString
-        let rating = Int.random(in: 1...5)
-        await manager.addNewBook(title: title, author: author, releaseDate: releaseDate, genre: genre, review: review, rating: rating)
         
         // When
+        guard let manager = self.manager else { return }
+        await manager.addBookListForTest()
+        await manager.fetchBooks()
+        let books = await manager.books
+        
+        // Then
+        XCTAssertFalse(books.isEmpty)
+        XCTAssertGreaterThan(books.count, 0)
+        XCTAssertEqual(books.count, 10)
+        
+    }
+    
+    func test_BooksManager_addNewBook_shouldBeDisplayedBooksArrayContaining1BookAfterMethodCalled() async {
+        // Given
+        let newBook = Book.bookExemple
+        
+        // When
+        guard let manager = manager else { return }
+        await manager.addNewBook(title: newBook.title, authorName: newBook.author.name, releaseDate: newBook.releaseDate, genre: newBook.genre, review: newBook.review, rating: newBook.rating)
+        let books = await manager.books
+        
+        // Then
+        XCTAssertFalse(books.isEmpty)
+        XCTAssertGreaterThan(books.count, 0)
+        XCTAssertEqual(books.count, 1)
+        XCTAssertEqual(books[0], newBook)
+    }
+    
+    func test_BooksManager_delete_shouldBeBooksArrayEmptyAfterMethodCalled() async {
+        // Given
+        
+        // When
+        guard let manager = self.manager else { return }
+        await manager.addBookForTest()
         let book = await manager.books[0]
         await manager.delete(book)
         let books = await manager.books
@@ -73,5 +99,26 @@ final class BooksManager_Tests: XCTestCase {
         // Then
         XCTAssertTrue(books.isEmpty)
         XCTAssertEqual(books.count, 0)
+    }
+    
+    func test_BooksManager_delete_shouldBeBooksArrayContaining1LessBookAfterMethodCalled() async {
+        // Given
+        
+        // When
+        guard let manager = self.manager else { return }
+        await manager.addBookListForTest()
+        
+        let book = await manager.books.randomElement()
+        
+        guard let bookSelected  = book else { return }
+        
+        await manager.delete(bookSelected)
+        let books = await manager.books
+        
+        // Then
+        XCTAssertFalse(books.isEmpty)
+        XCTAssertGreaterThan(books.count, 0)
+        XCTAssertEqual(books.count, 9)
+        XCTAssertFalse(books.contains(bookSelected))
     }
 }
