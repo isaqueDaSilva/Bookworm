@@ -46,7 +46,7 @@ actor BooksMananger {
     }
     
     func addBookForTest() {
-        self.books = [Book.bookExemple]
+        self.books.append(Book.bookExemple)
         save()
     }
     
