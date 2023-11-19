@@ -28,9 +28,7 @@ class AddNewBookViewModel: ObservableObject {
         }
     }
     
-    var genres: [String] {
-        Book.genres
-    }
+    var genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
     
     func addBook() {
         Task { @MainActor in

@@ -16,8 +16,6 @@ struct Book: Codable, Identifiable, Equatable, Comparable {
     let review: String
     let rating: Int
     
-    static let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
-    
     static let bookExemple = Book(title: UUID().uuidString, author: Author(name: UUID().uuidString), releaseDate: Date.now, genre: "Fantasy", review: UUID().uuidString, rating: Int.random(in: 1...5))
     
     static var bookListExemples: [Book] {
