@@ -28,9 +28,7 @@ class BookDetailsViewModel: ObservableObject {
     }
     
     var bookReleaseDate: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        return formatter.string(from: book.releaseDate)
+        book.releaseDateFormatted
     }
     
     var bookReview: String {
@@ -38,7 +36,7 @@ class BookDetailsViewModel: ObservableObject {
     }
     
     var bookRating: Int {
-        Int(book.rating)
+        book.rating
     }
     
     func displayAlert() {
