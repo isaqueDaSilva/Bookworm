@@ -9,27 +9,76 @@ import XCTest
 @testable import Bookworm
 
 final class BookDetailsViewModel_Tests: XCTestCase {
+    var viewModel: BookDetailsViewModel?
+    let manager = BooksMananger(path: FileManager.documentsDirectoryForTests.appending(component: "SavedTestBooks"))
+    func onChange() { print("Saved change successfuly") }
+    let book = Book.bookExemple
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        self.viewModel = BookDetailsViewModel(manager: manager, book: book, onChange: onChange)
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        self.viewModel = nil
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    
+    func test_BookDetailsViewModel_bookTitle_shouldBeBookTitleIsCorrect() {
+        // Given
+        // When
+        // Then
+        guard let viewModel = viewModel else { return }
+        XCTAssertEqual(viewModel.bookTitle, book.title)
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func test_BookDetailsViewModel_bookAuthor_shouldBeBookAuthorIsCorrect() {
+        // Given
+        // When
+        // Then
+        guard let viewModel = viewModel else { return }
+        XCTAssertEqual(viewModel.bookAuthor, book.author.name)
     }
-
+    
+    func test_BookDetailsViewModel_bookGenre_shouldBeBookGenreIsCorrect() {
+        // Given
+        // When
+        // Then
+        guard let viewModel = viewModel else { return }
+        XCTAssertEqual(viewModel.bookGenre, book.genre)
+    }
+    
+    func test_BookDetailsViewModel_bookReleaseDate_shouldBeBookReleaseDateIsCorrect() {
+        // Given
+        // When
+        // Then
+        guard let viewModel = viewModel else { return }
+        XCTAssertEqual(viewModel.bookReleaseDate, book.releaseDateFormatted)
+    }
+    
+    func test_BookDetailsViewModel_bookReview_shouldBeBookReviewIsCorrect() {
+        // Given
+        // When
+        // Then
+        guard let viewModel = viewModel else { return }
+        XCTAssertEqual(viewModel.bookReview, book.review)
+    }
+    
+    func test_BookDetailsViewModel_bookRating_shouldBeBookRatingIsCorrect() {
+        // Given
+        // When
+        // Then
+        guard let viewModel = viewModel else { return }
+        XCTAssertEqual(viewModel.bookRating, book.rating)
+    }
+    
+    func test_BookDetailsViewModel_displayAlert_shouldBeDeleteCurrentBookAlertIsTrue() {
+        // Given
+        // When
+        guard let viewModel = viewModel else { return }
+        viewModel.displayAlert()
+        
+        // Then
+        XCTAssertTrue(viewModel.deleteCurrentBookAlert)
+        XCTAssertEqual(viewModel.deleteCurrentBookAlert, true)
+    }
 }
