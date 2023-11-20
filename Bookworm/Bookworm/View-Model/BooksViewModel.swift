@@ -70,7 +70,7 @@ class BooksViewModel: ObservableObject {
     }
     
     func displayAddNewBook() {
-        showingAddNewBook = true
+        self.showingAddNewBook = true
     }
     
     func getBooks() {
@@ -121,6 +121,18 @@ class BooksViewModel: ObservableObject {
             color = .green
         }
         return color
+    }
+    
+    func addBookForTest() {
+        Task {
+            await manager.addBookForTest()
+        }
+    }
+    
+    func addBookListForTest() {
+        Task {
+            await manager.addBookListForTest()
+        }
     }
     
     init(manager: BooksMananger) {
