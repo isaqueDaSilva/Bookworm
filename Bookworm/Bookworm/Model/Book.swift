@@ -16,12 +16,18 @@ struct Book: Codable, Identifiable, Equatable, Comparable {
     let review: String
     let rating: Int
     
+    var releaseDateFormatted: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        return formatter.string(from: releaseDate)
+    }
+    
     static let bookExemple = Book(title: UUID().uuidString, author: Author(name: UUID().uuidString), releaseDate: Date.now, genre: "Fantasy", review: UUID().uuidString, rating: Int.random(in: 1...5))
     
     static var bookListExemples: [Book] {
         var bookList = [Book]()
         for _ in 0..<10 {
-            let newBook = Book(title: UUID().uuidString, author: Author(name: UUID().uuidString), releaseDate: Date.now, genre: "Fantasy", review: UUID().uuidString, rating: Int.random(in: 1...5))
+            let newBook = Book(title: UUID().uuidString, author: Author(name: UUID().uuidString), releaseDate: Date.now, genre: UUID().uuidString, review: UUID().uuidString, rating: Int.random(in: 1...5))
             bookList.append(newBook)
         }
         
