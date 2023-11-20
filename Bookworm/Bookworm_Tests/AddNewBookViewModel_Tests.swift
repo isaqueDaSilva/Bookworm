@@ -10,16 +10,16 @@ import XCTest
 
 final class AddNewBookViewModel_Tests: XCTestCase {
     var viewModel: AddNewBookViewModel?
-    let manager = BooksMananger(stack: CoreDataTestStack())
+    var manager = BooksMananger(path: FileManager.documentsDirectoryForTests.appending(component: "SavedTestBooks"))
     func onSave() { print("Save with success.") }
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        viewModel = AddNewBookViewModel(manager: manager, onSave: onSave)
+        self.viewModel = AddNewBookViewModel(manager: manager, onSave: onSave)
     }
     
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        viewModel = nil
+        self.viewModel = nil
     }
     
     func test_AddNewBookViewModel_isValid_shouldBeTrue() {
@@ -32,9 +32,9 @@ final class AddNewBookViewModel_Tests: XCTestCase {
         viewModel.review = UUID().uuidString
         
         // Than
-        XCTAssertTrue(!viewModel.title.isEmpty)
-        XCTAssertTrue(!viewModel.author.isEmpty)
-        XCTAssertTrue(!viewModel.review.isEmpty)
+        XCTAssertFalse(viewModel.title.isEmpty)
+        XCTAssertFalse(viewModel.author.isEmpty)
+        XCTAssertFalse(viewModel.review.isEmpty)
         XCTAssertTrue(viewModel.isValid)
     }
     
@@ -48,7 +48,7 @@ final class AddNewBookViewModel_Tests: XCTestCase {
         viewModel.review = UUID().uuidString
         
         // Then
-        XCTAssertFalse(!viewModel.title.isEmpty)
+        XCTAssertTrue(viewModel.title.isEmpty)
         XCTAssertFalse(viewModel.author.isEmpty)
         XCTAssertFalse(viewModel.review.isEmpty)
         XCTAssertFalse(viewModel.isValid)
