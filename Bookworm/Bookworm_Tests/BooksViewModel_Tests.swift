@@ -121,6 +121,60 @@ final class BooksViewModel_Tests: XCTestCase {
         XCTAssertEqual(viewModel.authorList.count, 10)
     }
     
+    func test_BooksViewModel_delete_shouldBeBooksArrayEmptyAfterMethodCalled() {
+        // Given
+        
+        // When
+        guard let viewModel = self.viewModel else { return }
+        let expectation = XCTestExpectation(description: "Should return one Book deleted in Books Array after 5 seconds")
+        
+        viewModel.$books
+            .dropFirst()
+            .sink { _ in
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        viewModel.addBookForTest()
+        viewModel.getBooks()
+        
+        guard let bookSelected = viewModel.books.first else { return }
+        viewModel.delete(bookSelected)
+        
+        // Then
+        wait(for: [expectation], timeout: 5)
+        XCTAssertTrue(viewModel.books.isEmpty)
+        XCTAssertEqual(viewModel.books.count, 0)
+    }
+    
+    func test_BooksManager_delete_shouldBeBooksArrayContaining1LessBookAfterMethodCalled() {
+        // Given
+        
+        // When
+        guard let viewModel = self.viewModel else { return }
+        let expectation = XCTestExpectation(description: "Should return one Book deleted in Books Array after 5 seconds")
+        
+        viewModel.$books
+            .dropFirst()
+            .sink { _ in
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        viewModel.addBookListForTest()
+        viewModel.getBooks()
+        
+        guard let bookSelected = viewModel.books.first else { return }
+        viewModel.delete(bookSelected)
+        
+        // Then
+        wait(for: [expectation], timeout: 5)
+        XCTAssertFalse(viewModel.books.isEmpty)
+        XCTAssertGreaterThan(viewModel.books.count, 0)
+        XCTAssertEqual(viewModel.books.count, 9)
+        XCTAssertFalse(viewModel.books.contains(bookSelected))
+    }
+    
     func test_BooksViewModel_textColor_shouldBeDisplayTextInRed() {
         // Given
         let rating = Int.random(in: 1...2)
