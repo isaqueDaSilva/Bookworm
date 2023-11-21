@@ -102,10 +102,8 @@ class BooksViewModel: ObservableObject {
         self.genres = genresList
     }
     
-    func delete(at indexSet: IndexSet) {
+    func delete(_ book: Book) {
         Task { @MainActor in
-            guard let index = indexSet.first else { return }
-            let book = books[index]
             await manager.delete(book)
             self.getBooks()
         }

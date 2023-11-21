@@ -38,10 +38,16 @@ struct BooksView: View {
                                         .foregroundColor(.black.opacity(0.4))
                                 }
                             }
+                            .swipeActions {
+                                Button {
+                                    viewModel.delete(book)
+                                } label: {
+                                    Text("Delete")
+                                }
+                                .tint(.red)
+                            }
                         }
-                        
                     }
-                    .onDelete(perform: viewModel.delete)
                 }
                 .listStyle(.plain)
             }
