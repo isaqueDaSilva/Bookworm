@@ -40,6 +40,17 @@
                ReferencedContainer = "container:Bookworm.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "7EA1EBFF2B0C48610055B26D"
+               BuildableName = "Bookworm_UITests.xctest"
+               BlueprintName = "Bookworm_UITests"
+               ReferencedContainer = "container:Bookworm.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

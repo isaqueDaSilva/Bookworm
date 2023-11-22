@@ -45,6 +45,7 @@ struct BooksView: View {
                                     Text("Delete")
                                 }
                                 .tint(.red)
+                                .accessibilityIdentifier("DeleteButton")
                             }
                         }
                     }
@@ -74,6 +75,7 @@ struct BooksView: View {
                         } label: {
                             Label("Add new Book", systemImage: "plus")
                         }
+                        .accessibilityIdentifier("AddNewBookButton")
                     }
                 }
             }
