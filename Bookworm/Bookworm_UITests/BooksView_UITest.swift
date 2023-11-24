@@ -24,10 +24,15 @@ final class BooksView_UITest: XCTestCase {
     }
     
     func test_BooksView_AddNewBookButton_shouldBeDisplayAddNewBookView() {
-        let navBar = app.navigationBars["Bookworm"]
-        let button = navBar.buttons["AddNewBookButton"]
-        button.tap()
+        let navBarBooksView = app.navigationBars["Bookworm"]
+        let plusButton = navBarBooksView.buttons["AddNewBookButton"]
+        plusButton.tap()
+        let navBarAddNewBook = app.navigationBars["Add New Book"].staticTexts["Add New Book"]
         
-        XCTAssertTrue(button.exists)
+        XCTAssertTrue(navBarAddNewBook.exists)
+    }
+    
+    func test_BooksView_DeleteButton_shouldBeDeleteTheBook() {
+        
     }
 }
