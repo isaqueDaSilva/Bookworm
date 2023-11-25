@@ -11,7 +11,7 @@ struct BookDetailsView: View {
     @StateObject var viewModel: BookDetailsViewModel
     
     var body: some View {
-        ScrollView {
+        List {
             ZStack(alignment: .bottomTrailing) {
                 Image(viewModel.bookGenre)
                     .resizable()
@@ -26,21 +26,33 @@ struct BookDetailsView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .offset(x: -5, y: -5)
             }
+            .listRowBackground(Color(CGColor(red: 240, green: 240, blue: 246, alpha: 0)))
             
-            VStack {
-                Text(viewModel.bookAuthor)
-                    .font(.largeTitle)
-                    .foregroundColor(.secondary)
-                
-                Text("In: \(viewModel.bookReleaseDate)")
-                    .font(.headline.bold())
-                
-                Text(viewModel.bookReview)
-                    .font(.headline.bold())
-                    .padding()
-                
-                RatingStars(rating: .constant(viewModel.bookRating))
+            Section("About Book") {
+                TextDetails(title: "Author:", description: viewModel.bookAuthor)
+                TextDetails(title: "Release in:", description: viewModel.bookReleaseDate)
+                TextDetails(title: "Genre:", description: viewModel.bookGenre)
             }
+            
+            Section("Review") {
+                Text(viewModel.bookReview)
+                    .font(.headline)
+            }
+            
+            HStack {
+                Spacer()
+                
+                VStack {
+                    RatingStars(rating: .constant(viewModel.bookRating))
+                        .font(.system(size: 25))
+                        .padding(5)
+                    Text("\(viewModel.bookRating)/5")
+                        .bold()
+                        .foregroundStyle(.gray)
+                }
+                Spacer()
+            }
+            .listRowBackground(Color(CGColor(red: 240, green: 240, blue: 246, alpha: 0)))
         }
         .navigationTitle(viewModel.bookTitle)
         .navigationBarTitleDisplayMode(.inline)
