@@ -10,13 +10,27 @@ import SwiftUI
 struct TextDetails: View {
     let title: String
     let description: String
+    let displayInfo: Bool
+    var displaySafariView: (() -> Void)? = nil
     var body: some View {
         HStack {
             Text(title)
                 .bold()
             Spacer()
-            Text(description)
-                .foregroundStyle(.gray)
+            
+            HStack {
+                Text(description)
+                
+                if displayInfo {
+                    Button {
+                        guard let displaySafariView = displaySafariView else { return }
+                        displaySafariView()
+                    } label: {
+                        Image(systemName: "info.circle")
+                    }
+                }
+            }
+            .foregroundStyle(.gray)
         }
     }
 }

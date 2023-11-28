@@ -11,6 +11,8 @@ class BookDetailsViewModel: ObservableObject {
     let manager: BooksMananger
     
     @Published var deleteCurrentBookAlert = false
+    @Published var showingSafafiView = false
+    @Published var selectedText: String?
     
     private let book: Book
     private var onChange: () -> Void
@@ -48,6 +50,10 @@ class BookDetailsViewModel: ObservableObject {
             await manager.delete(book)
             onChange()
         }
+    }
+    
+    func displaySafariView() {
+        self.showingSafafiView = true
     }
     
     init(manager: BooksMananger, book: Book, onChange: @escaping () -> Void) {

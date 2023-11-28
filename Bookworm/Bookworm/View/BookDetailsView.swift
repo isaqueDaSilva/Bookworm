@@ -29,9 +29,15 @@ struct BookDetailsView: View {
             .listRowBackground(Color(CGColor(red: 240, green: 240, blue: 246, alpha: 0)))
             
             Section("About Book") {
-                TextDetails(title: "Author:", description: viewModel.bookAuthor)
-                TextDetails(title: "Release in:", description: viewModel.bookReleaseDate)
-                TextDetails(title: "Genre:", description: viewModel.bookGenre)
+                TextDetails(title: "Author", description: viewModel.bookAuthor, displayInfo: true) {
+                    viewModel.selectedText = viewModel.bookAuthor
+                    viewModel.displaySafariView()
+                }
+                TextDetails(title: "Release in:", description: viewModel.bookReleaseDate, displayInfo: false)
+                TextDetails(title: "Genre:", description: viewModel.bookGenre, displayInfo: true) {
+                    viewModel.selectedText = viewModel.bookGenre
+                    viewModel.displaySafariView()
+                }
             }
             
             Section("Review") {
@@ -69,7 +75,9 @@ struct BookDetailsView: View {
         } message: {
             Text("Are you sure you want to delete this book?")
         }
-
+        .sheet(isPresented: $viewModel.showingSafafiView) {
+            SafariServiceView(seachText: viewModel.selectedText!)
+        }
     }
     
     init(manager: BooksMananger, book: Book, onChange: @escaping () -> Void) {
