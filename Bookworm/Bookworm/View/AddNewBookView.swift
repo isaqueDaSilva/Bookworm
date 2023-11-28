@@ -17,13 +17,14 @@ struct AddNewBookView: View {
                 Section("About the Book") {
                     TextField("Book Title", text: $viewModel.title)
                     TextField("Author", text: $viewModel.author)
-                    DatePicker("Release Data", selection: $viewModel.releaseDate, in: ...Date.now, displayedComponents: .date)
-                    Picker("Genre", selection: $viewModel.genre) {
+                    DatePicker("Release Data:", selection: $viewModel.releaseDate, in: ...Date.now, displayedComponents: .date)
+                    Picker("Genre:", selection: $viewModel.genre) {
                         ForEach(viewModel.genres, id: \.self) {
                             Text($0)
                         }
                     }
                 }
+                
                 Section("Review") {
                     RatingStars(rating: $viewModel.rating)
                     
