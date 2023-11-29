@@ -26,18 +26,20 @@ struct BookDetailsView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .offset(x: -5, y: -5)
             }
-            .listRowBackground(Color(CGColor(red: 240, green: 240, blue: 246, alpha: 0)))
             
             Section("About Book") {
                 TextDetails(title: "Author", description: viewModel.bookAuthor, displayInfo: true) {
                     viewModel.selectedText = viewModel.bookAuthor
                     viewModel.displaySafariView()
                 }
+                
                 TextDetails(title: "Release in:", description: viewModel.bookReleaseDate, displayInfo: false)
+                
                 TextDetails(title: "Genre:", description: viewModel.bookGenre, displayInfo: true) {
                     viewModel.selectedText = viewModel.bookGenre
                     viewModel.displaySafariView()
                 }
+                
             }
             
             Section("Review") {
@@ -70,17 +72,21 @@ struct BookDetailsView: View {
             }
         }
         .alert("Delete this Book", isPresented: $viewModel.deleteCurrentBookAlert) {
-            Button("Delete", role: .destructive, action: viewModel.delete)
+            Button("Delete", role: .destructive) {
+                Task {
+                    await viewModel.delete()
+                }
+            }
             Button("Cancel", role: .cancel, action: {})
         } message: {
             Text("Are you sure you want to delete this book?")
         }
         .sheet(isPresented: $viewModel.showingSafafiView) {
-            SafariServiceView(seachText: viewModel.selectedText!)
+            SafariServiceView(seachText: viewModel.selectedText)
         }
     }
     
-    init(manager: BooksMananger, book: Book, onChange: @escaping () -> Void) {
+    init(manager: BooksMananger, book: Book, onChange: @escaping () async -> Void) {
         _viewModel = StateObject(wrappedValue: BookDetailsViewModel(manager: manager, book: book, onChange: onChange))
     }
 }

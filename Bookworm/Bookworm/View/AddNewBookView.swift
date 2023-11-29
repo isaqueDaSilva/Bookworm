@@ -45,8 +45,10 @@ struct AddNewBookView: View {
                 if viewModel.isValid {
                     ToolbarItem {
                         Button("OK") {
-                            viewModel.addBook()
-                            dismiss()
+                            Task {
+                                await viewModel.addBook()
+                                dismiss()
+                            }
                         }
                     }
                 }
@@ -65,7 +67,7 @@ struct AddNewBookView: View {
         }
     }
     
-    init(manager: BooksMananger, onSave: @escaping () -> Void) {
+    init(manager: BooksMananger, onSave: @escaping () async -> Void) {
         _viewModel = StateObject(wrappedValue: AddNewBookViewModel(manager: manager, onSave: onSave))
     }
 }

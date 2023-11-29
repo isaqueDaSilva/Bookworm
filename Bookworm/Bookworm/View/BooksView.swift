@@ -25,7 +25,9 @@ struct BooksView: View {
                 Section {
                     ForEach(viewModel.search) { book in
                         NavigationLink {
-                            BookDetailsView(manager: viewModel.manager, book: book, onChange: viewModel.getBooks)
+                            BookDetailsView(manager: viewModel.manager, book: book) {
+                                await viewModel.getBooks()
+                            }
                         } label: {
                             HStack {
                                 EmojiRating(rating: book.rating)
@@ -40,7 +42,9 @@ struct BooksView: View {
                             }
                             .swipeActions {
                                 Button {
-                                    viewModel.delete(book)
+                                    Task {
+                                        await viewModel.delete(book)
+                                    }
                                 } label: {
                                     Text("Delete")
                                 }
@@ -53,6 +57,9 @@ struct BooksView: View {
                 .listStyle(.plain)
             }
             .navigationTitle("Bookworm")
+            .task {
+                await viewModel.getBooks()
+            }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     EditButton()
@@ -80,7 +87,9 @@ struct BooksView: View {
                 }
             }
             .sheet(isPresented: $viewModel.showingAddNewBook) {
-                AddNewBookView(manager: viewModel.manager, onSave: viewModel.getBooks)
+                AddNewBookView(manager: viewModel.manager) {
+                    await viewModel.getBooks()
+                }
             }
         }
     }
