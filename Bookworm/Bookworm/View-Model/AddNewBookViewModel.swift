@@ -10,7 +10,7 @@ import Foundation
 class AddNewBookViewModel: ObservableObject {
     let manager: BooksMananger
     
-    private var onSave: () -> Void
+    private var onSave: () async -> Void
     
     @Published var title = ""
     @Published var author = ""
@@ -30,14 +30,12 @@ class AddNewBookViewModel: ObservableObject {
     
     var genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
     
-    func addBook() {
-        Task { @MainActor in
-            await manager.addNewBook(title: title, authorName: author, releaseDate: releaseDate,genre: genre, review: review,rating: rating)
-            onSave()
-        }
+    func addBook() async {
+        await manager.addNewBook(title: title, authorName: author, releaseDate: releaseDate,genre: genre, review: review,rating: rating)
+        await self.onSave()
     }
     
-    init(manager: BooksMananger, onSave: @escaping () -> Void) {
+    init(manager: BooksMananger, onSave: @escaping () async -> Void) {
         self.manager = manager
         self.onSave = onSave
     }
