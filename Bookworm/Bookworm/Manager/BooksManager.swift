@@ -5,7 +5,6 @@
 //  Created by Isaque da Silva on 31/08/23.
 //
 
-import CoreData
 import Foundation
 
 actor BooksMananger {
