@@ -12,10 +12,10 @@ class BookDetailsViewModel: ObservableObject {
     
     @Published var deleteCurrentBookAlert = false
     @Published var showingSafafiView = false
-    @Published var selectedText: String?
+    @Published var selectedText: String = "" 
     
     private let book: Book
-    private var onChange: () -> Void
+    private var onChange: () async -> Void
     
     var bookTitle: String {
         book.title
@@ -45,18 +45,16 @@ class BookDetailsViewModel: ObservableObject {
         self.deleteCurrentBookAlert = true
     }
     
-    func delete() {
-        Task { @MainActor in
-            await manager.delete(book)
-            onChange()
-        }
+    func delete() async {
+        await manager.delete(book)
+        await onChange()
     }
     
     func displaySafariView() {
         self.showingSafafiView = true
     }
     
-    init(manager: BooksMananger, book: Book, onChange: @escaping () -> Void) {
+    init(manager: BooksMananger, book: Book, onChange: @escaping () async -> Void) {
         self.manager = manager
         self.book = book
         self.onChange = onChange

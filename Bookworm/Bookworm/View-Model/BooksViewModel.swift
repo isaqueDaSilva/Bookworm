@@ -73,10 +73,11 @@ class BooksViewModel: ObservableObject {
         self.showingAddNewBook = true
     }
     
-    func getBooks() {
-        Task { @MainActor in
-            await manager.fetchBooks()
-            self.books = await manager.books
+    func getBooks() async {
+        await manager.fetchBooks()
+        let bookList = await manager.books
+        await MainActor.run {
+            self.books = bookList
             getAuthorList()
             getGenreList()
         }
@@ -102,11 +103,9 @@ class BooksViewModel: ObservableObject {
         self.genres = genresList
     }
     
-    func delete(_ book: Book) {
-        Task { @MainActor in
-            await manager.delete(book)
-            self.getBooks()
-        }
+    func delete(_ book: Book) async {
+        await manager.delete(book)
+        await self.getBooks()
     }
     
     func textColor(_ rating: Int) -> Color {
@@ -135,6 +134,5 @@ class BooksViewModel: ObservableObject {
     
     init(manager: BooksMananger) {
         self.manager = manager
-        getBooks()
     }
 }
