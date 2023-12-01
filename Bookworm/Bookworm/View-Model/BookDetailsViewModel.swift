@@ -50,7 +50,8 @@ class BookDetailsViewModel: ObservableObject {
         await onChange()
     }
     
-    func displaySafariView() {
+    func displaySafariSearchFor(_ term: String) {
+        self.selectedText = term
         self.showingSafafiView = true
     }
     
