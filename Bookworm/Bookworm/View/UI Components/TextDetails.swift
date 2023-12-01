@@ -11,7 +11,7 @@ struct TextDetails: View {
     let title: String
     let description: String
     let displayInfo: Bool
-    var displaySafariView: (() -> Void)? = nil
+    var displaySafariView: ((_ text: String) -> Void)? = nil
     var body: some View {
         HStack {
             Text(title)
@@ -24,7 +24,7 @@ struct TextDetails: View {
                 if displayInfo {
                     Button {
                         guard let displaySafariView = displaySafariView else { return }
-                        displaySafariView()
+                        displaySafariView(description)
                     } label: {
                         Image(systemName: "info.circle")
                     }
