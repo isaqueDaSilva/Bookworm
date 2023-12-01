@@ -28,16 +28,14 @@ struct BookDetailsView: View {
             }
             
             Section("About Book") {
-                TextDetails(title: "Author", description: viewModel.bookAuthor, displayInfo: true) {
-                    viewModel.selectedText = viewModel.bookAuthor
-                    viewModel.displaySafariView()
+                TextDetails(title: "Author", description: viewModel.bookAuthor, displayInfo: true) { text in
+                    viewModel.displaySafariSearchFor(text)
                 }
                 
                 TextDetails(title: "Release in:", description: viewModel.bookReleaseDate, displayInfo: false)
                 
-                TextDetails(title: "Genre:", description: viewModel.bookGenre, displayInfo: true) {
-                    viewModel.selectedText = viewModel.bookGenre
-                    viewModel.displaySafariView()
+                TextDetails(title: "Genre:", description: viewModel.bookGenre, displayInfo: true) { text in
+                    viewModel.displaySafariSearchFor(text)
                 }
                 
             }
