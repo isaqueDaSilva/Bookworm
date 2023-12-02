@@ -62,7 +62,9 @@ struct BooksView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    EditButton()
+                    if !viewModel.books.isEmpty {
+                        EditButton()
+                    }
                 }
                 
                 ToolbarItem {
