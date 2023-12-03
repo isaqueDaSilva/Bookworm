@@ -8,7 +8,7 @@
 import Foundation
 
 class AddNewBookViewModel: ObservableObject {
-    let manager: BooksMananger
+    let manager: DataServiceProtocol
     
     private var onSave: () async -> Void
     
@@ -35,7 +35,7 @@ class AddNewBookViewModel: ObservableObject {
         await self.onSave()
     }
     
-    init(manager: BooksMananger, onSave: @escaping () async -> Void) {
+    init(manager: DataServiceProtocol, onSave: @escaping () async -> Void) {
         self.manager = manager
         self.onSave = onSave
     }
