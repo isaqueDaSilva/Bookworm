@@ -8,7 +8,7 @@
 import Foundation
 
 class BookDetailsViewModel: ObservableObject {
-    let manager: BooksMananger
+    let manager: DataServiceProtocol
     
     @Published var deleteCurrentBookAlert = false
     @Published var showingSafafiView = false
@@ -55,7 +55,7 @@ class BookDetailsViewModel: ObservableObject {
         self.showingSafafiView = true
     }
     
-    init(manager: BooksMananger, book: Book, onChange: @escaping () async -> Void) {
+    init(manager: DataServiceProtocol, book: Book, onChange: @escaping () async -> Void) {
         self.manager = manager
         self.book = book
         self.onChange = onChange
