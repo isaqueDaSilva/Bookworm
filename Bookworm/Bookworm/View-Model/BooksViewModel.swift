@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 
 class BooksViewModel: ObservableObject {
-    let manager: BooksMananger
+    let manager: DataServiceProtocol
     
     @Published var books = [Book]()
-    @Published var authorList = [String]()
+    @Published var authorList = [Author]()
     @Published var genres = [String]()
     @Published var showingAddNewBook = false
     @AppStorage("Filter") var filter: Filter = .all
@@ -50,7 +50,7 @@ class BooksViewModel: ObservableObject {
         case .ratingEqual:
             return ["1", "2", "3", "4", "5"]
         case .authors:
-            return self.authorList
+            return self.authorList.map { $0.name }
         }
     }
     
@@ -74,33 +74,22 @@ class BooksViewModel: ObservableObject {
     }
     
     func getBooks() async {
-        await manager.fetchBooks()
-        let bookList = await manager.books
+        let bookList = await manager.getBooks()
         await MainActor.run {
             self.books = bookList
-            getAuthorList()
-            getGenreList()
-        }
-    }
-    
-    private func getAuthorList() {
-        var authors = [String]()
-        books.forEach { book in
-            if !authors.contains(book.author.name) {
-                authors.append(book.author.name)
+            
+            books.forEach { book in
+                if !authorList.contains(book.author) {
+                    authorList.append(book.author)
+                }
+            }
+            
+            books.forEach { book in
+                if !genres.contains(book.genre) {
+                    genres.append(book.genre)
+                }
             }
         }
-        self.authorList = authors
-    }
-    
-    private func getGenreList() {
-        var genresList = [String]()
-        books.forEach { book in
-            if !genresList.contains(book.genre) {
-                genresList.append(book.genre)
-            }
-        }
-        self.genres = genresList
     }
     
     func delete(_ book: Book) async {
@@ -120,19 +109,7 @@ class BooksViewModel: ObservableObject {
         return color
     }
     
-    func addBookForTest() {
-        Task {
-            await manager.addBookForTest()
-        }
-    }
-    
-    func addBookListForTest() {
-        Task {
-            await manager.addBookListForTest()
-        }
-    }
-    
-    init(manager: BooksMananger) {
+    init(manager: DataServiceProtocol) {
         self.manager = manager
     }
 }

@@ -96,7 +96,7 @@ struct BooksView: View {
         }
     }
     
-    init(manager: BooksMananger) {
+    init(manager: DataServiceProtocol) {
         _viewModel = StateObject(wrappedValue: BooksViewModel(manager: manager))
     }
 }
