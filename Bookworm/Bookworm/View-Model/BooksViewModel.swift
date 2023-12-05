@@ -11,13 +11,14 @@ import SwiftUI
 class BooksViewModel: ObservableObject {
     let manager: DataServiceProtocol
     
-    @Published var books = [Book]()
-    @Published var authorList = [Author]()
-    @Published var genres = [String]()
+    @MainActor @Published var books = [Book]()
+    @MainActor @Published var authorList = [Author]()
+    @MainActor @Published var genres = [String]()
     @Published var showingAddNewBook = false
     @AppStorage("Filter") var filter: Filter = .all
     @Published var text = ""
     
+    @MainActor
     var showingPicker: Bool {
         switch filter {
         case .all, .ascendingOrder:
@@ -39,6 +40,7 @@ class BooksViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     var choiceText: [String] {
         switch filter {
         case .all:
@@ -54,6 +56,7 @@ class BooksViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     var search: [Book] {
         switch filter {
         case .all:
@@ -74,21 +77,12 @@ class BooksViewModel: ObservableObject {
     }
     
     func getBooks() async {
-        let bookList = await manager.getBooks()
+        let (bookList, authorsList, genresList) = await manager.getBooks()
+        
         await MainActor.run {
             self.books = bookList
-            
-            books.forEach { book in
-                if !authorList.contains(book.author) {
-                    authorList.append(book.author)
-                }
-            }
-            
-            books.forEach { book in
-                if !genres.contains(book.genre) {
-                    genres.append(book.genre)
-                }
-            }
+            self.authorList = authorsList
+            self.genres = genresList
         }
     }
     
