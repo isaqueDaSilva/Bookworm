@@ -31,9 +31,22 @@ actor BooksMananger: DataServiceProtocol {
         }
     }
     
-    func getBooks() -> [Book] {
+    func getBooks() -> ([Book], [Author], [String]) {
         self.fetchBooks()
-        return books
+        var authors = [Author]()
+        var genres = [String]()
+        
+        books.forEach { book in
+            if !authors.contains(book.author) {
+                authors.append(book.author)
+            }
+            
+            if !genres.contains(book.genre) {
+                genres.append(book.genre)
+            }
+        }
+        
+        return (books, authors, genres)
     }
     
     func addNewBook(title: String, authorName: String, releaseDate: Date, genre: String, review: String, rating: Int) {
