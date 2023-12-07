@@ -25,9 +25,7 @@ struct BooksView: View {
                 Section {
                     ForEach(viewModel.search) { book in
                         NavigationLink {
-                            BookDetailsView(manager: viewModel.manager, book: book) {
-                                await viewModel.getBooks()
-                            }
+                            BookDetailsView(manager: viewModel.manager, book: book)
                         } label: {
                             HStack {
                                 EmojiRating(rating: book.rating)
@@ -89,14 +87,12 @@ struct BooksView: View {
                 }
             }
             .sheet(isPresented: $viewModel.showingAddNewBook) {
-                AddNewBookView(manager: viewModel.manager) {
-                    await viewModel.getBooks()
-                }
+                AddNewBookView(manager: viewModel.manager)
             }
         }
     }
     
-    init(manager: DataServiceProtocol) {
+    init(manager: BooksMananger) {
         _viewModel = StateObject(wrappedValue: BooksViewModel(manager: manager))
     }
 }

@@ -67,7 +67,7 @@ struct AddNewBookView: View {
         }
     }
     
-    init(manager: DataServiceProtocol, onSave: @escaping () async -> Void) {
-        _viewModel = StateObject(wrappedValue: AddNewBookViewModel(manager: manager, onSave: onSave))
+    init(manager: BooksMananger) {
+        _viewModel = StateObject(wrappedValue: AddNewBookViewModel(manager: manager))
     }
 }
