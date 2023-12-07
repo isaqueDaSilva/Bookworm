@@ -8,13 +8,15 @@
 import Foundation
 
 actor BooksMananger: DataServiceProtocol {
-    private var books = [Book]()
+    @Published private var books = [Book]()
+    
     private var path: URL
     
     private func save() {
         do {
             let data = try JSONEncoder().encode(self.books)
             try data.write(to: self.path, options: [.atomic, .completeFileProtection])
+            self.fetchBooks()
         } catch let error {
             print("Falied to save data in FileManager. Error: \(error)")
         }
@@ -31,22 +33,9 @@ actor BooksMananger: DataServiceProtocol {
         }
     }
     
-    func getBooks() -> ([Book], [Author], [String]) {
+    func getBooks() -> Published<[Book]>.Publisher {
         self.fetchBooks()
-        var authors = [Author]()
-        var genres = [String]()
-        
-        books.forEach { book in
-            if !authors.contains(book.author) {
-                authors.append(book.author)
-            }
-            
-            if !genres.contains(book.genre) {
-                genres.append(book.genre)
-            }
-        }
-        
-        return (books, authors, genres)
+        return $books
     }
     
     func addNewBook(title: String, authorName: String, releaseDate: Date, genre: String, review: String, rating: Int) {
