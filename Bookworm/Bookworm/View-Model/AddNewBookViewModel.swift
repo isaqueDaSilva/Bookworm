@@ -8,9 +8,7 @@
 import Foundation
 
 class AddNewBookViewModel: ObservableObject {
-    let manager: DataServiceProtocol
-    
-    private var onSave: () async -> Void
+    let manager: BooksMananger
     
     @Published var title = ""
     @Published var author = ""
@@ -32,11 +30,9 @@ class AddNewBookViewModel: ObservableObject {
     
     func addBook() async {
         await manager.addNewBook(title: title, authorName: author, releaseDate: releaseDate,genre: genre, review: review,rating: rating)
-        await self.onSave()
     }
     
-    init(manager: DataServiceProtocol, onSave: @escaping () async -> Void) {
+    init(manager: BooksMananger) {
         self.manager = manager
-        self.onSave = onSave
     }
 }

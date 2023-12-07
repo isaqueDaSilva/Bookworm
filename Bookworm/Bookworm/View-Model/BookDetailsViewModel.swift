@@ -8,14 +8,13 @@
 import Foundation
 
 class BookDetailsViewModel: ObservableObject {
-    let manager: DataServiceProtocol
+    let manager: BooksMananger
     
     @Published var deleteCurrentBookAlert = false
     @Published var showingSafafiView = false
     @Published var selectedText: String = "" 
     
     private let book: Book
-    private var onChange: () async -> Void
     
     var bookTitle: String {
         book.title
@@ -47,7 +46,6 @@ class BookDetailsViewModel: ObservableObject {
     
     func delete() async {
         await manager.delete(book)
-        await onChange()
     }
     
     func displaySafariSearchFor(_ term: String) {
@@ -55,9 +53,8 @@ class BookDetailsViewModel: ObservableObject {
         self.showingSafafiView = true
     }
     
-    init(manager: DataServiceProtocol, book: Book, onChange: @escaping () async -> Void) {
+    init(manager: BooksMananger, book: Book) {
         self.manager = manager
         self.book = book
-        self.onChange = onChange
     }
 }

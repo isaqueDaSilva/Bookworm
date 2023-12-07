@@ -9,11 +9,11 @@ import Foundation
 import SwiftUI
 
 class BooksViewModel: ObservableObject {
-    let manager: DataServiceProtocol
+    let manager: BooksMananger
     
-    @MainActor @Published var books = [Book]()
-    @MainActor @Published var authorList = [Author]()
-    @MainActor @Published var genres = [String]()
+    @Published var books = [Book]()
+    @Published var authorList = [Author]()
+    @Published var genres = [String]()
     @Published var showingAddNewBook = false
     @AppStorage("Filter") var filter: Filter = .all
     @Published var text = ""
@@ -77,18 +77,34 @@ class BooksViewModel: ObservableObject {
     }
     
     func getBooks() async {
-        let (bookList, authorsList, genresList) = await manager.getBooks()
-        
-        await MainActor.run {
-            self.books = bookList
-            self.authorList = authorsList
-            self.genres = genresList
+        for await bookList in await manager.getBooks().values {
+            await MainActor.run {
+                self.books = bookList
+                self.getAuthorsAndGenresList()
+            }
         }
+    }
+    
+    private func getAuthorsAndGenresList() {
+        var authorsList = [Author]()
+        var genresList = [String]()
+        
+        self.books.forEach { book in
+            if !authorsList.contains(book.author) {
+                authorsList.append(book.author)
+            }
+            
+            if !genresList.contains(book.genre) {
+                genresList.append(book.genre)
+            }
+        }
+        
+        self.authorList = authorsList
+        self.genres = genresList
     }
     
     func delete(_ book: Book) async {
         await manager.delete(book)
-        await self.getBooks()
     }
     
     func textColor(_ rating: Int) -> Color {
@@ -103,7 +119,7 @@ class BooksViewModel: ObservableObject {
         return color
     }
     
-    init(manager: DataServiceProtocol) {
+    init(manager: BooksMananger) {
         self.manager = manager
     }
 }
