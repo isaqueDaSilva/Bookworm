@@ -5,7 +5,6 @@
 //  Created by Isaque da Silva on 02/12/23.
 //
 
-import Combine
 import Foundation
 
 protocol DataServiceProtocol {
