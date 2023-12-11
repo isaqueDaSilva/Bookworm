@@ -27,7 +27,6 @@ struct BooksView: View {
                     ForEach(dataManager.search) { book in
                         NavigationLink {
                             BookDetailsView(book: book)
-                                .environmentObject(dataManager)
                         } label: {
                             HStack {
                                 EmojiRating(rating: book.rating)
@@ -84,8 +83,8 @@ struct BooksView: View {
             }
             .sheet(isPresented: $viewModel.showingAddNewBook) {
                 AddNewBookView()
-                    .environmentObject(dataManager)
             }
         }
+        .environmentObject(dataManager)
     }
 }
