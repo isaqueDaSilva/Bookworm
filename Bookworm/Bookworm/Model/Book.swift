@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Book: Codable, Identifiable, Equatable, Comparable {
+struct Book: Codable, Comparable, Equatable, Identifiable {
     var id = UUID()
     let title: String
     let author: Author
@@ -22,12 +22,12 @@ struct Book: Codable, Identifiable, Equatable, Comparable {
         return formatter.string(from: releaseDate)
     }
     
-    static let bookExemple = Book(title: UUID().uuidString, author: Author(name: UUID().uuidString), releaseDate: Date.now, genre: "Fantasy", review: UUID().uuidString, rating: Int.random(in: 1...5))
+    static let bookExemple = Book(title: UUID().uuidString, authorName: UUID().uuidString, releaseDate: Date.now, genre: UUID().uuidString, review: UUID().uuidString, rating: Int.random(in: 1...5))
     
     static var bookListExemples: [Book] {
         var bookList = [Book]()
         for _ in 0..<10 {
-            let newBook = Book(title: UUID().uuidString, author: Author(name: UUID().uuidString), releaseDate: Date.now, genre: UUID().uuidString, review: UUID().uuidString, rating: Int.random(in: 1...5))
+            let newBook = Book(title: UUID().uuidString, authorName: UUID().uuidString, releaseDate: Date.now, genre: UUID().uuidString, review: UUID().uuidString, rating: Int.random(in: 1...5))
             bookList.append(newBook)
         }
         
@@ -40,5 +40,15 @@ struct Book: Codable, Identifiable, Equatable, Comparable {
     
     static func < (lhs: Book, rhs: Book) -> Bool {
         lhs.title < rhs.title
+    }
+    
+    init(id: UUID = UUID(), title: String, authorName: String, releaseDate: Date, genre: String, review: String, rating: Int) {
+        self.id = id
+        self.title = title
+        self.author = Author(name: authorName)
+        self.releaseDate = releaseDate
+        self.genre = genre
+        self.review = review
+        self.rating = rating
     }
 }
