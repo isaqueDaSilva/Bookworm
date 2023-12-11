@@ -9,102 +9,10 @@ import Foundation
 import SwiftUI
 
 class BooksViewModel: ObservableObject {
-    let manager: BooksMananger
-    
-    @Published var books = [Book]()
-    @Published var authorList = [Author]()
-    @Published var genres = [String]()
     @Published var showingAddNewBook = false
-    @AppStorage("Filter") var filter: Filter = .all
-    @Published var text = ""
-    
-    @MainActor
-    var showingPicker: Bool {
-        switch filter {
-        case .all, .ascendingOrder:
-            return false
-        case .genre:
-            if !genres.isEmpty {
-                return true
-            } else {
-                return false
-            }
-        case .ratingEqual:
-            return true
-        case .authors:
-            if !authorList.isEmpty {
-                return true
-            } else {
-                return false
-            }
-        }
-    }
-    
-    @MainActor
-    var choiceText: [String] {
-        switch filter {
-        case .all:
-            return []
-        case .ascendingOrder:
-            return []
-        case .genre:
-            return self.genres
-        case .ratingEqual:
-            return ["1", "2", "3", "4", "5"]
-        case .authors:
-            return self.authorList.map { $0.name }
-        }
-    }
-    
-    @MainActor
-    var search: [Book] {
-        switch filter {
-        case .all:
-            return books
-        case .ascendingOrder:
-            return books.sorted { $0 < $1 }
-        case .genre:
-            return books.filter { $0.genre.contains(text) }
-        case .ratingEqual:
-            return books.filter { String($0.rating).contains(text) }
-        case .authors:
-            return books.filter { $0.author.name.contains(text) }
-        }
-    }
     
     func displayAddNewBook() {
         self.showingAddNewBook = true
-    }
-    
-    func getBooks() async {
-        for await bookList in await manager.getBooks().values {
-            await MainActor.run {
-                self.books = bookList
-                self.getAuthorsAndGenresList()
-            }
-        }
-    }
-    
-    private func getAuthorsAndGenresList() {
-        var authorsList = [Author]()
-        var genresList = [String]()
-        
-        self.books.forEach { book in
-            if !authorsList.contains(book.author) {
-                authorsList.append(book.author)
-            }
-            
-            if !genresList.contains(book.genre) {
-                genresList.append(book.genre)
-            }
-        }
-        
-        self.authorList = authorsList
-        self.genres = genresList
-    }
-    
-    func delete(_ book: Book) async {
-        await manager.delete(book)
     }
     
     func textColor(_ rating: Int) -> Color {
@@ -117,9 +25,5 @@ class BooksViewModel: ObservableObject {
             color = .green
         }
         return color
-    }
-    
-    init(manager: BooksMananger) {
-        self.manager = manager
     }
 }

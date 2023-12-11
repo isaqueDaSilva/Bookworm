@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BookDetailsView: View {
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var dataManager: BooksData
     @StateObject var viewModel: BookDetailsViewModel
     
     var body: some View {
@@ -73,7 +74,7 @@ struct BookDetailsView: View {
         .alert("Delete this Book", isPresented: $viewModel.deleteCurrentBookAlert) {
             Button("Delete", role: .destructive) {
                 Task {
-                    await viewModel.delete()
+                    await dataManager.deleteBook(viewModel.book)
                     dismiss()
                 }
             }
@@ -86,7 +87,7 @@ struct BookDetailsView: View {
         }
     }
     
-    init(manager: BooksMananger, book: Book) {
-        _viewModel = StateObject(wrappedValue: BookDetailsViewModel(manager: manager, book: book))
+    init(book: Book) {
+        _viewModel = StateObject(wrappedValue: BookDetailsViewModel(book: book))
     }
 }

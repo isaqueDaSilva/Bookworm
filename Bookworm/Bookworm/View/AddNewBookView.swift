@@ -9,7 +9,8 @@ import SwiftUI
 
 struct AddNewBookView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject var viewModel: AddNewBookViewModel
+    @EnvironmentObject var dataManager: BooksData
+    @StateObject var viewModel = AddNewBookViewModel()
     
     var body: some View {
         NavigationView {
@@ -46,7 +47,14 @@ struct AddNewBookView: View {
                     ToolbarItem {
                         Button("OK") {
                             Task {
-                                await viewModel.addBook()
+                                await dataManager.createNewBook(
+                                    title: viewModel.title, 
+                                    authorName: viewModel.author,
+                                    releaseDate: viewModel.releaseDate,
+                                    genre: viewModel.genre,
+                                    review: viewModel.review,
+                                    rating: viewModel.rating
+                                )
                                 dismiss()
                             }
                         }
@@ -65,9 +73,5 @@ struct AddNewBookView: View {
                 }
             }
         }
-    }
-    
-    init(manager: BooksMananger) {
-        _viewModel = StateObject(wrappedValue: AddNewBookViewModel(manager: manager))
     }
 }

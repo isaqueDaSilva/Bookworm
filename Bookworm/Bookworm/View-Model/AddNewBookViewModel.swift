@@ -8,8 +8,6 @@
 import Foundation
 
 class AddNewBookViewModel: ObservableObject {
-    let manager: BooksMananger
-    
     @Published var title = ""
     @Published var author = ""
     @Published var releaseDate = Date.now
@@ -27,12 +25,4 @@ class AddNewBookViewModel: ObservableObject {
     }
     
     var genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
-    
-    func addBook() async {
-        await manager.addNewBook(title: title, authorName: author, releaseDate: releaseDate,genre: genre, review: review,rating: rating)
-    }
-    
-    init(manager: BooksMananger) {
-        self.manager = manager
-    }
 }

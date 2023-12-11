@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct BooksView: View {
-    @StateObject var viewModel: BooksViewModel
+    @StateObject var viewModel = BooksViewModel()
+    @EnvironmentObject var dataManager: BooksData
     
     var body: some View {
         NavigationView {
             List {
-                if viewModel.showingPicker {
-                    Picker("Select", selection: $viewModel.text) {
-                        ForEach(viewModel.choiceText, id: \.self) {
+                if dataManager.showingPicker {
+                    Picker("Select", selection: $dataManager.text) {
+                        ForEach(dataManager.choiceText, id: \.self) {
                             Text($0)
                         }
                     }
@@ -23,9 +24,10 @@ struct BooksView: View {
                 }
                 
                 Section {
-                    ForEach(viewModel.search) { book in
+                    ForEach(dataManager.search) { book in
                         NavigationLink {
-                            BookDetailsView(manager: viewModel.manager, book: book)
+                            BookDetailsView(book: book)
+                                .environmentObject(dataManager)
                         } label: {
                             HStack {
                                 EmojiRating(rating: book.rating)
@@ -41,7 +43,7 @@ struct BooksView: View {
                             .swipeActions {
                                 Button {
                                     Task {
-                                        await viewModel.delete(book)
+                                        await dataManager.deleteBook(book)
                                     }
                                 } label: {
                                     Text("Delete")
@@ -56,19 +58,13 @@ struct BooksView: View {
             }
             .navigationTitle("Bookworm")
             .task {
-                await viewModel.getBooks()
+                await dataManager.loadBooks()
             }
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    if !viewModel.books.isEmpty {
-                        EditButton()
-                    }
-                }
-                
                 ToolbarItem {
                     HStack {
                         Menu {
-                            Picker("Filter", selection: $viewModel.filter) {
+                            Picker("Filter", selection: $dataManager.filter) {
                                 ForEach(Filter.allCases, id: \.self) {
                                     Text($0.rawValue)
                                 }
@@ -87,12 +83,9 @@ struct BooksView: View {
                 }
             }
             .sheet(isPresented: $viewModel.showingAddNewBook) {
-                AddNewBookView(manager: viewModel.manager)
+                AddNewBookView()
+                    .environmentObject(dataManager)
             }
         }
-    }
-    
-    init(manager: BooksMananger) {
-        _viewModel = StateObject(wrappedValue: BooksViewModel(manager: manager))
     }
 }
