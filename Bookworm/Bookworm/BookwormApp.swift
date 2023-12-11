@@ -9,10 +9,12 @@ import SwiftUI
 
 @main
 struct BookwormApp: App {
-    let manager = BooksMananger(path: FileManager.documentyDirectory.appending(path: "SavedBooks"))
+    static let manager = BooksManager(url: FileManager.documentyDirectory.appending(path: "SavedBooks"))
+    @StateObject var dataManager = BooksData(manager: manager)
     var body: some Scene {
         WindowGroup {
-            BooksView(manager: manager)
+            BooksView()
+                .environmentObject(dataManager)
         }
     }
 }
