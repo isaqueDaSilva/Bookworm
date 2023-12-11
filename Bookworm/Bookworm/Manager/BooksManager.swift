@@ -15,7 +15,6 @@ actor BooksManager: DataServiceProtocol {
         do {
             let data = try JSONEncoder().encode(self.books)
             try data.write(to: url, options: [.atomic, .completeFileProtection])
-            fetchBooks()
         } catch let error {
             print("Falied to save data in FileManager. Error: \(error)")
         }
