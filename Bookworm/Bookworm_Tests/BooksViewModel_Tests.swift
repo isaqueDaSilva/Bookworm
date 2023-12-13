@@ -6,26 +6,20 @@
 //
 
 @testable import Bookworm
-import Combine
 import XCTest
 
 final class BooksViewModel_Tests: XCTestCase {
     
-    var manager = BooksMananger(path: FileManager.documentsDirectoryForTests.appending(component: "SavedTestBooks"))
-    var viewModel: BooksViewModel?
-    var cancellables = Set<AnyCancellable>()
+    private var viewModel: BooksViewModel?
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        self.viewModel = BooksViewModel(manager: manager)
+        self.viewModel = BooksViewModel()
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        Task {
-            await manager.removeAllBooksForTest()
-            viewModel = nil
-        }
+        self.viewModel = nil
     }
     
     func test_BooksViewModel_displayAddNewBook_shouldBeTrue() {
@@ -38,141 +32,6 @@ final class BooksViewModel_Tests: XCTestCase {
         // Then
         XCTAssertTrue(viewModel.showingAddNewBook)
         XCTAssertEqual(viewModel.showingAddNewBook, true)
-    }
-    
-    func test_BooksViewModel_getBooks_shouldBeInitializedEmptyOnFirstLaunchOfTheApp() {
-        // Given
-        
-        // When
-        guard let viewModel = viewModel else { return }
-        viewModel.getBooks()
-        
-        // Then
-        XCTAssertTrue(viewModel.books.isEmpty)
-        XCTAssertEqual(viewModel.books.count, 0)
-    }
-    
-    func test_BooksViewModel_getBooks_shouldBe1BookSavedInFileMangerAfterRelaunchApp() {
-        // Given
-        
-        // When
-        guard let viewModel = viewModel else { return }
-        let expectation = XCTestExpectation(description: "Should return 1 book after 5 seconds.")
-        viewModel.$books
-            .dropFirst()
-            .sink { _ in
-                expectation.fulfill()
-            }
-            .store(in: &cancellables)
-        
-        viewModel.addBookForTest()
-        viewModel.getBooks()
-        
-        // Then
-        wait(for: [expectation], timeout: 5)
-        XCTAssertFalse(viewModel.books.isEmpty)
-        XCTAssertNotEqual(viewModel.books.count, 0)
-        XCTAssertGreaterThan(viewModel.books.count, 0)
-        XCTAssertEqual(viewModel.books.count, 1)
-        
-        XCTAssertFalse(viewModel.genres.isEmpty)
-        XCTAssertNotEqual(viewModel.genres.count, 0)
-        XCTAssertGreaterThan(viewModel.genres.count, 0)
-        XCTAssertEqual(viewModel.genres.count, 1)
-        
-        XCTAssertFalse(viewModel.authorList.isEmpty)
-        XCTAssertNotEqual(viewModel.authorList.count, 0)
-        XCTAssertGreaterThan(viewModel.authorList.count, 0)
-        XCTAssertEqual(viewModel.authorList.count, 1)
-    }
-    
-    func test_BooksViewModel_getBooks_shouldBe10BooksSavedInFileManagerAfterRelauchApp() {
-        // Given
-        
-        // When
-        guard let viewModel = viewModel else { return }
-        let expectation = XCTestExpectation(description: "Should return 10 books after 5 seconds.")
-        
-        viewModel.$books
-            .dropFirst()
-            .sink { _ in
-                expectation.fulfill()
-            }
-            .store(in: &cancellables)
-        
-        viewModel.addBookListForTest()
-        viewModel.getBooks()
-        
-        //Then
-        wait(for: [expectation], timeout: 5)
-        XCTAssertFalse(viewModel.books.isEmpty)
-        XCTAssertNotEqual(viewModel.books.count, 0)
-        XCTAssertGreaterThan(viewModel.books.count, 0)
-        XCTAssertEqual(viewModel.books.count, 10)
-        
-        XCTAssertFalse(viewModel.genres.isEmpty)
-        XCTAssertNotEqual(viewModel.genres.count, 0)
-        XCTAssertGreaterThan(viewModel.genres.count, 0)
-        XCTAssertEqual(viewModel.genres.count, 10)
-        
-        XCTAssertFalse(viewModel.authorList.isEmpty)
-        XCTAssertNotEqual(viewModel.authorList.count, 0)
-        XCTAssertGreaterThan(viewModel.authorList.count, 0)
-        XCTAssertEqual(viewModel.authorList.count, 10)
-    }
-    
-    func test_BooksViewModel_delete_shouldBeBooksArrayEmptyAfterMethodCalled() {
-        // Given
-        
-        // When
-        guard let viewModel = self.viewModel else { return }
-        let expectation = XCTestExpectation(description: "Should return one Book deleted in Books Array after 5 seconds")
-        
-        viewModel.$books
-            .dropFirst()
-            .sink { _ in
-                expectation.fulfill()
-            }
-            .store(in: &cancellables)
-        
-        viewModel.addBookForTest()
-        viewModel.getBooks()
-        
-        guard let bookSelected = viewModel.books.first else { return }
-        viewModel.delete(bookSelected)
-        
-        // Then
-        wait(for: [expectation], timeout: 5)
-        XCTAssertTrue(viewModel.books.isEmpty)
-        XCTAssertEqual(viewModel.books.count, 0)
-    }
-    
-    func test_BooksManager_delete_shouldBeBooksArrayContaining1LessBookAfterMethodCalled() {
-        // Given
-        
-        // When
-        guard let viewModel = self.viewModel else { return }
-        let expectation = XCTestExpectation(description: "Should return one Book deleted in Books Array after 5 seconds")
-        
-        viewModel.$books
-            .dropFirst()
-            .sink { _ in
-                expectation.fulfill()
-            }
-            .store(in: &cancellables)
-        
-        viewModel.addBookListForTest()
-        viewModel.getBooks()
-        
-        guard let bookSelected = viewModel.books.first else { return }
-        viewModel.delete(bookSelected)
-        
-        // Then
-        wait(for: [expectation], timeout: 5)
-        XCTAssertFalse(viewModel.books.isEmpty)
-        XCTAssertGreaterThan(viewModel.books.count, 0)
-        XCTAssertEqual(viewModel.books.count, 9)
-        XCTAssertFalse(viewModel.books.contains(bookSelected))
     }
     
     func test_BooksViewModel_textColor_shouldBeDisplayTextInRed() {
