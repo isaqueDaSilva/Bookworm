@@ -9,13 +9,14 @@ import XCTest
 @testable import Bookworm
 
 final class BookDetailsViewModel_Tests: XCTestCase {
-    var viewModel: BookDetailsViewModel?
-    let manager = BooksMananger(path: FileManager.documentsDirectoryForTests.appending(component: "SavedTestBooks"))
-    func onChange() { print("Saved change successfuly") }
-    let book = Book.bookExemple
+    
+    private var viewModel: BookDetailsViewModel?
+    private let book = Book.bookExemple
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        self.viewModel = BookDetailsViewModel(manager: manager, book: book, onChange: onChange)
+        
+        self.viewModel = BookDetailsViewModel(book: book)
     }
 
     override func tearDownWithError() throws {
