@@ -16,13 +16,4 @@ class AddNewBookViewModel: ObservableObject {
     @Published var rating = 1
     @Published var showingAlert = false
     
-    var isValid: Bool {
-        if title.isEmpty || author.isEmpty || review.isEmpty {
-            return false
-        } else {
-            return true
-        }
-    }
-    
-    var genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
 }

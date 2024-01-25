@@ -6,9 +6,19 @@
 //
 
 import Foundation
+import XCTest
 
 extension FileManager {
     static var documentsDirectoryForTests: URL {
-        FileManager.default.temporaryDirectory
+        let fileManager = FileManager.default
+        let directory = fileManager.temporaryDirectory
+        let fileName = UUID().uuidString
+        let fileURL = directory.appending(path: fileName)
+        
+        if fileManager.fileExists(atPath: fileURL.path()) {
+            try? fileManager.removeItem(at: fileURL)
+        }
+        
+        return fileURL
     }
 }

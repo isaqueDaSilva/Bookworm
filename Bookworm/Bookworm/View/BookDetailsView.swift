@@ -8,86 +8,69 @@
 import SwiftUI
 
 struct BookDetailsView: View {
-    @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var dataManager: BooksData
-    @StateObject var viewModel: BookDetailsViewModel
+    @State private var dummyRate = 4
     
     var body: some View {
-        List {
-            ZStack(alignment: .bottomTrailing) {
-                Image(viewModel.bookGenre)
-                    .resizable()
-                    .scaledToFit()
+        GeometryReader { geo in
+            List {
+                Section {
+                    VStack {
+                        BookCover(width: 135, height: 180, customText: "T")
+                        .padding(.bottom, 5)
+                        
+                        VStack {
+                            Description(
+                                title: "Title Test",
+                                description: "Author Test",
+                                primaryFont: .title,
+                                secondaryFont: .headline
+                            )
+                        }
+                    }
+                }
+                .frame(width: geo.size.width)
+                .listRowBackground(Color(CGColor(red: 240, green: 240, blue: 246, alpha: 0)))
                 
-                Text(viewModel.bookGenre.uppercased())
-                    .font(.caption)
-                    .fontWeight(.black)
-                    .padding(8)
-                    .foregroundColor(.white)
-                    .background(.black.opacity(0.75))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .offset(x: -5, y: -5)
-            }
-            
-            Section("About Book") {
-                TextDetails(title: "Author", description: viewModel.bookAuthor, displayInfo: true) { text in
-                    viewModel.displaySafariSearchFor(text)
+                
+                Section("More Information") {
+                    InformationLabel(
+                        informationTitle: "Release Date:",
+                        informationDescription: "21/01/2024"
+                    )
+                    
+                    InformationLabel(
+                        informationTitle: "Genre:",
+                        informationDescription: "Fantasy"
+                    )
+                    
+                    HStack {
+                        Text("Rating:")
+                            .font(.body)
+                            .bold()
+                        Spacer()
+                        RatingStars(rating: $dummyRate)
+                    }
                 }
                 
-                TextDetails(title: "Release in:", description: viewModel.bookReleaseDate, displayInfo: false)
-                
-                TextDetails(title: "Genre:", description: viewModel.bookGenre, displayInfo: true) { text in
-                    viewModel.displaySafariSearchFor(text)
+                Section("Review") {
+                    Text("Review here")
                 }
                 
-            }
-            
-            Section("Review") {
-                Text(viewModel.bookReview)
-                    .font(.headline)
-            }
-            
-            HStack {
-                Spacer()
-                
-                VStack {
-                    RatingStars(rating: .constant(viewModel.bookRating))
-                        .font(.system(size: 25))
-                        .padding(5)
-                    Text("\(viewModel.bookRating)/5")
-                        .bold()
-                        .foregroundStyle(.gray)
-                }
-                Spacer()
-            }
-            .listRowBackground(Color(CGColor(red: 240, green: 240, blue: 246, alpha: 0)))
-        }
-        .navigationTitle(viewModel.bookTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            Button {
-                viewModel.displayAlert()
-            } label: {
-                Image(systemName: "trash")
-            }
-        }
-        .alert("Delete this Book", isPresented: $viewModel.deleteCurrentBookAlert) {
-            Button("Delete", role: .destructive) {
-                Task {
-                    await dataManager.deleteBook(viewModel.book)
-                    dismiss()
+                Section {
+                    DestructiveButton(label: "Delete Book") { }
                 }
             }
-            Button("Cancel", role: .cancel, action: {})
-        } message: {
-            Text("Are you sure you want to delete this book?")
-        }
-        .sheet(isPresented: $viewModel.showingSafafiView) {
-            SafariServiceView(seachText: viewModel.selectedText)
+            .navigationTitle("Book Details")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                EditButton(label: "Edit") { }
+            }
         }
     }
-    
-    init(book: Book) {
-        _viewModel = StateObject(wrappedValue: BookDetailsViewModel(book: book))
+}
+
+#Preview {
+    NavigationStack {
+        BookDetailsView()
     }
 }

@@ -8,70 +8,57 @@
 import SwiftUI
 
 struct AddNewBookView: View {
-    @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var dataManager: BooksData
-    @StateObject var viewModel = AddNewBookViewModel()
-    
+    @State private var title = ""
+    @State private var releaseDate = Date()
+    @State private var genre: Genre = .fantasy
+    @State private var review = ""
+    @State private var rating = 1
     var body: some View {
-        NavigationView {
-            Form {
-                Section("About the Book") {
-                    TextField("Book Title", text: $viewModel.title)
-                    TextField("Author", text: $viewModel.author)
-                    DatePicker("Release Data:", selection: $viewModel.releaseDate, in: ...Date.now, displayedComponents: .date)
-                    Picker("Genre:", selection: $viewModel.genre) {
-                        ForEach(viewModel.genres, id: \.self) {
-                            Text($0)
-                        }
+        NavigationStack {
+            GeometryReader { geo in
+                Form {
+                    Section {
+                        BookCover(width: 135, height: 180, customText: "T")
+                        .listRowBackground(Color(CGColor(red: 240, green: 240, blue: 246, alpha: 0)))
                     }
-                }
-                
-                Section("Review") {
-                    RatingStars(rating: $viewModel.rating)
+                    .frame(width: geo.size.width)
                     
-                    ZStack(alignment: .leading) {
-                        if viewModel.review.isEmpty {
-                            Text("What did you think about the book?")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary.opacity(0.6))
-                                .padding(.horizontal, 3)
-                        }
-                        TextEditor(text: $viewModel.review)
-                    }
-                }
-            }
-            .navigationTitle("Add New Book")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                if viewModel.isValid {
-                    ToolbarItem {
-                        Button("OK") {
-                            Task {
-                                await dataManager.createNewBook(
-                                    title: viewModel.title, 
-                                    authorName: viewModel.author,
-                                    releaseDate: viewModel.releaseDate,
-                                    genre: viewModel.genre,
-                                    review: viewModel.review,
-                                    rating: viewModel.rating
-                                )
-                                dismiss()
+                    Section("Book's information") {
+                        TextField("Insert the Book's title...", text: $title)
+                        DatePicker("Release date:", selection: $releaseDate, in: ...Date.now, displayedComponents: .date)
+                        Picker("Book's genre:", selection: $genre) {
+                            ForEach(Genre.allCases, id: \.rawValue) {
+                                Text($0.rawValue)
                             }
                         }
+                        
+                        HStack {
+                            Text("Rating:")
+                            Spacer()
+                            RatingStars(rating: $rating)
+                        }
+                    }
+                    
+                    Section("Review") {
+                        TextField("Write a review for this book...", text: $review)
                     }
                 }
-                
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        HStack {
-                            Image(systemName: "chevron.left")
-                            Text("Back")
-                        }
+                .navigationTitle("Add new Book")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        BackButton { }
+                    }
+                    
+                    ToolbarItem {
+                        SaveButton { }
                     }
                 }
             }
         }
     }
+}
+
+#Preview {
+    AddNewBookView()
 }

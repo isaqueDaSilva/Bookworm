@@ -7,11 +7,21 @@
 
 import Foundation
 
-struct Author: Codable, Identifiable, Equatable, Comparable  {
-    var id = UUID()
-    let name: String
-    
-    static func < (lhs: Author, rhs: Author) -> Bool {
-        lhs.name < rhs.name
+struct Author: Codable, Identifiable {
+    let id: UUID
+    let authorName: String
+    let books: [Book]
+    let user: UUID
+}
+
+extension Author {
+    struct CreateAuthor: Codable {
+        let authorName: String
+    }
+}
+
+extension Author {
+    struct UpadateAuthor: Codable {
+        let authorName: String?
     }
 }
