@@ -8,17 +8,37 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @State private var isActive = false
+    @State private var text = "Username"
     var body: some View {
         NavigationStack {
             List {
                 Section {
-                    VStack(alignment: .leading) {
-                        Description(
-                            title: "Name",
-                            description: "usernametest@icloud.com",
-                            primaryFont: .title3,
-                            secondaryFont: .subheadline
-                        )
+                    HStack(alignment: .center) {
+                        VStack(alignment: .leading) {
+                            Description(
+                                title: text,
+                                description: "usernametest@icloud.com",
+                                primaryFont: .title3,
+                                secondaryFont: .subheadline
+                            )
+                        }
+                        Spacer()
+                        Menu("Edit") {
+                            Button {
+                                alertWithTextField(
+                                    title: "Edit Username",
+                                    message: "Insert your new username in the session below",
+                                    text: text,
+                                    placeholder: "username",
+                                    primaryActionTitle: "OK",
+                                    secondaryActionTitle: "Cancel") { text in
+                                        someAction(someText: text)
+                                    }
+                            } label: {
+                                Label("Edit Username", systemImage: "pencil")
+                            }
+                        }
                     }
                 }
                 
@@ -37,8 +57,12 @@ struct ProfileView: View {
                     DestructiveButton(label: "Delete this account") { }
                 }
             }
-            .navigationTitle("Username")
+            .navigationTitle("Name")
         }
+    }
+    
+    func someAction(someText: String) { 
+        text = someText
     }
 }
 
