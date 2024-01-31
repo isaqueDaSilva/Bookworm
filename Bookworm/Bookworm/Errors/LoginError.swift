@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+enum LoginError: Error {
+    case noTokenAvailable
+    case youAreNotLoggedIn
+}
