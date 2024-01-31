@@ -11,4 +11,5 @@ import Security
 enum KeychainError: Error {
     case duplicateItem
     case unknown(OSStatus)
+    case noItem
 }
