@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct User: Codable, Identifiable { 
+struct User: Codable, Identifiable, Hashable {
     let id: UUID
     let name: String
     let username: String
@@ -16,7 +16,7 @@ struct User: Codable, Identifiable {
 }
 
 extension User {
-    struct CreateUser: Codable {
+    struct CreateUser: Codable, Hashable {
         let name: String
         let username: String
         let email: String
@@ -26,15 +26,14 @@ extension User {
 }
 
 extension User {
-    struct UpadateUser: Codable {
+    struct UpadateUser: Codable, Hashable {
         let username: String?
-        let email: String?
     }
 }
 
 
 extension User {
-    struct Login: Codable {
+    struct Login: Codable, Hashable {
         let email: String
         let password: String
     }

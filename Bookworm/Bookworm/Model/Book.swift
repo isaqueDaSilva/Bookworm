@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Book: Codable, Identifiable {
+struct Book: Codable, Identifiable, Hashable {
     let id: UUID
     let title: String
     let author: UUID
@@ -18,7 +18,7 @@ struct Book: Codable, Identifiable {
 }
 
 extension Book {
-    struct CreateBook: Codable {
+    struct CreateBook: Codable, Hashable {
         let title: String
         let author: UUID
         let releaseDate: String
@@ -29,7 +29,7 @@ extension Book {
 }
 
 extension Book {
-    struct UpdateBook: Codable {
+    struct UpdateBook: Codable, Hashable {
         let title: String?
         let releaseDate: String?
         let genre: Genre.RawValue?

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Author: Codable, Identifiable {
+struct Author: Codable, Identifiable, Hashable {
     let id: UUID
     let authorName: String
     let books: [Book]
@@ -15,13 +15,13 @@ struct Author: Codable, Identifiable {
 }
 
 extension Author {
-    struct CreateAuthor: Codable {
+    struct CreateAuthor: Codable, Hashable {
         let authorName: String
     }
 }
 
 extension Author {
-    struct UpadateAuthor: Codable {
+    struct UpadateAuthor: Codable, Hashable {
         let authorName: String?
     }
 }
