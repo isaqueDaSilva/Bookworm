@@ -8,13 +8,16 @@
 import Foundation
 import Security
 
-actor KeychainManager {
-    static func save(service: String, account: String, token: Data) throws -> OSStatus {
-        let query: [CFString : Any] = [
-            kSecClass: kSecClassGenericPassword,
-            kSecAttrService: service,
-            kSecAttrAccount: account,
-            kSecValueData: token
+
+final class KeychainManager {
+    @discardableResult
+    static func save(service: String, token: Token) throws -> OSStatus {
+        let tokenData = try JSONEncoder().encode(token)
+        
+        let query: [String : Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecValueData as String: tokenData
         ]
         
         let status = SecItemAdd(query as CFDictionary, nil)
@@ -30,10 +33,35 @@ actor KeychainManager {
         return status
     }
     
-    static func delete(account: String) throws -> OSStatus {
-        let query: [CFString : Any] = [
-            kSecClass: kSecClassGenericPassword,
-            kSecAttrAccount: account,
+    static func load(service: String) throws -> Data? {
+        let query: [String : Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service,
+            kSecMatchLimit as String: kSecMatchLimitOne,
+            kSecReturnAttributes as String: true,
+            kSecReturnData as String: true
+        ]
+        
+        var item: CFTypeRef?
+        
+        let status = SecItemCopyMatching(query as CFDictionary, &item)
+        
+        guard status == errSecSuccess else {
+            throw KeychainError.unknown(status)
+        }
+        
+        guard let existingItem = item as? [String : Any] else {
+            return nil
+        }
+        
+        return existingItem[kSecValueData as String] as? Data
+    }
+    
+    @discardableResult
+    static func delete(service: String) throws -> OSStatus {
+        let query: [String : Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrService as String: service
         ]
         
         let status = SecItemDelete(query as CFDictionary)
@@ -43,21 +71,5 @@ actor KeychainManager {
         }
         
         return status
-    }
-    
-    static func load(service: String, account: String) -> Data? {
-        let query: [CFString : Any] = [
-            kSecClass: kSecClassGenericPassword,
-            kSecAttrService: service,
-            kSecAttrAccount: account,
-            kSecReturnData: kCFBooleanTrue as Any,
-            kSecMatchLimit: kSecMatchLimitOne
-        ]
-        
-        var result: AnyObject?
-        
-        let status = SecItemCopyMatching(query as CFDictionary, &result)
-        
-        return result as? Data
     }
 }
