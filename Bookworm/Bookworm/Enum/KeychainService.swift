@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+enum KeychainService: String {
+    case login = "bookworm-login"
+}
