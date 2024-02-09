@@ -8,37 +8,48 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State private var email = ""
-    @State private var password = ""
+    @StateObject private var viewModel: LoginViewModel
+    
     var body: some View {
         NavigationStack {
             VStack(alignment: .center) {
                 BookwormHeader()
-                .padding(.bottom)
+                    .padding(.bottom)
                 
                 FieldComponent(
-                    TextField("Insert your email here...", text: $email)
-                    
+                    TextField("Insert your email here...", text: $viewModel.email)
                 )
                 
                 FieldComponent(
-                    SecureField("Insert your password here...", text: $password)
+                    SecureField("Insert your password here...", text: $viewModel.password)
                 )
                 
                 HStack(alignment: .center) {
                     Text("No Account?")
-                        .font(.headline.bold())
-                    Button("Create Account") { }
+                        .font(.headline)
+                        .bold()
+                    
+                    Button("Create Account") {
+                        viewModel.moveToCreateAccountView = true
+                    }
                 }
                 .padding(.top, 5)
                 
-                ActionButton(title: "Login") { }
+                ActionButton(title: "Login", mode: $viewModel.loginButtonState) { 
+                    viewModel.getUser()
+                }
             }
-
+            .navigationDestination(isPresented: $viewModel.moveToCreateAccountView) {
+                CreateAccountView()
+            }
+            .alert("Login failed", isPresented: $viewModel.showingLoginError) {
+            } message: {
+                Text(viewModel.loginErrorMessage)
+            }
         }
     }
-}
-
-#Preview {
-    LoginView()
+    
+    init(authenticator: AuthenticationManager) {
+        _viewModel = StateObject(wrappedValue: LoginViewModel(authenticationManager: authenticator))
+    }
 }
