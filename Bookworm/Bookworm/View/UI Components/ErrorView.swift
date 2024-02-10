@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ErrorView: View {
-    let navTitle: String
     var body: some View {
         VStack {
             Image(systemName: "exclamationmark.triangle")
@@ -18,6 +17,5 @@ struct ErrorView: View {
                 .font(.headline)
                 .bold()
         }
-        .navigationTitle(navTitle)
     }
 }
