@@ -15,18 +15,24 @@ struct BookCover: View {
     var body: some View {
         ZStack(alignment: .center) {
             RoundedRectangle(cornerRadius: 10)
-                .foregroundStyle(.white)
-                .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                .foregroundStyle(.secondary)
             
-            Text(customText)
-                .font(.largeTitle)
-                .bold()
-                .foregroundStyle(.black)
+            VStack {
+                Image(systemName: "book.fill")
+                    .font(.largeTitle)
+                    .padding(.bottom, 5)
+                Text(customText)
+                    .font(.subheadline)
+                    .bold()
+                    .multilineTextAlignment(.center)
+            }
+            .foregroundStyle(.primary)
+            .padding()
         }
         .frame(width: width, height: height)
     }
 }
 
 #Preview {
-    BookCover(width: 90, height: 120, customText: "T")
+    BookCover(width: 90, height: 120, customText: "Teste 123")
 }
