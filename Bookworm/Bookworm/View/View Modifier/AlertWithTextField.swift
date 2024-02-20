@@ -11,7 +11,6 @@ struct AlertWithTextField: ViewModifier {
     @Binding var text: String
     @Binding var isActive: Bool
     
-    
     let title: String
     let primaryButtonTitle: String
     let secondaryButtonTitle: String
@@ -31,7 +30,7 @@ struct AlertWithTextField: ViewModifier {
                 VStack {
                     TextField(placeholder, text: $text)
                     HStack {
-                        Button(primaryButtonTitle, role: primaryRole) { 
+                        Button(primaryButtonTitle, role: primaryRole) {
                             primaryAction()
                         }
                         .disabled(isDisabled)
