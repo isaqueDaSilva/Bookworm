@@ -8,24 +8,17 @@
 import SwiftUI
 
 struct FieldComponent<L: View>: View {
+    @Environment(\.colorScheme) var colorScheme
     let label: L
     
     var body: some View {
         label
-            .padding()
-            .frame(maxWidth: .infinity, maxHeight: 50)
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(Color(.systemGray5))
-            )
-            .padding(.horizontal)
+            .textFieldStyle(.roundedBorder)
+            .border(.secondary)
+            .clipShape(RoundedRectangle(cornerRadius: 2))
     }
     
     init(_ label: L) {
         self.label = label
     }
-}
-
-#Preview {
-    LoginView()
 }
