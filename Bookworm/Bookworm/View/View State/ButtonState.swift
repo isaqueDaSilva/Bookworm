@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+enum ButtonState {
+    case load, loading
+}
