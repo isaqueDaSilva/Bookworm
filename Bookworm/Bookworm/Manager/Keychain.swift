@@ -2,18 +2,15 @@
 //  KeychainManager.swift
 //  Bookworm
 //
-//  Created by Isaque da Silva on 24/01/24.
+//  Created by Isaque da Silva on 17/02/24.
 //
 
 import Foundation
 import Security
 
-
-final class KeychainManager {
+struct Keychain {
     @discardableResult
-    static func save(service: String, token: Token) throws -> OSStatus {
-        let tokenData = try JSONEncoder().encode(token)
-        
+    static func save(service: String, tokenData: Data) throws -> OSStatus {
         let query: [String : Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
@@ -22,8 +19,12 @@ final class KeychainManager {
         
         let status = SecItemAdd(query as CFDictionary, nil)
         
+        if status == errSecDuplicateItem {
+            try self.delete(service: service)
+        }
+        
         guard status != errSecDuplicateItem else {
-            throw KeychainError.duplicateItem
+            throw KeychainError.duplicateItem("There are two identical keys saved.")
         }
         
         guard status == errSecSuccess else {

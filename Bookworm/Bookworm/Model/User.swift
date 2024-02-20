@@ -2,120 +2,88 @@
 //  User.swift
 //  Bookworm
 //
-//  Created by Isaque da Silva on 19/01/24.
+//  Created by Isaque da Silva on 16/02/24.
 //
 
 import Foundation
+import SwiftData
 
-struct User: Codable, Identifiable, Hashable {
+/// A representation of an user data.
+@Model
+final class User: Identifiable {
+    /// An unique identifier for user.
     let id: UUID
-    let name: String
-    let username: String
-    let email: String
-    let authors: [Author]
     
-    func delete(token: Token) async throws {
-        let endpoint = "http://127.0.0.1:8080/user/delete"
+    /// Name of user.
+    let name: String
+    
+    /// Username of user.
+    var username: String
+    
+    /// Email of user.
+    let email: String
+    
+    /// Authors that the user has saved
+    var authors: [Author]
+    
+    /// The books that the user has saved linked to each author they have saved.
+    var books = [Book]()
+    
+    /// Creates a new instance for user.
+    init(
+        id: UUID,
+        name: String,
+        username: String,
+        email: String,
+        authors: [Author]
+    ) {
+        self.id = id
+        self.name = name
+        self.username = username
+        self.email = email
+        self.authors = authors
         
-        guard let url = URL(string: endpoint) else {
-            throw NetworkError.invalidURL
-        }
-        
-        var request = URLRequest(url: url)
-        request.addValue("Bearer \(token.value)", forHTTPHeaderField: "Authorization")
-        request.httpMethod = HTTPMethod.delete.rawValue
-        
-        let (_, response) = try await URLSession.shared.data(for: request)
-        
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-            throw NetworkError.invalidResponse
-        }
-    }
-}
-
-extension User {
-    struct CreateUser: Codable, Hashable {
-        let name: String
-        let username: String
-        let email: String
-        let password: String
-        let confirmPassword: String
-        
-        func create() async throws {
-            let endpoint = "http://127.0.0.1:8080/user/create"
-            
-            guard let url = URL(string: endpoint) else {
-                throw NetworkError.invalidURL
-            }
-            
-            let user = try JSONEncoder().encode(self)
-            
-            var request = URLRequest(url: url)
-            request.httpMethod = HTTPMethod.post.rawValue
-            
-            let (_, response) = try await URLSession.shared.upload(for: request, from: user)
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                throw NetworkError.invalidResponse
+        authors.forEach { author in
+            author.books.forEach { book in
+                if !self.books.contains(book) {
+                    self.books.append(book)
+                }
             }
         }
     }
 }
 
+// A mapping from a user's items
+// obtained from a request
+// to the user's items in SwiftData.
 extension User {
-    struct UpadateUser: Codable, Hashable {
-        let username: String?
-        
-        func update(token: Token) async throws -> User {
-            let endpoint = "http://127.0.0.1:8080/user/update"
-            
-            guard let url = URL(string: endpoint) else {
-                throw NetworkError.invalidURL
-            }
-            
-            let userUpdated = try JSONEncoder().encode(self)
-            
-            var request = URLRequest(url: url)
-            request.addValue("Bearer \(token.value)", forHTTPHeaderField: "Authorization")
-            request.httpMethod = HTTPMethod.patch.rawValue
-            
-            let (data, response) = try await URLSession.shared.upload(for: request, from: userUpdated)
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                throw NetworkError.invalidResponse
-            }
-            
-            return try JSONDecoder().decode(User.self, from: data)
-        }
+    /// Creates a new user instance from a decoded result from server.
+    convenience init(from result: Result) {
+        self.init(
+            id: result.id,
+            name: result.name,
+            username: result.username,
+            email: result.email,
+            authors: result.authors.convertResultCollectionInAuthors()
+        )
     }
 }
 
 
 extension User {
-    struct Login: Codable, Hashable {
-        let email: String
-        let password: String
+    /// Update an existent user from a decoded result from server.
+    func update(_ userResult: Result) {
+        self.username = userResult.username
+        self.authors = userResult.authors.convertResultCollectionInAuthors()
         
-        func getTokenData() async throws -> Data {
-            let endpoint = "http://127.0.0.1:8080/user/login"
-            
-            guard let url = URL(string: endpoint) else {
-                throw NetworkError.invalidURL
+        var booksResult = [Result.BookResult]()
+        
+        userResult.authors.forEach { author in
+            author.books.forEach { book in
+                booksResult.append(book)
             }
-            
-            let userCredentials = try JSONEncoder().encode(self).base64EncodedString()
-            
-            var request = URLRequest(url: url)
-            request.addValue("Basic \(userCredentials)", forHTTPHeaderField: "Authorization")
-            request.httpMethod = HTTPMethod.post.rawValue
-            
-            let (data, response) = try await URLSession.shared.data(for: request)
-            
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                throw NetworkError.invalidResponse
-            }
-            
-            return data
         }
+        
+        self.books = booksResult.convertResultCollectionInBooks()
     }
 }

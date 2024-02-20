@@ -1,5 +1,5 @@
 //
-//  AuthenticationManager.swift
+//  DataManager.swift
 //  Bookworm
 //
 //  Created by Isaque da Silva on 17/02/24.
