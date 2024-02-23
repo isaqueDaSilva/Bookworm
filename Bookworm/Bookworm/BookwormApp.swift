@@ -2,7 +2,7 @@
 //  BookwormApp.swift
 //  Bookworm
 //
-//  Created by Isaque da Silva on 31/08/23.
+//  Created by Isaque da Silva on 23/02/24.
 //
 
 import SwiftUI
@@ -10,8 +10,8 @@ import SwiftUI
 @main
 struct BookwormApp: App {
     var body: some Scene {
-        #if os(iOS)
-        BookwormIOSScene()
-        #endif
+        WindowGroup {
+            ContentView()
+        }
     }
 }
