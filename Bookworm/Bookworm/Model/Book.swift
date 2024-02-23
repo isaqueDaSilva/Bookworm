@@ -10,7 +10,10 @@ import SwiftData
 
 @Model
 final class Book: Codable {
+    @Attribute(.unique)
     let id: UUID?
+    
+    @Attribute(.unique)
     var title: String
     let author: String
     var releaseDate: String
@@ -57,5 +60,15 @@ final class Book: Codable {
         self.genre = try container.decode(String.self, forKey: .genre)
         self.review = try container.decode(String.self, forKey: .review)
         self.rating = try container.decode(Int.self, forKey: .rating)
+    }
+}
+
+extension Book: Hashable {
+    static func == (lhs: Book, rhs: Book) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
     }
 }

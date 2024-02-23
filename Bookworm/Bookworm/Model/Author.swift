@@ -10,7 +10,10 @@ import SwiftData
 
 @Model
 final class Author: Codable {
+    @Attribute(.unique)
     let id: UUID?
+    
+    @Attribute(.unique)
     var authorName: String
     
     @Relationship(deleteRule: .cascade)
@@ -38,5 +41,15 @@ final class Author: Codable {
         self.id = id
         self.authorName = authorName
         self.books = books
+    }
+}
+
+extension Author: Hashable { 
+    static func == (lhs: Author, rhs: Author) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
     }
 }

@@ -20,10 +20,10 @@ final class User: Codable {
     var email: String
     
     @Relationship(deleteRule: .cascade)
-    var author: [Author]
+    var authors: [Author]
     
     enum CodingKeys: String, CodingKey {
-        case id, name, username, email, author
+        case id, name, username, email, authors
     }
     
     init(id: UUID? = nil, name: String, username: String, email: String, author: [Author] = []) {
@@ -31,7 +31,7 @@ final class User: Codable {
         self.name = name
         self.username = username
         self.email = email
-        self.author = author
+        self.authors = author
     }
     
     required init(from decoder: Decoder) throws {
@@ -40,7 +40,7 @@ final class User: Codable {
         self.name = try value.decode(String.self, forKey: .name)
         self.username = try value.decode(String.self, forKey: .username)
         self.email = try value.decode(String.self, forKey: .email)
-        self.author = try value.decode([Author].self, forKey: .author)
+        self.authors = try value.decode([Author].self, forKey: .authors)
     }
     
     func encode(to encoder: Encoder) throws {
