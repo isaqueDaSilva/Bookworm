@@ -6,3 +6,8 @@
 //
 
 import Foundation
+
+enum RequestValue: String {
+    case bearer = "Bearer"
+    case basic = "Basic"
+}
