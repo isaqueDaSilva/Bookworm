@@ -14,7 +14,7 @@ final class Storage: ObservableObject {
     
     @Published var user: User?
     
-    private func save() throws {
+    func save() throws {
         try self.context.save()
         try self.fetch()
     }
@@ -67,15 +67,50 @@ final class Storage: ObservableObject {
             }
         }
         
-        try save()
+        try self.save()
     }
     
     
+    func deleteUser() throws {
+        let user = try self.getUser()
+        
+        self.context.delete(user)
+        
+        try self.save()
+    }
+    
+    func deleteAuthor(_ authorForDelete: Author) throws {
+        let user = try self.getUser()
+        
+        for author in user.authors {
+            if author.id == authorForDelete.id {
+                self.context.delete(author)
+            }
+        }
+        
+        try self.save()
+    }
+    
+    func deleteBook(_ bookForDelete: Book) throws {
+        let user = try self.getUser()
+        
+        for author in user.authors {
+            for book in author.books {
+                if book.id == bookForDelete.id {
+                    self.context.delete(book)
+                }
+            }
+        }
+        
+        try self.save()
+    }
     
     init() {
         do {
             self.container = try ModelContainer(for: User.self)
             self.context = ModelContext(container)
+            
+            try self.fetch()
         } catch let error {
             fatalError(error.localizedDescription)
         }
