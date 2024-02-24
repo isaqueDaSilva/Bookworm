@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E0008772B89D50E000879DB /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0008762B89D50E000879DB /* Keychain.swift */; };
+		7E0008792B89D7BF000879DB /* KeychainError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0008782B89D7BF000879DB /* KeychainError.swift */; };
 		7E4F8D022B8842C800524C74 /* BookwormApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D012B8842C800524C74 /* BookwormApp.swift */; };
 		7E4F8D042B8842C800524C74 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D032B8842C800524C74 /* ContentView.swift */; };
 		7E4F8D062B8842CA00524C74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E4F8D052B8842CA00524C74 /* Assets.xcassets */; };
@@ -14,10 +16,19 @@
 		7E4F8D142B8843AC00524C74 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D132B8843AC00524C74 /* User.swift */; };
 		7E4F8D162B88452600524C74 /* Author.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D152B88452600524C74 /* Author.swift */; };
 		7E4F8D182B88462500524C74 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D172B88462500524C74 /* Book.swift */; };
-		7E4F8D1A2B8858E100524C74 /* CreateUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D192B8858E100524C74 /* CreateUser.swift */; };
+		7E4F8D1D2B886BA400524C74 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D1C2B886BA400524C74 /* NetworkService.swift */; };
+		7E4F8D1F2B886C1400524C74 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D1E2B886C1400524C74 /* HTTPMethod.swift */; };
+		7E4F8D212B886C7A00524C74 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D202B886C7A00524C74 /* NetworkError.swift */; };
+		7E4F8D232B88711900524C74 /* APIEndpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D222B88711900524C74 /* APIEndpoints.swift */; };
+		7E4F8D252B8872C300524C74 /* HeaderField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D242B8872C300524C74 /* HeaderField.swift */; };
+		7E4F8D272B8872DC00524C74 /* RequestValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D262B8872DC00524C74 /* RequestValue.swift */; };
+		7E4F8D2A2B8873E200524C74 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D292B8873E200524C74 /* Storage.swift */; };
+		7E4F8D2C2B88766300524C74 /* StorageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D2B2B88766300524C74 /* StorageError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7E0008762B89D50E000879DB /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		7E0008782B89D7BF000879DB /* KeychainError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainError.swift; sourceTree = "<group>"; };
 		7E4F8CFE2B8842C800524C74 /* Bookworm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bookworm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E4F8D012B8842C800524C74 /* BookwormApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookwormApp.swift; sourceTree = "<group>"; };
 		7E4F8D032B8842C800524C74 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -27,7 +38,14 @@
 		7E4F8D132B8843AC00524C74 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		7E4F8D152B88452600524C74 /* Author.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Author.swift; sourceTree = "<group>"; };
 		7E4F8D172B88462500524C74 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
-		7E4F8D192B8858E100524C74 /* CreateUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateUser.swift; sourceTree = "<group>"; };
+		7E4F8D1C2B886BA400524C74 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		7E4F8D1E2B886C1400524C74 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		7E4F8D202B886C7A00524C74 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		7E4F8D222B88711900524C74 /* APIEndpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEndpoints.swift; sourceTree = "<group>"; };
+		7E4F8D242B8872C300524C74 /* HeaderField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderField.swift; sourceTree = "<group>"; };
+		7E4F8D262B8872DC00524C74 /* RequestValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestValue.swift; sourceTree = "<group>"; };
+		7E4F8D292B8873E200524C74 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		7E4F8D2B2B88766300524C74 /* StorageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +85,8 @@
 				7E4F8D102B88431200524C74 /* Model */,
 				7E4F8D112B88431900524C74 /* View */,
 				7E4F8D122B88432500524C74 /* View Model */,
+				7E4F8D1B2B886B8C00524C74 /* Network */,
+				7E4F8D282B8873C400524C74 /* Manager */,
 			);
 			path = Bookworm;
 			sourceTree = "<group>";
@@ -83,7 +103,6 @@
 			isa = PBXGroup;
 			children = (
 				7E4F8D132B8843AC00524C74 /* User.swift */,
-				7E4F8D192B8858E100524C74 /* CreateUser.swift */,
 				7E4F8D152B88452600524C74 /* Author.swift */,
 				7E4F8D172B88462500524C74 /* Book.swift */,
 			);
@@ -103,6 +122,30 @@
 			children = (
 			);
 			path = "View Model";
+			sourceTree = "<group>";
+		};
+		7E4F8D1B2B886B8C00524C74 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				7E4F8D1C2B886BA400524C74 /* NetworkService.swift */,
+				7E4F8D1E2B886C1400524C74 /* HTTPMethod.swift */,
+				7E4F8D202B886C7A00524C74 /* NetworkError.swift */,
+				7E4F8D222B88711900524C74 /* APIEndpoints.swift */,
+				7E4F8D242B8872C300524C74 /* HeaderField.swift */,
+				7E4F8D262B8872DC00524C74 /* RequestValue.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		7E4F8D282B8873C400524C74 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				7E4F8D292B8873E200524C74 /* Storage.swift */,
+				7E4F8D2B2B88766300524C74 /* StorageError.swift */,
+				7E0008762B89D50E000879DB /* Keychain.swift */,
+				7E0008782B89D7BF000879DB /* KeychainError.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,11 +219,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E4F8D042B8842C800524C74 /* ContentView.swift in Sources */,
+				7E0008792B89D7BF000879DB /* KeychainError.swift in Sources */,
 				7E4F8D022B8842C800524C74 /* BookwormApp.swift in Sources */,
 				7E4F8D162B88452600524C74 /* Author.swift in Sources */,
 				7E4F8D182B88462500524C74 /* Book.swift in Sources */,
-				7E4F8D1A2B8858E100524C74 /* CreateUser.swift in Sources */,
+				7E4F8D1F2B886C1400524C74 /* HTTPMethod.swift in Sources */,
+				7E4F8D232B88711900524C74 /* APIEndpoints.swift in Sources */,
+				7E4F8D212B886C7A00524C74 /* NetworkError.swift in Sources */,
 				7E4F8D142B8843AC00524C74 /* User.swift in Sources */,
+				7E4F8D1D2B886BA400524C74 /* NetworkService.swift in Sources */,
+				7E4F8D2C2B88766300524C74 /* StorageError.swift in Sources */,
+				7E4F8D252B8872C300524C74 /* HeaderField.swift in Sources */,
+				7E4F8D272B8872DC00524C74 /* RequestValue.swift in Sources */,
+				7E4F8D2A2B8873E200524C74 /* Storage.swift in Sources */,
+				7E0008772B89D50E000879DB /* Keychain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +366,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -352,6 +405,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
