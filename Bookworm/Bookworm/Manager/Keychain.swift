@@ -77,7 +77,7 @@ struct Keychain {
         return tokenValue
     }
     
-    static func update(
+    private static func update(
         account: String,
         service: String,
         tokenValue: String
