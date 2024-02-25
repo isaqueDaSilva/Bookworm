@@ -14,11 +14,14 @@ final class Storage: ObservableObject {
     
     @Published var user: User?
     
+    /// This method is used to save every change
+    /// will be happen in a  persistent data model.
     func save() throws {
         try self.context.save()
         try self.fetch()
     }
     
+    /// This method is used to fetch an User saved into SwiftData
     private func fetch() throws {
         let descriptor = FetchDescriptor<User>()
         let userFetched = try context.fetch(descriptor)
@@ -31,6 +34,7 @@ final class Storage: ObservableObject {
         self.user = user
     }
     
+    /// This method checks if the "user" property not nil.
     private func getUser() throws -> User {
         guard let user = self.user else {
             throw StorageError.dataNotFound
@@ -39,11 +43,14 @@ final class Storage: ObservableObject {
         return user
     }
     
+    /// This method is used to create and save a new instance of User on SwiftData
     func createUser(_ user: User) throws {
         self.context.insert(user)
         try self.save()
     }
     
+    /// This method is used to create, insert and save a new instance of Author 
+    /// in an existing user on SwiftData.
     func createAuthor(_ author: Author) throws {
         let user = try self.getUser()
         
@@ -54,6 +61,8 @@ final class Storage: ObservableObject {
         }
     }
     
+    /// This method is used to create, insert and save a new instance of a new Book
+    /// on existing Author, from an existing User on SwiftData.
     func createBook(_ book: Book) throws {
         let user = try self.getUser()
         
@@ -70,7 +79,7 @@ final class Storage: ObservableObject {
         try self.save()
     }
     
-    
+    /// This method is used to delete an existing User.
     func deleteUser() throws {
         let user = try self.getUser()
         
@@ -79,6 +88,8 @@ final class Storage: ObservableObject {
         try self.save()
     }
     
+    /// This method is used to delete an existing Author,
+    /// of a existing User saved on SwiftData.
     func deleteAuthor(_ authorForDelete: Author) throws {
         let user = try self.getUser()
         
@@ -91,6 +102,8 @@ final class Storage: ObservableObject {
         try self.save()
     }
     
+    /// This method is used to delete an existing Book
+    /// of a existing Author, from a existing User saved on SwiftData.
     func deleteBook(_ bookForDelete: Book) throws {
         let user = try self.getUser()
         
@@ -105,6 +118,12 @@ final class Storage: ObservableObject {
         try self.save()
     }
     
+    /// Prepares SwiftData for use.
+    ///
+    /// This iniit configures the ModelContainer for a User Model,
+    /// defines a ModelContext for a ModelContainer,
+    /// and searches if exist some User save on SwiftData or no,
+    /// and if the process fails, an error will be returned.
     init() {
         do {
             self.container = try ModelContainer(for: User.self)

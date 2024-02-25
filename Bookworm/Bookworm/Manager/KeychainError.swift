@@ -7,10 +7,18 @@
 
 import Foundation
 
+/// Errors that may occur when communicating with Keychain.
 enum KeychainError: Error, LocalizedError, Identifiable {
+    /// Error that can occur when there is an attempt to send invalid data.
     case badData
+    
+    /// Some unknown error that was returned at runtime.
     case unknonw(OSStatus)
+    
+    /// Error that can occur when we perform a search and there is no match with any of the data.
     case itemNotFound
+    
+    /// Error that can occur when an attempt to transform a saved Data type into a String type is not possible.
     case unableToConvertToString
     
     var id: String {
