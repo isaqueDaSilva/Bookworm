@@ -25,7 +25,9 @@ struct SecureFieldWithToggle: View {
                         
                 }
             } label: {
-                Image(systemName: isHiddenSecureText ? "eye.slash" : "eye")
+                let icon = isHiddenSecureText ? Icons.eyeSlash.systemImage : Icons.eye.systemImage
+                
+                icon
                     .foregroundStyle(Color(uiColor: .systemBlue))
                     .padding(.horizontal)
             }
