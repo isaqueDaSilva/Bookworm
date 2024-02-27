@@ -1,8 +1,12 @@
 //
-//  PreviewSampleData.swift
+//  KeychainService.swift
 //  Bookworm
 //
 //  Created by Isaque da Silva on 26/02/24.
 //
 
 import Foundation
+
+enum KeychainService: String {
+    case authorization
+}

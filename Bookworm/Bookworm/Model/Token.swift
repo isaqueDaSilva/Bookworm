@@ -1,5 +1,5 @@
 //
-//  PreviewSampleData.swift
+//  Token.swift
 //  Bookworm
 //
 //  Created by Isaque da Silva on 26/02/24.

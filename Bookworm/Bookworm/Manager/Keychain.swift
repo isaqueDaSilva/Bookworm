@@ -12,12 +12,8 @@ struct Keychain {
     static func create(
         account: String,
         service: String,
-        tokenValue: String
+        tokenData: Data
     ) throws {
-        guard let tokenData = tokenValue.data(using: .utf8) else {
-            throw KeychainError.badData
-        }
-        
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: account,
@@ -34,7 +30,7 @@ struct Keychain {
             try self.update(
                 account: account,
                 service: service,
-                tokenValue: tokenValue
+                tokenData: tokenData
             )
         default:
             throw KeychainError.unknonw(status)
@@ -44,7 +40,7 @@ struct Keychain {
     static func read(
         account: String,
         service: String
-    ) throws -> String {
+    ) throws -> Data {
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: account,
@@ -68,24 +64,19 @@ struct Keychain {
         
         guard
             let existingItem = item as? [String: Any],
-            let tokenData = existingItem[kSecValueData as String] as? Data,
-            let tokenValue = String(data: tokenData, encoding: .utf8)
+            let tokenData = existingItem[kSecValueData as String] as? Data
         else {
             throw KeychainError.unableToConvertToString
         }
         
-        return tokenValue
+        return tokenData
     }
     
     private static func update(
         account: String,
         service: String,
-        tokenValue: String
+        tokenData: Data
     ) throws {
-        guard let tokenData = tokenValue.data(using: .utf8) else {
-            throw KeychainError.badData
-        }
-        
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: account,
