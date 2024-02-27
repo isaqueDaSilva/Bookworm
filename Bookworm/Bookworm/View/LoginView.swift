@@ -8,55 +8,43 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State private var email = ""
-    @State private var password = ""
+    @FocusState private var focusedField: Field?
+    
+    @StateObject private var viewModel: LoginViewModel
+    
     var body: some View {
         NavigationStack {
             GeometryReader{ geo in
                 VStack {
-                    HStack(alignment: .firstTextBaseline) {
-                        Image(systemName: "book.fill")
-                        Text("Bookwork")
-                    }
-                    .font(.system(size: 40))
-                    .fontWeight(.heavy)
-                    .bold()
-                    .foregroundStyle(Color(uiColor: .systemBlue))
-                    .frame(height: geo.size.height / 4)
+                    BookwormLogo()
+                        .frame(height: geo.size.height / 4)
                     
                     VStack {
                         EntryField(
                             label: Text("Email"),
-                            content: TextField("insert your email here", text: $email),
-                            leadingAccessoryView: Image(systemName: "person")
+                            content: TextField("insert your email here", text: $viewModel.email),
+                            leadingAccessoryView: Icons.envelope.systemImage
                         )
+                        .focused($focusedField, equals: .email)
                         .padding(.bottom, 20)
                         
                         EntryField(
                             label: Text("Password"),
-                            content: SecureFieldWithToggle(title: "Insert your password here...", text: $password),
-                            leadingAccessoryView: Image(systemName: "key")
+                            content: SecureFieldWithToggle(title: "Insert your password here...", text: $viewModel.password),
+                            leadingAccessoryView: Icons.key.systemImage
                         )
+                        .focused($focusedField, equals: .password)
                     }
                     .frame(height: geo.size.height / 4)
                     .padding(.bottom, 20)
                     
-                    Button {
-                        
-                    } label: {
-                        Text("Login")
-                            .font(.title3)
-                            .bold()
-                            .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(minHeight: 54, alignment: .center)
-                            .background {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .foregroundStyle(Color(uiColor: .systemBlue))
-                            }
-                        
+                    ActionButton(title: "Login", isLoadingState: viewModel.isLoadingState) {
+                        if viewModel.isValid() {
+                            viewModel.login()
+                        } else {
+                            focusedField = viewModel.backToFocusField()
+                        }
                     }
-                    .buttonStyle(.plain)
                 }
                 .padding()
                 .toolbar {
@@ -64,18 +52,38 @@ struct LoginView: View {
                         HStack(spacing: 0) {
                             Text("Don't have an account?")
                             Button("Create Account") {
-                                
+                                viewModel.showingCreateAccountView = true
                             }
                         }
                         .font(.subheadline)
                         .bold()
                     }
                 }
+                .alert(
+                    viewModel.errorTitle,
+                    isPresented: $viewModel.showingError
+                ) { } message: {
+                    Text(viewModel.errorMessage)
+                }
+                .navigationDestination(isPresented: $viewModel.showingCreateAccountView) {
+                    CreateAccountView()
+                }
             }
         }
+    }
+    
+    init(storage: Storage) {
+        _viewModel = StateObject(wrappedValue: LoginViewModel(storage: storage))
+    }
+}
+
+
+extension LoginView {
+    enum Field: Hashable {
+        case email, password
     }
 }
 
 #Preview {
-    LoginView()
+    LoginView(storage: Storage.preview)
 }
