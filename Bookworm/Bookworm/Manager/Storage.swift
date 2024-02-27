@@ -118,15 +118,16 @@ final class Storage: ObservableObject {
         try self.save()
     }
     
-    /// Prepares SwiftData for use.
+    /// Prepares the Storage type for use
     ///
     /// This iniit configures the ModelContainer for a User Model,
     /// defines a ModelContext for a ModelContainer,
     /// and searches if exist some User save on SwiftData or no,
     /// and if the process fails, an error will be returned.
-    init() {
+    init(isStoredInMemoryOnly: Bool = false) {
         do {
-            self.container = try ModelContainer(for: User.self)
+            let config = ModelConfiguration(isStoredInMemoryOnly: isStoredInMemoryOnly)
+            self.container = try ModelContainer(for: User.self, configurations: config)
             self.context = ModelContext(container)
             
             try self.fetch()
