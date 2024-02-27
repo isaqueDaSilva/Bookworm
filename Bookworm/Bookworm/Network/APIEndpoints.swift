@@ -10,7 +10,7 @@ import Foundation
 enum APIEndpoints: String {
     // User endpoints
     case login = "http://127.0.0.1:8080/user/login"
-    case getUSer = "http://127.0.0.1:8080/user/profile"
+    case getUser = "http://127.0.0.1:8080/user/profile"
     case createUser = "http://127.0.0.1:8080/user/create"
     case updateUser = "http://127.0.0.1:8080/user/update"
     case deleteUser = "http://127.0.0.1:8080/user/delete"
