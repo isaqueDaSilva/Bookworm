@@ -26,6 +26,8 @@ enum StorageError: Error, LocalizedError, Identifiable {
             return NSLocalizedString("We were unable to locate the requested data, please try again.", comment: "")
         case .duplicateItem:
             return NSLocalizedString("This item already exists, please create a new one.", comment: "")
+        case .contextNoAvailable:
+            return NSLocalizedString("Could not find the Model Context, please try again.", comment: "")
         }
     }
 }
