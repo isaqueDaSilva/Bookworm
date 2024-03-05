@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+enum EntityNames: String {
+    case book = "Book"
+    case author = "Author"
+    case annotation = "Annotation"
+}
