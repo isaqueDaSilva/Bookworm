@@ -7,71 +7,52 @@
 
 import SwiftUI
 
-struct AlertWithTextField: ViewModifier {
-    @Binding var text: String
-    @Binding var isActive: Bool
-    
-    let title: String
-    let primaryButtonTitle: String
-    let secondaryButtonTitle: String
-    let placeholder: String
-    var isDisabled: Bool
-    
-    let primaryRole: ButtonRole?
-    let secondaryRole: ButtonRole?
-    
-    let primaryAction: () -> Void
-    let secondaryAction: (() -> Void)?
-    
-    func body(content: Content) -> some View {
-        content
-            .alert(title, isPresented: $isActive) {
-                VStack {
-                    TextField(placeholder, text: $text)
-                    HStack {
-                        Button(primaryButtonTitle, role: primaryRole) {
-                            primaryAction()
-                        }
-                        .disabled(isDisabled)
-                        
-                        Button(secondaryButtonTitle, role: secondaryRole) {
-                            guard let secondaryAction = self.secondaryAction else { return }
-                            secondaryAction()
-                        }
-                    }
-                }
-            }
-    }
-}
-
 extension View {
     func alertWithTextField(
-        text: Binding<String>,
-        isActive: Binding<Bool>,
         title: String,
+        message: String,
+        text: String? = nil,
+        placeholder: String,
         primaryButtonTitle: String,
         secondaryButtonTitle: String,
-        placeholder: String,
-        isDisabled: Bool,
-        primaryRole: ButtonRole? = nil,
-        secondaryRole: ButtonRole? = nil,
-        primaryAction: @escaping () -> Void,
+        primaryAction: @escaping (String) -> Void,
         secondaryAction: (() -> Void)? = nil
-    ) -> some View {
-        modifier(
-            AlertWithTextField(
-                text: text,
-                isActive: isActive,
-                title: title,
-                primaryButtonTitle: primaryButtonTitle,
-                secondaryButtonTitle: secondaryButtonTitle,
-                placeholder: placeholder, 
-                isDisabled: isDisabled,
-                primaryRole: primaryRole,
-                secondaryRole: secondaryRole,
-                primaryAction: primaryAction,
-                secondaryAction: secondaryAction
-            )
-        )
+    ) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addTextField { field in
+            if let text {
+                field.text = text
+            }
+            field.placeholder = placeholder
+        }
+        
+        alert.addAction(.init(title: secondaryButtonTitle, style: .cancel, handler: { _ in
+            guard let secondaryAction = secondaryAction else { return }
+            secondaryAction()
+        }))
+        
+        alert.addAction(.init(title: primaryButtonTitle, style: .default, handler: { action in
+            if let text = alert.textFields?[0].text {
+                primaryAction(text)
+                print(text)
+            } else {
+                primaryAction("")
+                print("")
+            }
+        }))
+        
+        rootController().present(alert, animated: true)
+    }
+    
+    private func rootController() -> UIViewController {
+        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            return .init()
+        }
+        
+        guard let root = screen.windows.first?.rootViewController else {
+            return .init()
+        }
+        
+        return root
     }
 }
