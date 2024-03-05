@@ -13,6 +13,14 @@ enum Icons: String {
     case key = "key"
     case eye = "eye"
     case eyeSlash = "eye.slash"
+    case plus = "plus"
+    case trash = "trash"
+    case house = "house"
+    case pencil = "pencil"
+    case exit = "rectangle.portrait.and.arrow.right"
+    case checkmark = "checkmark"
+    case chevronLeft = "chevron.left"
+    case chevronRight = "chevron.right"
     
     var systemImage: Image {
         Image(systemName: self.rawValue)
