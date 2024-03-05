@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
-struct BooksView: View {
-    @EnvironmentObject var storage: Storage
-    @StateObject private var viewModel = BooksViewModel()
+struct HomeView: View {
+    @StateObject private var viewModel: HomeViewModel
     
     let colums = [GridItem(.adaptive(minimum: 150), spacing: 20, alignment: .center)]
     
@@ -17,17 +17,15 @@ struct BooksView: View {
         NavigationStack {
             ScrollView {
                 LazyVGrid(columns: colums, spacing: 20) {
-                    ForEach(storage.books) { book in
+                    ForEach(viewModel.books) { book in
                         NavigationLink(value: book) {
                             Cover(
-                                title: book.title,
-                                author: book.author.authorName
+                                title: book.wrappedTitle,
+                                author: book.wrappedAuthorName
                             )
                             .contextMenu {
                                 Button("Delete Book", systemImage: Icons.trash.rawValue, role: .destructive) {
-                                    viewModel.deleteBook(book) { bookForDelete in
-                                        try storage.deleteBook(bookForDelete)
-                                    }
+                                    viewModel.deleteBook(book)
                                 }
                             }
                         }
@@ -36,6 +34,7 @@ struct BooksView: View {
                     }
                 }
                 .navigationTitle("Bookworm")
+                .padding(.horizontal)
                 .toolbar {
                     Button {
                         viewModel.showingAddNewBook = true
@@ -44,17 +43,22 @@ struct BooksView: View {
                     }
                 }
                 .navigationDestination(for: Book.self) { book in
-                    Text(book.title)
+                    BookDetailView(storage: viewModel.storage, book: book)
                 }
                 .sheet(isPresented: $viewModel.showingAddNewBook) {
-                    
+                    BookFormView(storage: viewModel.storage) {
+                        viewModel.fetchBooks()
+                    }
                 }
             }
         }
     }
+    
+    init(storage: Storage) {
+        _viewModel = StateObject(wrappedValue: HomeViewModel(storage: storage))
+    }
 }
 
 #Preview {
-    BooksView()
-        .environmentObject(Storage.preview)
+    HomeView(storage: Storage.preview)
 }
