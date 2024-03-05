@@ -7,12 +7,16 @@
 
 import SwiftUI
 
-struct iOSScene: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+struct iOSScene: Scene {
+    private var storage: Storage
+    
+    var body: some Scene {
+        WindowGroup {
+            HomeView(storage: storage)
+        }
     }
-}
-
-#Preview {
-    iOSScene()
+    
+    init(storage: Storage) {
+        self.storage = storage
+    }
 }
