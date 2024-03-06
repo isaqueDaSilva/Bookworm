@@ -9,9 +9,9 @@ import SwiftUI
 
 @main
 struct BookwormApp: App {
+    private var storageController = Storage()
+    
     var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+        iOSScene(storage: storageController)
     }
 }
