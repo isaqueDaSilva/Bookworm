@@ -1,5 +1,5 @@
 //
-//  CreateBookViewModel.swift
+//  BookFormViewModel.swift
 //  Bookworm
 //
 //  Created by Isaque da Silva on 28/02/24.
@@ -7,49 +7,75 @@
 
 import Foundation
 
-extension FormView {
-    final class CreateBookViewModel: ObservableObject {
+// Create new Book view Model
+extension BookFormView {
+    final class BookFormViewModel: ObservableObject {
+        let storage: Storage
+        
+        let book: Book
+        
         @Published var title = ""
         @Published var author: Author?
         @Published var releaseDate = Date.now
         @Published var genre: Genre = .fantasy
         @Published var review = ""
         @Published var rating = 1
-        @Published var isLoadingState = false
-        @Published var errorTile = ""
+        @Published var startOfReading = Date.now
+        @Published var endOfReading = Date.now
+        @Published var isFinished = false
+        
+        @Published var errorTitle = ""
         @Published var errorMessage = ""
         @Published var showingError = false
         
-        var authorName: String {
-            author?.authorName ?? "No Author"
-        }
+        @Published var showingAuthorSelectionView = false
         
-        private func createNewBook() throws -> Book {
-            guard let author = self.author else {
-                throw StorageError.dataNotFound
-            }
+        @Published var isEditMode = false
+        
+        var navTitle: String {
+            let prefix = self.isEditMode ? "Edit" : "Add new"
             
-            return Book(
-                id: UUID(),
-                title: self.title,
-                author: author,
-                releaseDate: self.releaseDate,
-                genre: self.genre,
-                review: self.review,
-                rating: self.rating
-            )
+            return "\(prefix) Author"
         }
         
-        func addBook(_ completion: @escaping ((Book) throws -> Void)) {
+        func save() {
+            self.book.title = self.title
+            self.book.author = self.author
+            self.book.releaseDate = self.releaseDate
+            self.book.genre = self.genre.rawValue
+            self.book.startOfReading = self.startOfReading
+            self.book.isFinished = self.isFinished
+            self.book.review = self.review
+            self.book.rating = Int16(self.rating)
+            self.book.endOfReading = self.endOfReading
+            
             do {
-                self.isLoadingState = true
-                let newBook = try self.createNewBook()
-                try completion(newBook)
+                try storage.save()
             } catch let error {
-                self.errorTile = "Falied to Create New Book"
+                self.errorTitle = "Falied to save changes."
                 self.errorMessage = error.localizedDescription
-                self.isLoadingState = false
-                showingError = true
+                self.showingError = true
+            }
+        }
+        
+        init(storage: Storage, book: Book? = nil) {
+            self.storage = storage
+            
+            if let bookSelected = book {
+                self.book = bookSelected
+                _title = Published(initialValue: bookSelected.wrappedTitle)
+                _author = Published(initialValue: bookSelected.author)
+                _releaseDate = Published(initialValue: bookSelected.wrappedReleaseDare)
+                _genre = Published(initialValue: Genre(rawValue: bookSelected.wrappedGenre) ?? .fantasy)
+                _review = Published(initialValue: bookSelected.wrappedReview)
+                _rating = Published(initialValue: Int(bookSelected.rating))
+                _startOfReading = Published(initialValue: bookSelected.wrappedStartOfReading)
+                _endOfReading = Published(initialValue: bookSelected.wrappedEndOfReading)
+                _isFinished = Published(initialValue: bookSelected.isFinished)
+                
+                self.isEditMode = true
+            } else {
+                self.book = Book(context: storage.context)
             }
         }
     }
