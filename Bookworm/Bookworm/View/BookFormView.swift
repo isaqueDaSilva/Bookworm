@@ -6,116 +6,139 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct BookFormView: View {
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var storage: Storage
-    @StateObject private var viewModel = CreateBookViewModel()
+    @StateObject private var viewModel: BookFormViewModel
+    
+    var action: () -> Void
     
     var body: some View {
         NavigationStack {
-            GeometryReader { geo in
-                Form {
-                    Section {
-                        Cover(
-                            title: viewModel.title.isEmpty ? "No Title" : viewModel.title,
-                            author: viewModel.authorName
-                        )
+            Form {
+                Section {
+                    Cover(
+                        title: viewModel.title.isEmpty ? "No Title" : viewModel.title,
+                        author: viewModel.author?.wrappedName ?? "No Author"
+                    )
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+                .listRowBackground(Color.listLightGray)
+                
+                Section("More Information") {
+                    LabeledContent("Title:") {
+                        TextField("Insert the title here...", text: $viewModel.title)
+                            .multilineTextAlignment(.trailing)
                     }
-                    .frame(width: geo.size.width)
-                    .listRowBackground(Color.listLightGray)
                     
-                    Section("More Information") {
-                        LabeledContent("Title:") {
-                            TextField("Insert the title here...", text: $viewModel.title)
-                                .multilineTextAlignment(.trailing)
-                        }
-                        
-                        NavigationLink(value: storage.authors) {
-                            LabeledContent("Author:") {
-                                Text(
-                                    (viewModel.author != nil) ?
-                                    viewModel.authorName : "Select an Author"
-                                )
+                    Button {
+                        viewModel.showingAuthorSelectionView = true
+                    } label: {
+                        LabeledContent("Author") {
+                            HStack {
+                                Text(viewModel.author?.wrappedName ?? "Select an Author")
+                                
+                                Icons.chevronRight.systemImage
                             }
                         }
-                        
+                    }
+                    .buttonStyle(.plain)
+
+                    
+                    DatePicker(
+                        "Release Date:",
+                        selection: $viewModel.releaseDate,
+                        in: ...Date.now,
+                        displayedComponents: .date
+                    )
+                    
+                    Picker("Genre:", selection: $viewModel.genre) {
+                        ForEach(Genre.allCases, id: \.id) {
+                            Text($0.rawValue)
+                        }
+                    }
+                }
+                
+                Section("Reading Information") {
+                    DatePicker(
+                        "Starting of Reading:",
+                        selection: $viewModel.startOfReading,
+                        in: ...Date.now,
+                        displayedComponents: .date
+                    )
+                    
+                    if viewModel.isFinished {
                         DatePicker(
-                            "Release Date:",
-                            selection: $viewModel.releaseDate,
+                            "End of Reading:",
+                            selection: $viewModel.endOfReading,
                             in: ...Date.now,
                             displayedComponents: .date
                         )
-                        
-                        Picker("Genre:", selection: $viewModel.genre) {
-                            ForEach(Genre.allCases, id: \.id) {
-                                Text($0.rawValue)
-                            }
-                        }
                     }
                     
+                    Toggle("Have you finished reading yet?", isOn: $viewModel.isFinished.animation(.easeInOut))
+                    
+                }
+                
+                if viewModel.isFinished {
                     Section("Review") {
-                        TextField("Insert your review here...", text: $viewModel.review, axis: .vertical)
-                    }
-                    
-                    Section {
-                        VStack {
+                        LabeledContent("Rating:") {
                             RatingStars(rating: $viewModel.rating)
-                                .padding(.bottom, 5)
-                            Text("\(viewModel.rating)/5")
-                                .foregroundStyle(.secondary)
-                                .bold()
+                        }
+                        
+                        TextField("Insert the revire here...", text: $viewModel.review, axis: .vertical)
+                    }
+                }
+            }
+            .navigationTitle(viewModel.navTitle)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(isPresented: $viewModel.showingAuthorSelectionView) {
+                AuthorSelectionView(
+                    authorSelected: viewModel.author,
+                    storage: viewModel.storage
+                ) { author in
+                    viewModel.author = author
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        HStack {
+                            Icons.chevronLeft.systemImage
+                            Text("Back")
                         }
                     }
-                    .frame(width: geo.size.width)
-                    .listRowBackground(Color.listLightGray)
-                }
-                .navigationTitle("Add new Book")
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationDestination(for: [Author].self) { authors in
-                    AuthorsView(authorSelected: $viewModel.author)
-                }
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button {
-                            dismiss()
-                        } label: {
-                            HStack {
-                                Icons.chevronLeft.systemImage
-                                Text("Back")
-                            }
-                        }
 
-                    }
-                    
-                    ToolbarItem {
-                        Button {
-                            viewModel.addBook { book in
-                                try storage.createBook(book)
-                                dismiss()
-                            }
-                        } label: {
-                            if viewModel.isLoadingState {
-                                ProgressView()
-                            } else {
-                                Text("Save")
-                            }
-                        }
+                }
+                
+                ToolbarItem {
+                    Button {
+                        viewModel.save()
+                        action()
+                        dismiss()
+                    } label: {
+                        Text("Save")
                     }
                 }
-                .alert(viewModel.errorTile, isPresented: $viewModel.showingError) {
-                } message: {
-                    Text(viewModel.errorMessage)
-                }
-                .environmentObject(storage)
+            }
+            .alert(viewModel.errorTitle, isPresented: $viewModel.showingError) {
+            } message: {
+                Text(viewModel.errorMessage)
             }
         }
+    }
+    
+    init(storage: Storage, book: Book? = nil, action: @escaping () -> Void) {
+        _viewModel = StateObject(wrappedValue: BookFormViewModel(storage: storage, book: book))
+        self.action = action
     }
 }
 
 #Preview {
-    CreateNewBookView()
-        .environmentObject(Storage(isStoredInMemoryOnly: true))
+    BookFormView(storage: .preview) { }
 }
 
 extension Color {
