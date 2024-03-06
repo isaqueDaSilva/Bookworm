@@ -41,6 +41,7 @@ extension Storage {
             // Annotation
             for annotationIndex in 1...10 {
                 annotation.id = UUID()
+                annotation.title = "Dummy Title \(annotationIndex)"
                 annotation.commentDescription = "Dummy Description \(annotationIndex)"
                 annotation.creation = Date.now
                 annotation.lastModification = Date.now
