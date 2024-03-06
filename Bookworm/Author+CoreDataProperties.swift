@@ -48,6 +48,4 @@ extension Author {
 
 }
 
-extension Author : Identifiable {
-
-}
+extension Author : Identifiable { }
