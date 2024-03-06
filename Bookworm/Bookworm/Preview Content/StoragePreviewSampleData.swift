@@ -7,6 +7,8 @@
 
 import Foundation
 
+let dummyBook = Book(context: Storage.preview.context)
+
 extension Storage {
     static var preview: Storage {
         let storageProvider = Storage(inMemory: true)
