@@ -1,48 +1,84 @@
 //
-//  AuthorSelectionViewMode.swift
+//  AuthorSelectionViewModel.swift
 //  Bookworm
 //
 //  Created by Isaque da Silva on 01/03/24.
 //
 
-import Combine
+import CoreData
 import Foundation
 
-extension AuthorSelection {
-    final class AuthorSelectionViewMode: ObservableObject {
-        @Published var storage: Storage
+extension AuthorSelectionView {
+    final class AuthorSelectionViewModel: ObservableObject {
+        let storage: Storage
         
-        @Published var authorsList = [Author]()
-        @Published var authorName = ""
+        @Published var authorSelected: Author?
+        @Published var authorList = [Author]()
         
         @Published var errorTitle = ""
         @Published var errorMessage = ""
         @Published var showingError = false
         
-        var cancellable = Set<AnyCancellable>()
         
-        private func observerAuthors() {
-            $storage
-                .sink { [weak self] storage in
-                    guard let self = self else { return }
-                    self.authorsList = storage.authors
-                }
-                .store(in: &cancellable)
+        private func save() throws {
+            try self.storage.save()
+            fetchAuthors()
         }
         
-        func createAuthor() {
+        func fetchAuthors() {
             do {
-                let newAuthor = Author(id: UUID(), authorName: self.authorName)
-                try self.storage.createAuthor(newAuthor)
+                let request = NSFetchRequest<Author>(entityName: EntityNames.author.rawValue)
+                self.authorList = try storage.context.fetch(request)
             } catch let error {
-                self.errorTitle = "Failed to save changes"
+                self.errorTitle = "Falied to Fetch Authors"
                 self.errorMessage = error.localizedDescription
                 self.showingError = true
             }
         }
         
-        init(storage: Storage) {
+        func createAuthor(_ authorName: String) {
+            let newAuthor = Author(context: storage.context)
+            newAuthor.id = UUID()
+            newAuthor.name = authorName
+            
+            do {
+                try self.save()
+            } catch let error {
+                self.errorTitle = "Falied to Create a New Authors"
+                self.errorMessage = error.localizedDescription
+                self.showingError = true
+            }
+        }
+        
+        func updateAuthor(_ author: Author, _ authorName: String) {
+            author.name = authorName
+            
+            do {
+                try self.save()
+            } catch let error {
+                self.errorTitle = "Falied to Update the Authors"
+                self.errorMessage = error.localizedDescription
+                self.showingError = true
+            }
+        }
+        
+        func deleteAuthor(_ author: Author) {
+            do {
+                storage.context.delete(author)
+                
+                try self.save()
+            } catch let error {
+                self.errorTitle = "Falied to Update the Authors"
+                self.errorMessage = error.localizedDescription
+                self.showingError = true
+            }
+        }
+        
+        init(storage: Storage, author: Author?) {
             self.storage = storage
+            _authorSelected = Published(initialValue: author)
+            
+            self.fetchAuthors()
         }
     }
 }
