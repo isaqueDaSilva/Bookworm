@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import SwiftUI
+import PhotosUI
 
-// Create new Book view Model
 extension BookFormView {
     final class BookFormViewModel: ObservableObject {
         let storage: Storage
@@ -58,6 +59,11 @@ extension BookFormView {
             self.book.rating = Int16(self.rating)
             self.book.endOfReading = self.endOfReading
             
+            if let coverImage {
+                let imageData = coverImage.jpegData(compressionQuality: 0.6)
+                self.book.cover = imageData
+            }
+            
             do {
                 try storage.save()
             } catch let error {
@@ -94,6 +100,11 @@ extension BookFormView {
                 _startOfReading = Published(initialValue: bookSelected.wrappedStartOfReading)
                 _endOfReading = Published(initialValue: bookSelected.wrappedEndOfReading)
                 _isFinished = Published(initialValue: bookSelected.isFinished)
+                
+                if let imageData = book?.cover {
+                    let image = UIImage(data: imageData)
+                    _coverImage = Published(initialValue: image)
+                }
                 
                 self.isEditMode = true
             } else {
