@@ -34,7 +34,7 @@ extension AnnotationListView {
         
         func fetchAnnotations() {
             do {
-                let request = NSFetchRequest<Annotation>(entityName: EntityNames.annotation.rawValue)
+                let request = Annotation.fetchRequest()
                 self.annotations = try storage.context.fetch(request)
             } catch let error {
                 self.alertTitle = "Falied to Fetch Annotations"
