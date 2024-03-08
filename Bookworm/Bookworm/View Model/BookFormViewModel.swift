@@ -14,8 +14,17 @@ extension BookFormView {
         
         let book: Book
         
+        @Published var pickerItemSelect: PhotosPickerItem? = nil {
+            didSet {
+                if let pickerItemSelect {
+                    getImage(pickerItemSelect)
+                }
+            }
+        }
+        
         @Published var title = ""
         @Published var author: Author?
+        @Published var coverImage: UIImage?
         @Published var releaseDate = Date.now
         @Published var genre: Genre = .fantasy
         @Published var review = ""
