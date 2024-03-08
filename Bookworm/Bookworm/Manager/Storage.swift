@@ -13,6 +13,7 @@ final class Storage {
     var context: NSManagedObjectContext
     
     func save() throws {
+        guard context.hasChanges else { return }
         try context.save()
     }
     
