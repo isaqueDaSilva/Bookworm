@@ -67,6 +67,19 @@ extension BookFormView {
             }
         }
         
+        func getImage(_ pickerItemSelected: PhotosPickerItem) {
+            Task {
+                if let pickerItemSelect,
+                   let data = try? await pickerItemSelect.loadTransferable(type: Data.self) {
+                    if let image = UIImage(data: data) {
+                        await MainActor.run {
+                            self.coverImage = image
+                        }
+                    }
+                }
+            }
+        }
+        
         init(storage: Storage, book: Book? = nil) {
             self.storage = storage
             
