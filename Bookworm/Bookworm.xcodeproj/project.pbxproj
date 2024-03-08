@@ -20,7 +20,6 @@
 		7E12C71C2B98174E0040624D /* AnnotationFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E12C71B2B98174E0040624D /* AnnotationFormViewModel.swift */; };
 		7E1D9CD02B96EB8B003F4120 /* BookDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1D9CCF2B96EB8B003F4120 /* BookDetailView.swift */; };
 		7E1D9CD22B96F39D003F4120 /* BookDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1D9CD12B96F39D003F4120 /* BookDetailViewModel.swift */; };
-		7E2CEA282B8AC35A0075133F /* Authentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CEA272B8AC35A0075133F /* Authentication.swift */; };
 		7E47B8D32B8F3772009F3586 /* BookFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E47B8D22B8F3772009F3586 /* BookFormViewModel.swift */; };
 		7E4F8D022B8842C800524C74 /* BookwormApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D012B8842C800524C74 /* BookwormApp.swift */; };
 		7E4F8D062B8842CA00524C74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E4F8D052B8842CA00524C74 /* Assets.xcassets */; };
@@ -28,13 +27,15 @@
 		7E4F8D2C2B88766300524C74 /* StorageError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4F8D2B2B88766300524C74 /* StorageError.swift */; };
 		7E53E1892B9406F700E72BA2 /* StoragePreviewSampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53E1882B9406F700E72BA2 /* StoragePreviewSampleData.swift */; };
 		7E53E18B2B943EF300E72BA2 /* EntityNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E53E18A2B943EF300E72BA2 /* EntityNames.swift */; };
+		7E5F032D2B997FBD005BDA90 /* Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5F032C2B997FBD005BDA90 /* Description.swift */; };
 		7E7A1E172B929EFC00F83C98 /* AuthorSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7A1E162B929EFC00F83C98 /* AuthorSelectionViewModel.swift */; };
 		7E7A1E192B92F0BB00F83C98 /* AuthorSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7A1E182B92F0BB00F83C98 /* AuthorSelectionView.swift */; };
 		7E7BCEF02B8F1439005119CB /* BookFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7BCEEF2B8F1439005119CB /* BookFormView.swift */; };
 		7E7BCEF62B8F1CAB005119CB /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7BCEF52B8F1CAB005119CB /* Genre.swift */; };
 		7E7BCEF82B8F1DC5005119CB /* RatingStar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7BCEF72B8F1DC5005119CB /* RatingStar.swift */; };
+		7E858BEA2B9ACA760090FB33 /* Color+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E858BE92B9ACA760090FB33 /* Color+Extensions.swift */; };
+		7E858BEC2B9ACB060090FB33 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E858BEB2B9ACB060090FB33 /* Date+Extensions.swift */; };
 		7EA10F302B8EA8DA0025914A /* iOSScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA10F2F2B8EA8DA0025914A /* iOSScene.swift */; };
-		7EA10F392B8EFD190025914A /* AlertWithTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA10F382B8EFD190025914A /* AlertWithTextField.swift */; };
 		7EA9939F2B91749800D68D0C /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA9939E2B91749800D68D0C /* Storage.swift */; };
 		7EFB97F22B8D66FD007615CF /* Icons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFB97F12B8D66FD007615CF /* Icons.swift */; };
 		7EFB97F82B8D97E0007615CF /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFB97F72B8D97E0007615CF /* HomeView.swift */; };
@@ -56,7 +57,6 @@
 		7E12C71B2B98174E0040624D /* AnnotationFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationFormViewModel.swift; sourceTree = "<group>"; };
 		7E1D9CCF2B96EB8B003F4120 /* BookDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailView.swift; sourceTree = "<group>"; };
 		7E1D9CD12B96F39D003F4120 /* BookDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailViewModel.swift; sourceTree = "<group>"; };
-		7E2CEA272B8AC35A0075133F /* Authentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authentication.swift; sourceTree = "<group>"; };
 		7E47B8D22B8F3772009F3586 /* BookFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFormViewModel.swift; sourceTree = "<group>"; };
 		7E4F8CFE2B8842C800524C74 /* Bookworm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bookworm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E4F8D012B8842C800524C74 /* BookwormApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookwormApp.swift; sourceTree = "<group>"; };
@@ -66,13 +66,15 @@
 		7E4F8D2B2B88766300524C74 /* StorageError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageError.swift; sourceTree = "<group>"; };
 		7E53E1882B9406F700E72BA2 /* StoragePreviewSampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoragePreviewSampleData.swift; sourceTree = "<group>"; };
 		7E53E18A2B943EF300E72BA2 /* EntityNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityNames.swift; sourceTree = "<group>"; };
+		7E5F032C2B997FBD005BDA90 /* Description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Description.swift; sourceTree = "<group>"; };
 		7E7A1E162B929EFC00F83C98 /* AuthorSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorSelectionViewModel.swift; sourceTree = "<group>"; };
 		7E7A1E182B92F0BB00F83C98 /* AuthorSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorSelectionView.swift; sourceTree = "<group>"; };
 		7E7BCEEF2B8F1439005119CB /* BookFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookFormView.swift; sourceTree = "<group>"; };
 		7E7BCEF52B8F1CAB005119CB /* Genre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Genre.swift; path = "../../../../../100 Days of SwiftUI/Bookworm/Bookworm/Enum/Genre.swift"; sourceTree = "<group>"; };
 		7E7BCEF72B8F1DC5005119CB /* RatingStar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingStar.swift; sourceTree = "<group>"; };
+		7E858BE92B9ACA760090FB33 /* Color+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensions.swift"; sourceTree = "<group>"; };
+		7E858BEB2B9ACB060090FB33 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		7EA10F2F2B8EA8DA0025914A /* iOSScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSScene.swift; sourceTree = "<group>"; };
-		7EA10F382B8EFD190025914A /* AlertWithTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertWithTextField.swift; sourceTree = "<group>"; };
 		7EA9939E2B91749800D68D0C /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		7EFB97F12B8D66FD007615CF /* Icons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icons.swift; sourceTree = "<group>"; };
 		7EFB97F72B8D97E0007615CF /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				7E4F8D112B88431900524C74 /* View */,
 				7E4F8D122B88432500524C74 /* View Model */,
 				7E4F8D282B8873C400524C74 /* Manager */,
+				7E858BE82B9ACA540090FB33 /* Extensions */,
 			);
 			path = Bookworm;
 			sourceTree = "<group>";
@@ -180,9 +183,17 @@
 			children = (
 				7EA9939E2B91749800D68D0C /* Storage.swift */,
 				7E4F8D2B2B88766300524C74 /* StorageError.swift */,
-				7E2CEA272B8AC35A0075133F /* Authentication.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		7E858BE82B9ACA540090FB33 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7E858BE92B9ACA760090FB33 /* Color+Extensions.swift */,
+				7E858BEB2B9ACB060090FB33 /* Date+Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		7EA10F312B8EA8E40025914A /* Scenes */ = {
@@ -198,7 +209,7 @@
 			children = (
 				7EFB97F12B8D66FD007615CF /* Icons.swift */,
 				7EFB97F92B8DAC37007615CF /* Cover.swift */,
-				7EA10F382B8EFD190025914A /* AlertWithTextField.swift */,
+				7E5F032C2B997FBD005BDA90 /* Description.swift */,
 				7E7BCEF72B8F1DC5005119CB /* RatingStar.swift */,
 			);
 			path = Components;
@@ -232,7 +243,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1520;
-				LastUpgradeCheck = 1520;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					7E4F8CFD2B8842C800524C74 = {
 						CreatedOnToolsVersion = 15.2;
@@ -280,10 +291,12 @@
 				7E4F8D022B8842C800524C74 /* BookwormApp.swift in Sources */,
 				7EA9939F2B91749800D68D0C /* Storage.swift in Sources */,
 				7E7A1E172B929EFC00F83C98 /* AuthorSelectionViewModel.swift in Sources */,
+				7E5F032D2B997FBD005BDA90 /* Description.swift in Sources */,
 				7E53E1892B9406F700E72BA2 /* StoragePreviewSampleData.swift in Sources */,
 				7E7A1E192B92F0BB00F83C98 /* AuthorSelectionView.swift in Sources */,
 				7E03F31D2B93BB6800B55C5B /* Author+CoreDataProperties.swift in Sources */,
 				7E12C7162B97FD4A0040624D /* AnnotationListView.swift in Sources */,
+				7E858BEA2B9ACA760090FB33 /* Color+Extensions.swift in Sources */,
 				7E4F8D2C2B88766300524C74 /* StorageError.swift in Sources */,
 				7E53E18B2B943EF300E72BA2 /* EntityNames.swift in Sources */,
 				7EFB97FA2B8DAC37007615CF /* Cover.swift in Sources */,
@@ -293,11 +306,10 @@
 				7EFB97F22B8D66FD007615CF /* Icons.swift in Sources */,
 				7E47B8D32B8F3772009F3586 /* BookFormViewModel.swift in Sources */,
 				7E12C71C2B98174E0040624D /* AnnotationFormViewModel.swift in Sources */,
-				7EA10F392B8EFD190025914A /* AlertWithTextField.swift in Sources */,
 				7E03F31A2B93BB6800B55C5B /* Annotation+CoreDataClass.swift in Sources */,
+				7E858BEC2B9ACB060090FB33 /* Date+Extensions.swift in Sources */,
 				7E12C71A2B9806C00040624D /* AnnotationFormView.swift in Sources */,
 				7E12C7182B97FD740040624D /* AnnotationListViewModel.swift in Sources */,
-				7E2CEA282B8AC35A0075133F /* Authentication.swift in Sources */,
 				7E03F3182B93BB6800B55C5B /* Book+CoreDataClass.swift in Sources */,
 				7E03F31C2B93BB6800B55C5B /* Author+CoreDataClass.swift in Sources */,
 				7EFB97F82B8D97E0007615CF /* HomeView.swift in Sources */,
@@ -345,6 +357,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -363,7 +376,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -406,6 +421,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -418,7 +434,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -433,6 +451,7 @@
 				CODE_SIGN_ENTITLEMENTS = Bookworm/Bookworm.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Bookworm/Preview Content\"";
 				DEVELOPMENT_TEAM = 9798UJJCY4;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -473,6 +492,7 @@
 				CODE_SIGN_ENTITLEMENTS = Bookworm/Bookworm.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Bookworm/Preview Content\"";
 				DEVELOPMENT_TEAM = 9798UJJCY4;
 				ENABLE_HARDENED_RUNTIME = YES;
