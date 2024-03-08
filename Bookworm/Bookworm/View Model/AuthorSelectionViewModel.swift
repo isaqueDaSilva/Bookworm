@@ -33,7 +33,7 @@ extension AuthorSelectionView {
         
         func fetchAuthors() {
             do {
-                let request = NSFetchRequest<Author>(entityName: EntityNames.author.rawValue)
+                let request = Author.fetchRequest()
                 self.authorList = try storage.context.fetch(request)
             } catch let error {
                 self.errorTitle = "Falied to Fetch Authors"

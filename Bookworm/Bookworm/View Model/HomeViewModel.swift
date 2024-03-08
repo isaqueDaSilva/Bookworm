@@ -20,7 +20,7 @@ extension HomeView {
         
         func fetchBooks() {
             do {
-                let request = NSFetchRequest<Book>(entityName: EntityNames.book.rawValue)
+                let request = Book.fetchRequest()
                 self.books = try storage.context.fetch(request)
             } catch let error {
                 self.errorTitle = "Falied to Fetch Books"
