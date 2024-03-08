@@ -8,11 +8,23 @@
 import SwiftUI
 
 struct Description: View {
+    let title: String
+    let author: String
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Group {
+            Text(title)
+                .font(.title)
+                .bold()
+            
+            Text(author)
+                .font(.headline)
+                .bold()
+                .foregroundStyle(.secondary)
+        }
     }
 }
 
 #Preview {
-    Description()
+    Description(title: "Dummy", author: "Dummy Author")
 }

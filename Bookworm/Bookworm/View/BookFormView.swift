@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SwiftData
+import PhotosUI
 
 struct BookFormView: View {
     @Environment(\.dismiss) var dismiss
@@ -18,10 +18,14 @@ struct BookFormView: View {
         NavigationStack {
             Form {
                 Section {
-                    Cover(
-                        title: viewModel.title.isEmpty ? "No Title" : viewModel.title,
-                        author: viewModel.author?.wrappedName ?? "No Author"
-                    )
+                    VStack {
+                        Cover(
+                            coverImage: viewModel.coverImage,
+                            title: viewModel.title.isEmpty ? "No Title" : viewModel.title
+                        )
+                        PhotosPicker("Select an Cover", selection: $viewModel.pickerItemSelect)
+                            .buttonStyle(.borderedProminent)
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
                 .listRowBackground(Color.listLightGray)
@@ -139,8 +143,4 @@ struct BookFormView: View {
 
 #Preview {
     BookFormView(storage: .preview) { }
-}
-
-extension Color {
-    static var listLightGray = Color(CGColor(red: 246, green: 240, blue: 240, alpha: 0))
 }

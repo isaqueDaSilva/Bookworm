@@ -19,10 +19,17 @@ struct HomeView: View {
                 LazyVGrid(columns: colums, spacing: 20) {
                     ForEach(viewModel.books) { book in
                         NavigationLink(value: book) {
-                            Cover(
-                                title: book.wrappedTitle,
-                                author: book.wrappedAuthorName
-                            )
+                            VStack {
+                                Cover(
+                                    coverImage: book.coverImage,
+                                    title: book.wrappedTitle
+                                )
+                                
+                                Description(
+                                    title: book.wrappedTitle,
+                                    author: book.wrappedAuthorName
+                                )
+                            }
                             .contextMenu {
                                 Button("Delete Book", systemImage: Icons.trash.rawValue, role: .destructive) {
                                     viewModel.deleteBook(book)
@@ -30,7 +37,6 @@ struct HomeView: View {
                             }
                         }
                         .buttonStyle(.plain)
-                        .disabled(book.isDisabled)
                     }
                 }
                 .navigationTitle("Bookworm")
@@ -43,12 +49,18 @@ struct HomeView: View {
                     }
                 }
                 .navigationDestination(for: Book.self) { book in
-                    BookDetailView(storage: viewModel.storage, book: book)
+                    BookDetailView(storage: viewModel.storage, book: book) {
+                        viewModel.fetchBooks()
+                    }
                 }
                 .sheet(isPresented: $viewModel.showingAddNewBook) {
                     BookFormView(storage: viewModel.storage) {
                         viewModel.fetchBooks()
                     }
+                }
+                .alert(viewModel.alertTitle, isPresented: $viewModel.showingAlert) {
+                } message: {
+                    Text(viewModel.alertMessage)
                 }
             }
         }

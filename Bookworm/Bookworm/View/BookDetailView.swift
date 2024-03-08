@@ -8,27 +8,30 @@
 import SwiftUI
 
 struct BookDetailView: View {
+    @Environment(\.dismiss) var dismiss
     @StateObject private var viewModel: BookDetailViewModel
+    
+    var action: () -> Void
+    
     var body: some View {
         List {
             Section {
-                Cover(
-                    title: viewModel.title,
-                    author: viewModel.author
-                )
+                VStack {
+                    Cover(
+                        coverImage: viewModel.coverImage,
+                        title: viewModel.title
+                    )
+                    
+                    Description(
+                        title: viewModel.title,
+                        author: viewModel.author
+                    )
+                }
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .listRowBackground(Color.listLightGray)
             
             Section("More Information") {
-                LabeledContent("Title:") {
-                    Text(viewModel.title)
-                }
-                
-                LabeledContent("Author:") {
-                    Text(viewModel.author)
-                }
-                
                 LabeledContent("Release Date:") {
                     Text(viewModel.releaseDate)
                 }
@@ -102,6 +105,8 @@ struct BookDetailView: View {
                 
                 Button("OK", role: .destructive) {
                     viewModel.deleteBook()
+                    action()
+                    dismiss()
                 }
             }
         } message: {
@@ -112,13 +117,14 @@ struct BookDetailView: View {
         }
     }
     
-    init(storage: Storage, book: Book) {
+    init(storage: Storage, book: Book, _ action: @escaping () -> Void) {
         _viewModel = StateObject(wrappedValue: BookDetailViewModel(storage: storage, book: book))
+        self.action = action
     }
 }
 
 #Preview {
     NavigationStack {
-        BookDetailView(storage: .preview, book: dummyBook)
+        BookDetailView(storage: .preview, book: dummyBook) { }
     }
 }
