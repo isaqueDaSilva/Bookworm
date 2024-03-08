@@ -7,6 +7,7 @@
 
 import CoreData
 import Foundation
+import UIKit
 
 extension BookDetailView {
     final class BookDetailViewModel: ObservableObject {
@@ -29,6 +30,10 @@ extension BookDetailView {
         
         var author: String {
             book.wrappedAuthorName
+        }
+        
+        var coverImage: UIImage? {
+            book.coverImage
         }
         
         var releaseDate: String {
@@ -102,14 +107,5 @@ extension BookDetailView {
             self.book = book
             self.storage = storage
         }
-    }
-}
-
-extension Date {
-    func dateString() -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "YY/MM/dd"
-        
-        return formatter.string(from: self)
     }
 }
