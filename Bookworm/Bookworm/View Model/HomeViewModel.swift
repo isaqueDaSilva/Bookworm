@@ -10,35 +10,37 @@ import Foundation
 
 extension HomeView {
     final class HomeViewModel: ObservableObject {
-        var storage: Storage
+        let storage: Storage
         
         @Published var books = [Book]()
-        @Published var errorTitle = ""
-        @Published var errorMessage = ""
-        @Published var showingError = false
+        @Published var alertTitle = ""
+        @Published var alertMessage = ""
+        @Published var showingAlert = false
         @Published var showingAddNewBook = false
+        @Published var bookSelected: Book?
         
         func fetchBooks() {
             do {
                 let request = Book.fetchRequest()
                 self.books = try storage.context.fetch(request)
+                
             } catch let error {
-                self.errorTitle = "Falied to Fetch Books"
-                self.errorMessage = error.localizedDescription
-                self.showingError = true
+                self.alertTitle = "Falied to Fetch Books"
+                self.alertMessage = error.localizedDescription
+                self.showingAlert = true
             }
         }
         
         func deleteBook(_ book: Book) {
             do {
-                book.isDisabled = true
-                storage.context.delete(book)
+                self.storage.context.delete(book)
+                
                 try storage.save()
                 self.fetchBooks()
             } catch let error {
-                self.errorTitle = "Falied to Delete Book"
-                self.errorMessage = error.localizedDescription
-                self.showingError = true
+                self.alertTitle = "Falied to Delete Book"
+                self.alertMessage = error.localizedDescription
+                self.showingAlert = true
             }
         }
         
