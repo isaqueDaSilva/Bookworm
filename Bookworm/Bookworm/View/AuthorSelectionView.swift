@@ -17,6 +17,7 @@ struct AuthorSelectionView: View {
         List(viewModel.authorList) { author in
             HStack {
                 Text(author.wrappedName)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 Spacer()
                 if author == viewModel.authorSelected {
                     Image(systemName: "checkmark")
@@ -24,7 +25,6 @@ struct AuthorSelectionView: View {
                         .font(.body.weight(.semibold))
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
             .onTapGesture {
                 viewModel.authorSelected = author
                 action(author)
@@ -32,16 +32,7 @@ struct AuthorSelectionView: View {
             }
             .contextMenu {
                 Button {
-                    alertWithTextField(
-                        title: "Update Author",
-                        message: "",
-                        text: author.wrappedName,
-                        placeholder: "Insert the author name here",
-                        primaryButtonTitle: "OK",
-                        secondaryButtonTitle: "Cancel"
-                    ) { authorName in
-                        viewModel.updateAuthor(author, authorName)
-                    }
+                    viewModel.showingEditor(author)
                 } label: {
                     Label("Edit", systemImage: Icons.pencil.rawValue)
                 }
@@ -57,15 +48,7 @@ struct AuthorSelectionView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             Button {
-                alertWithTextField(
-                    title: "New Author",
-                    message: "Create a new author to use them to register a new book.",
-                    placeholder: "Insert the author name here",
-                    primaryButtonTitle: "OK",
-                    secondaryButtonTitle: "Cancel"
-                ) { authorName in
-                    viewModel.createAuthor(authorName)
-                }
+                viewModel.showingEditor()
             } label: {
                 Icons.plus.systemImage
             }
@@ -74,7 +57,15 @@ struct AuthorSelectionView: View {
         } message: {
             Text(viewModel.errorMessage)
         }
-        
+        .alert(viewModel.editorTitle, isPresented: $viewModel.showingEditor) {
+            TextField("Author name", text: $viewModel.authorName)
+            
+            Button("Cancel", role: .cancel) { }
+            Button("OK") { viewModel.saveChanges() }
+        } message: {
+            Text("Insert the author name in session bellow.")
+        }
+
     }
     
     init(authorSelected: Author? = nil, storage: Storage, action: @escaping (Author) -> Void) {
