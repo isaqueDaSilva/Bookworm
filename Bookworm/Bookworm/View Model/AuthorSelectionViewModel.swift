@@ -42,10 +42,20 @@ extension AuthorSelectionView {
             }
         }
         
-        func createAuthor(_ authorName: String) {
+        func showingEditor(_ author: Author? = nil) {
+            self.authorSelected = author
+            
+            if let authorSelected {
+                self.authorName = authorSelected.wrappedName
+            }
+            
+            self.showingEditor = true
+        }
+        
+        private func createAuthor() {
             let newAuthor = Author(context: storage.context)
             newAuthor.id = UUID()
-            newAuthor.name = authorName
+            newAuthor.name = self.authorName
             
             do {
                 try self.save()
@@ -56,8 +66,10 @@ extension AuthorSelectionView {
             }
         }
         
-        func updateAuthor(_ author: Author, _ authorName: String) {
-            author.name = authorName
+        private func updateAuthor() {
+            guard let authorSelected else { return }
+            
+            authorSelected.name = self.authorName
             
             do {
                 try self.save()
@@ -65,6 +77,14 @@ extension AuthorSelectionView {
                 self.errorTitle = "Falied to Update the Authors"
                 self.errorMessage = error.localizedDescription
                 self.showingError = true
+            }
+        }
+        
+        func saveChanges() {
+            if authorSelected == nil {
+                self.createAuthor()
+            } else {
+                self.updateAuthor()
             }
         }
         
