@@ -2,12 +2,13 @@
 //  Book+CoreDataProperties.swift
 //  Bookworm
 //
-//  Created by Isaque da Silva on 02/03/24.
+//  Created by Isaque da Silva on 08/03/24.
 //
 //
 
 import Foundation
 import CoreData
+import UIKit
 
 
 extension Book {
@@ -16,19 +17,19 @@ extension Book {
         return NSFetchRequest<Book>(entityName: "Book")
     }
 
-    @NSManaged public var id: UUID?
-    @NSManaged public var title: String?
-    @NSManaged public var releaseDate: Date?
-    @NSManaged public var genre: String?
-    @NSManaged public var review: String?
-    @NSManaged public var rating: Int16
-    @NSManaged public var startOfReading: Date?
-    @NSManaged public var endOfReading: Date?
-    @NSManaged public var isFinished: Bool
     @NSManaged public var creation: Date?
-    @NSManaged public var isDisabled: Bool
-    @NSManaged public var author: Author?
+    @NSManaged public var endOfReading: Date?
+    @NSManaged public var genre: String?
+    @NSManaged public var id: UUID?
+    @NSManaged public var isFinished: Bool
+    @NSManaged public var rating: Int16
+    @NSManaged public var releaseDate: Date?
+    @NSManaged public var review: String?
+    @NSManaged public var startOfReading: Date?
+    @NSManaged public var title: String?
+    @NSManaged public var cover: Data?
     @NSManaged public var annotations: NSSet?
+    @NSManaged public var author: Author?
     
     public var wrappedTitle: String {
         self.title ?? "No title saved."
@@ -36,6 +37,14 @@ extension Book {
     
     public var wrappedAuthorName: String {
         self.author?.wrappedName ?? "No Author saved."
+    }
+    
+    public var coverImage: UIImage? {
+        guard let imageData = self.cover else {
+            return nil
+        }
+        
+        return UIImage(data: imageData)
     }
     
     public var wrappedReleaseDare: Date {
@@ -66,6 +75,7 @@ extension Book {
         let list = annotations as? Set<Annotation> ?? []
         return list.sorted { $0.wrappedCreation < $1.wrappedCreation }
     }
+
 }
 
 // MARK: Generated accessors for annotations
