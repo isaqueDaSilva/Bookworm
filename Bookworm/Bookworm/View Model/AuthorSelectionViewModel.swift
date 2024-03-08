@@ -15,10 +15,16 @@ extension AuthorSelectionView {
         @Published var authorSelected: Author?
         @Published var authorList = [Author]()
         
+        @Published var showingEditor = false
+        @Published var authorName = ""
+        
         @Published var errorTitle = ""
         @Published var errorMessage = ""
         @Published var showingError = false
         
+        var editorTitle: String {
+            authorSelected != nil ? "New Author" : "Edit Author"
+        }
         
         private func save() throws {
             try self.storage.save()
