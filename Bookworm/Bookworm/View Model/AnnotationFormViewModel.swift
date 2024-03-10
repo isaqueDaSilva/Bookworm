@@ -30,7 +30,7 @@ extension AnnotationFormView {
             try self.storage.save()
         }
         
-        func saveChanges(_ completationHandler: @escaping () -> Void) {
+        func saveChanges() {
             self.annotation.id = UUID()
             self.annotation.title = self.title
             self.annotation.commentDescription = self.commentDescription
@@ -40,7 +40,6 @@ extension AnnotationFormView {
             
             do {
                 try self.save()
-                completationHandler()
             } catch let error {
                 self.alertTitle = "Falied to \(self.isEditMode ? "Edit" : "Create new") Annotation"
                 self.alertMessage = error.localizedDescription
@@ -48,11 +47,10 @@ extension AnnotationFormView {
             }
         }
         
-        func deleteAnnotation(_ completationHandler: @escaping () -> Void) {
+        func deleteAnnotation() {
             do {
                 self.storage.context.delete(self.annotation)
                 try self.save()
-                completationHandler()
             } catch let error {
                 self.alertTitle = "Falied to Delete Annotation"
                 self.alertMessage = error.localizedDescription

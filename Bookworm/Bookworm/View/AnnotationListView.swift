@@ -31,6 +31,14 @@ struct AnnotationListView: View {
         }
         .navigationTitle("Annotations")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            viewModel.fetchAnnotations()
+        }
+        .onChange(of: viewModel.annotations) { oldValue, newValue in
+            if viewModel.annotations != oldValue {
+                viewModel.annotations = newValue
+            }
+        }
         .toolbar {
             Button {
                 viewModel.showingFormView()
@@ -39,9 +47,11 @@ struct AnnotationListView: View {
             }
         }
         .sheet(isPresented: $viewModel.showingAddAnotationView) {
-            AnnotationFormView(storage: viewModel.storage, annotation: viewModel.annotationSelected, book: viewModel.book) {
-                viewModel.fetchAnnotations()
-            }
+            AnnotationFormView(
+                storage: viewModel.storage,
+                annotation: viewModel.annotationSelected,
+                book: viewModel.book
+            )
             .presentationDetents([
                 (viewModel.annotationSelected != nil) ? .fraction(0.65) : .medium
             ])

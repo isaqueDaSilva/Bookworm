@@ -12,8 +12,6 @@ struct AnnotationFormView: View {
     
     @StateObject private var viewModel: AnnotationFormViewModel
     
-    var action: () -> Void
-    
     var body: some View {
         NavigationStack {
             Form {
@@ -28,10 +26,8 @@ struct AnnotationFormView: View {
                 if viewModel.isEditMode {
                     Section {
                         Button(role: .destructive) {
-                            viewModel.deleteAnnotation {
-                                action()
-                                dismiss()
-                            }
+                            viewModel.deleteAnnotation()
+                            dismiss()
                         } label: {
                             Label("Delete Annotation", systemImage: Icons.trash.rawValue)
                                 .foregroundStyle(.red)
@@ -55,10 +51,8 @@ struct AnnotationFormView: View {
                 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        viewModel.saveChanges {
-                            action()
-                            dismiss()
-                        }
+                        viewModel.saveChanges()
+                        dismiss()
                     } label: {
                         Text("Save")
                     }
@@ -70,14 +64,12 @@ struct AnnotationFormView: View {
     init(
         storage: Storage,
         annotation: Annotation? = nil,
-        book: Book,
-        action: @escaping () -> Void
+        book: Book
     ) {
         _viewModel = StateObject(wrappedValue: AnnotationFormViewModel(storage: storage, annotation: annotation, book: book))
-        self.action = action
     }
 }
 
 #Preview {
-    AnnotationFormView(storage: .preview, book: dummyBook) { }
+    AnnotationFormView(storage: .preview, book: dummyBook)
 }

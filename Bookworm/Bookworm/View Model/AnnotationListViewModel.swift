@@ -58,8 +58,6 @@ extension AnnotationListView {
         init(storage: Storage, book: Book) {
             self.storage = storage
             self.book = book
-            
-            self.fetchAnnotations()
         }
     }
 }

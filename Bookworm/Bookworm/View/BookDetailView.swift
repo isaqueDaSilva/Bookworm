@@ -11,8 +11,6 @@ struct BookDetailView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject private var viewModel: BookDetailViewModel
     
-    var action: () -> Void
-    
     var body: some View {
         List {
             Section {
@@ -89,15 +87,16 @@ struct BookDetailView: View {
         }
         .navigationTitle("Details")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            viewModel.fetchChanges()
+        }
         .toolbar {
             Button("Edit") {
                 viewModel.showingEditView = true
             }
         }
         .sheet(isPresented: $viewModel.showingEditView) {
-            BookFormView(storage: viewModel.storage, book: viewModel.book) {
-                viewModel.fetchChanges()
-            }
+            BookFormView(storage: viewModel.storage, book: viewModel.book)
         }
         .alert(viewModel.alertTitle, isPresented: $viewModel.showingAlert) {
             if viewModel.isDeletingAlert {
@@ -105,7 +104,6 @@ struct BookDetailView: View {
                 
                 Button("OK", role: .destructive) {
                     viewModel.deleteBook()
-                    action()
                     dismiss()
                 }
             }
@@ -117,14 +115,13 @@ struct BookDetailView: View {
         }
     }
     
-    init(storage: Storage, book: Book, _ action: @escaping () -> Void) {
+    init(storage: Storage, book: Book) {
         _viewModel = StateObject(wrappedValue: BookDetailViewModel(storage: storage, book: book))
-        self.action = action
     }
 }
 
 #Preview {
     NavigationStack {
-        BookDetailView(storage: .preview, book: dummyBook) { }
+        BookDetailView(storage: .preview, book: dummyBook)
     }
 }

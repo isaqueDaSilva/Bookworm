@@ -41,6 +41,14 @@ struct HomeView: View {
                 }
                 .navigationTitle("Bookworm")
                 .padding(.horizontal)
+                .onAppear {
+                    viewModel.fetchBooks()
+                }
+                .onChange(of: viewModel.books) { oldValue, newValue in
+                    if viewModel.books != oldValue {
+                        viewModel.books = newValue
+                    }
+                }
                 .toolbar {
                     Button {
                         viewModel.showingAddNewBook = true
@@ -49,14 +57,10 @@ struct HomeView: View {
                     }
                 }
                 .navigationDestination(for: Book.self) { book in
-                    BookDetailView(storage: viewModel.storage, book: book) {
-                        viewModel.fetchBooks()
-                    }
+                    BookDetailView(storage: viewModel.storage, book: book)
                 }
                 .sheet(isPresented: $viewModel.showingAddNewBook) {
-                    BookFormView(storage: viewModel.storage) {
-                        viewModel.fetchBooks()
-                    }
+                    BookFormView(storage: viewModel.storage)
                 }
                 .alert(viewModel.alertTitle, isPresented: $viewModel.showingAlert) {
                 } message: {

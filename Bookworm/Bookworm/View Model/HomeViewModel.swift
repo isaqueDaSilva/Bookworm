@@ -23,6 +23,7 @@ extension HomeView {
             do {
                 let request = Book.fetchRequest()
                 self.books = try storage.context.fetch(request)
+                print(books.count)
                 
             } catch let error {
                 self.alertTitle = "Falied to Fetch Books"
@@ -46,8 +47,6 @@ extension HomeView {
         
         init(storage: Storage) {
             self.storage = storage
-            
-            self.fetchBooks()
         }
     }
 }

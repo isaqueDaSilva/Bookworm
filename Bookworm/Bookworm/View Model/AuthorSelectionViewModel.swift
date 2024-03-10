@@ -12,7 +12,7 @@ extension AuthorSelectionView {
     final class AuthorSelectionViewModel: ObservableObject {
         let storage: Storage
         
-        @Published var authorSelected: Author?
+        private var authorSelected: Author?
         @Published var authorList = [Author]()
         
         @Published var showingEditor = false
@@ -100,11 +100,8 @@ extension AuthorSelectionView {
             }
         }
         
-        init(storage: Storage, author: Author?) {
+        init(storage: Storage) {
             self.storage = storage
-            _authorSelected = Published(initialValue: author)
-            
-            self.fetchAuthors()
         }
     }
 }

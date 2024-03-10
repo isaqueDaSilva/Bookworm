@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct AuthorSelectionView: View {
+    @Binding var authorSelected: Author?
     @Environment(\.dismiss) var dismiss
     @StateObject private var viewModel: AuthorSelectionViewModel
-    
-    var action: (Author) -> Void
     
     var body: some View {
         List(viewModel.authorList) { author in
@@ -19,15 +18,14 @@ struct AuthorSelectionView: View {
                 Text(author.wrappedName)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 Spacer()
-                if author == viewModel.authorSelected {
+                if author == authorSelected {
                     Image(systemName: "checkmark")
                         .foregroundStyle(.tint)
                         .font(.body.weight(.semibold))
                 }
             }
             .onTapGesture {
-                viewModel.authorSelected = author
-                action(author)
+                authorSelected = author
                 dismiss()
             }
             .contextMenu {
@@ -46,6 +44,9 @@ struct AuthorSelectionView: View {
         }
         .navigationTitle("Choice an Author")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            viewModel.fetchAuthors()
+        }
         .toolbar {
             Button {
                 viewModel.showingEditor()
@@ -68,14 +69,14 @@ struct AuthorSelectionView: View {
 
     }
     
-    init(authorSelected: Author? = nil, storage: Storage, action: @escaping (Author) -> Void) {
-        _viewModel = StateObject(wrappedValue: AuthorSelectionViewModel(storage: storage, author: authorSelected))
-        self.action = action
+    init(authorSelected: Binding<Author?>, storage: Storage) {
+        _viewModel = StateObject(wrappedValue: AuthorSelectionViewModel(storage: storage))
+        _authorSelected = authorSelected
     }
 }
 
 #Preview {
     NavigationStack {
-        AuthorSelectionView(storage: .preview) { _ in }
+        AuthorSelectionView(authorSelected: .constant(nil), storage: .preview)
     }
 }
