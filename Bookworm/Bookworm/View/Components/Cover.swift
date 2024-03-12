@@ -12,12 +12,12 @@ struct Cover: View {
     let title: String
     
     var body: some View {
-        Group {
+        VStack {
             if let coverImage {
                 Image(uiImage: coverImage)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 135, height: 180)
+                    .frame(width: 150, height: 200)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
             } else {
                 VStack(alignment: .center) {
@@ -31,18 +31,21 @@ struct Cover: View {
                         .fontWeight(.heavy)
                         .fontDesign(.serif)
                 }
-                .frame(width: 135, height: 180)
-                .padding()
+                .multilineTextAlignment(.center)
+                .frame(width: 150, height: 200)
                 .background(
                     RoundedRectangle(cornerRadius: 10)
                         .foregroundStyle(Color(.systemGray3))
                 )
-                .multilineTextAlignment(.center)
             }
         }
     }
 }
 
 #Preview {
-    Cover(coverImage: nil, title: "Hary Potter")
+    VStack {
+        Cover(title: "Harry Potter")
+        
+        Cover(coverImage: UIImage(systemName: Icons.plus.rawValue), title: "Hary Potter")
+    }
 }
