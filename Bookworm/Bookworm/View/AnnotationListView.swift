@@ -59,7 +59,9 @@ struct AnnotationListView: View {
     }
     
     init(storage: Storage, book: Book) {
-        _viewModel = StateObject(wrappedValue: AnnotationListViewModel(storage: storage, book: book))
+        _viewModel = StateObject(
+            wrappedValue: AnnotationListViewModel(storage: storage, book: book)
+        )
     }
 }
 
