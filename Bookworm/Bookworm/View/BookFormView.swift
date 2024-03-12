@@ -79,7 +79,7 @@ struct BookFormView: View {
                         )
                     }
                     
-                    Toggle("Have you finished reading yet?", isOn: $viewModel.isFinished.animation(.easeInOut))
+                    Toggle("Have you finished reading yet?", isOn: $viewModel.isFinished.animation(.spring()))
                     
                 }
                 
