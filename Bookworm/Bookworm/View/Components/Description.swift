@@ -14,7 +14,7 @@ struct Description: View {
     var body: some View {
         Group {
             Text(title)
-                .font(.title)
+                .font(.title3)
                 .bold()
             
             Text(author)
