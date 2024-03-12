@@ -22,6 +22,11 @@ struct HomeView: View {
                                     coverImage: book.coverImage,
                                     title: book.wrappedTitle
                                 )
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(lineWidth: 1)
+                                        .foregroundStyle(viewModel.overlayColor(book))
+                                }
                                 
                                 Description(
                                     title: book.wrappedTitle,

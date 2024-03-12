@@ -7,6 +7,7 @@
 
 import CoreData
 import Foundation
+import SwiftUI
 
 extension HomeView {
     final class HomeViewModel: ObservableObject {
@@ -17,6 +18,24 @@ extension HomeView {
         @Published var alertMessage = ""
         @Published var showingAlert = false
         @Published var showingAddNewBook = false
+        
+        func overlayColor(_ book: Book) -> Color {
+            if book.isFinished {
+                
+                switch Int(book.rating) {
+                case 1...2:
+                    return .red
+                case 3...4:
+                    return .orange
+                case 5:
+                    return .green
+                default:
+                    return .primary
+                }
+            } else {
+                return .primary
+            }
+        }
         
         func fetchBooks() {
             do {
