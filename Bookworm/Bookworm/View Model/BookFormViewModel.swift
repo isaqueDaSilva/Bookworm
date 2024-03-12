@@ -13,7 +13,7 @@ extension BookFormView {
     final class BookFormViewModel: ObservableObject {
         let storage: Storage
         
-        let book: Book
+        var bookSelected: Book? = nil
         
         @Published var pickerItemSelect: PhotosPickerItem? = nil {
             didSet {
@@ -24,8 +24,8 @@ extension BookFormView {
         }
         
         @Published var title = ""
-        @Published var author: Author?
-        @Published var coverImage: UIImage?
+        @Published var author: Author? = nil
+        @Published var coverImage: UIImage? = nil
         @Published var releaseDate = Date.now
         @Published var genre: Genre = .fantasy
         @Published var review = ""
@@ -40,28 +40,55 @@ extension BookFormView {
         
         @Published var showingAuthorSelectionView = false
         
-        @Published var isEditMode = false
-        
         var navTitle: String {
-            let prefix = self.isEditMode ? "Edit" : "Add new"
+            let prefix = (self.bookSelected == nil) ? "Add New" : "Edit"
             
             return "\(prefix) Author"
         }
         
-        func save() {
-            self.book.title = self.title
-            self.book.author = self.author
-            self.book.releaseDate = self.releaseDate
-            self.book.genre = self.genre.rawValue
-            self.book.startOfReading = self.startOfReading
-            self.book.isFinished = self.isFinished
-            self.book.review = self.review
-            self.book.rating = Int16(self.rating)
-            self.book.endOfReading = self.endOfReading
+        private func createBook() {
+            let newBook = Book(context: storage.context)
+            newBook.id = UUID()
+            newBook.title = self.title
+            newBook.author = self.author
+            newBook.releaseDate = self.releaseDate
+            newBook.genre = self.genre.rawValue
+            newBook.startOfReading = self.startOfReading
+            newBook.isFinished = self.isFinished
+            newBook.review = self.review
+            newBook.rating = Int16(self.rating)
+            newBook.endOfReading = self.endOfReading
             
             if let coverImage {
                 let imageData = coverImage.jpegData(compressionQuality: 0.6)
-                self.book.cover = imageData
+                newBook.cover = imageData
+            }
+        }
+        
+        private func updateBook() {
+            guard let bookSelected else { return }
+            
+            bookSelected.title = self.title
+            bookSelected.author = self.author
+            bookSelected.releaseDate = self.releaseDate
+            bookSelected.genre = self.genre.rawValue
+            bookSelected.startOfReading = self.startOfReading
+            bookSelected.isFinished = self.isFinished
+            bookSelected.review = self.review
+            bookSelected.rating = Int16(self.rating)
+            bookSelected.endOfReading = self.endOfReading
+            
+            if let coverImage {
+                let imageData = coverImage.jpegData(compressionQuality: 0.6)
+                bookSelected.cover = imageData
+            }
+        }
+        
+        func save() {
+            if self.bookSelected == nil {
+                createBook()
+            } else {
+                updateBook()
             }
             
             do {
@@ -90,7 +117,7 @@ extension BookFormView {
             self.storage = storage
             
             if let bookSelected = book {
-                self.book = bookSelected
+                self.bookSelected = bookSelected
                 _title = Published(initialValue: bookSelected.wrappedTitle)
                 _author = Published(initialValue: bookSelected.author)
                 _releaseDate = Published(initialValue: bookSelected.wrappedReleaseDare)
@@ -105,10 +132,6 @@ extension BookFormView {
                     let image = UIImage(data: imageData)
                     _coverImage = Published(initialValue: image)
                 }
-                
-                self.isEditMode = true
-            } else {
-                self.book = Book(context: storage.context)
             }
         }
     }
