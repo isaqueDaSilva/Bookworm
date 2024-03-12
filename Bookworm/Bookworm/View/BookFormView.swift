@@ -12,8 +12,6 @@ struct BookFormView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject private var viewModel: BookFormViewModel
     
-    var action: () -> Void
-    
     var body: some View {
         NavigationStack {
             Form {
@@ -97,13 +95,16 @@ struct BookFormView: View {
             }
             .navigationTitle(viewModel.navTitle)
             .navigationBarTitleDisplayMode(.inline)
+            .onChange(of: viewModel.author) { oldAuthor, newAuthor in
+                if viewModel.author != oldAuthor {
+                    viewModel.author = newAuthor
+                }
+            }
             .navigationDestination(isPresented: $viewModel.showingAuthorSelectionView) {
                 AuthorSelectionView(
-                    authorSelected: viewModel.author,
+                    authorSelected: $viewModel.author,
                     storage: viewModel.storage
-                ) { author in
-                    viewModel.author = author
-                }
+                )
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -121,7 +122,6 @@ struct BookFormView: View {
                 ToolbarItem {
                     Button {
                         viewModel.save()
-                        action()
                         dismiss()
                     } label: {
                         Text("Save")
@@ -135,12 +135,11 @@ struct BookFormView: View {
         }
     }
     
-    init(storage: Storage, book: Book? = nil, action: @escaping () -> Void) {
+    init(storage: Storage, book: Book? = nil) {
         _viewModel = StateObject(wrappedValue: BookFormViewModel(storage: storage, book: book))
-        self.action = action
     }
 }
 
 #Preview {
-    BookFormView(storage: .preview) { }
+    BookFormView(storage: .preview)
 }
