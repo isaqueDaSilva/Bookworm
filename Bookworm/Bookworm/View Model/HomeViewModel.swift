@@ -17,13 +17,11 @@ extension HomeView {
         @Published var alertMessage = ""
         @Published var showingAlert = false
         @Published var showingAddNewBook = false
-        @Published var bookSelected: Book?
         
         func fetchBooks() {
             do {
                 let request = Book.fetchRequest()
                 self.books = try storage.context.fetch(request)
-                print(books.count)
                 
             } catch let error {
                 self.alertTitle = "Falied to Fetch Books"
