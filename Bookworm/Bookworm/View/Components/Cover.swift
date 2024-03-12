@@ -12,7 +12,7 @@ struct Cover: View {
     let title: String
     
     var body: some View {
-        VStack {
+        Group {
             if let coverImage {
                 Image(uiImage: coverImage)
                     .resizable()
