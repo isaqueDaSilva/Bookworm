@@ -6,12 +6,10 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct HomeView: View {
     @StateObject private var viewModel: HomeViewModel
-    
-    let colums = [GridItem(.adaptive(minimum: 150), spacing: 20, alignment: .center)]
+    let colums = [GridItem(.adaptive(minimum: 150), spacing: 10, alignment: .top)]
     
     var body: some View {
         NavigationStack {
@@ -19,7 +17,7 @@ struct HomeView: View {
                 LazyVGrid(columns: colums, spacing: 20) {
                     ForEach(viewModel.books) { book in
                         NavigationLink(value: book) {
-                            VStack {
+                            VStack(alignment: .leading) {
                                 Cover(
                                     coverImage: book.coverImage,
                                     title: book.wrappedTitle
@@ -30,6 +28,8 @@ struct HomeView: View {
                                     author: book.wrappedAuthorName
                                 )
                             }
+                            .shadow(radius: 5)
+                            .padding(8)
                             .contextMenu {
                                 Button("Delete Book", systemImage: Icons.trash.rawValue, role: .destructive) {
                                     viewModel.deleteBook(book)
@@ -40,14 +40,8 @@ struct HomeView: View {
                     }
                 }
                 .navigationTitle("Bookworm")
-                .padding(.horizontal)
                 .onAppear {
                     viewModel.fetchBooks()
-                }
-                .onChange(of: viewModel.books) { oldValue, newValue in
-                    if viewModel.books != oldValue {
-                        viewModel.books = newValue
-                    }
                 }
                 .toolbar {
                     Button {
@@ -59,7 +53,7 @@ struct HomeView: View {
                 .navigationDestination(for: Book.self) { book in
                     BookDetailView(storage: viewModel.storage, book: book)
                 }
-                .sheet(isPresented: $viewModel.showingAddNewBook) {
+                .sheet(isPresented: $viewModel.showingAddNewBook, onDismiss: viewModel.fetchBooks) {
                     BookFormView(storage: viewModel.storage)
                 }
                 .alert(viewModel.alertTitle, isPresented: $viewModel.showingAlert) {
