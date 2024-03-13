@@ -7,10 +7,11 @@
 
 import CoreData
 import Foundation
-import SwiftUI
 
 extension HomeView {
+    /// Brings together all HomeView execution logic and business logic.
     final class HomeViewModel: ObservableObject {
+        // MARK: - Properties
         let storage: Storage
         
         @Published var books = [Book]()
@@ -19,24 +20,9 @@ extension HomeView {
         @Published var showingAlert = false
         @Published var showingAddNewBook = false
         
-        func overlayColor(_ book: Book) -> Color {
-            if book.isFinished {
-                
-                switch Int(book.rating) {
-                case 1...2:
-                    return .red
-                case 3...4:
-                    return .orange
-                case 5:
-                    return .green
-                default:
-                    return .primary
-                }
-            } else {
-                return .primary
-            }
-        }
+        // MARK: - Methods
         
+        /// Performs a search for books saved in Core Data.
         func fetchBooks() {
             do {
                 let request = Book.fetchRequest()
@@ -49,6 +35,8 @@ extension HomeView {
             }
         }
         
+        /// Performs a deletion action for book selected.
+        /// - Parameter book: A Book selected for perform delete action.
         func deleteBook(_ book: Book) {
             do {
                 self.storage.context.delete(book)
@@ -62,6 +50,8 @@ extension HomeView {
             }
         }
         
+        /// Initializes the View Model to execute the actions proposed in the View.
+        /// - Parameter storage: The type that contains the default container and viewContext types, of Core Data.
         init(storage: Storage) {
             self.storage = storage
         }

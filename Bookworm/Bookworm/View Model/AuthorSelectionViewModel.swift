@@ -9,7 +9,9 @@ import CoreData
 import Foundation
 
 extension AuthorSelectionView {
+    /// Initializes the View Model to execute the actions proposed in the View.
     final class AuthorSelectionViewModel: ObservableObject {
+        // MARK: - Properties
         let storage: Storage
         
         private var authorSelected: Author?
@@ -26,11 +28,13 @@ extension AuthorSelectionView {
             authorSelected != nil ? "New Author" : "Edit Author"
         }
         
+        // MARK: - Methods
         private func save() throws {
             try self.storage.save()
             fetchAuthors()
         }
         
+        /// Performs a search for saved authors.
         func fetchAuthors() {
             do {
                 let request = Author.fetchRequest()
@@ -42,6 +46,8 @@ extension AuthorSelectionView {
             }
         }
         
+        /// Displays the editor for create or update author.
+        /// - Parameter author: An Author value to perform an update action.
         func showingEditor(_ author: Author? = nil) {
             self.authorSelected = author
             
@@ -52,6 +58,7 @@ extension AuthorSelectionView {
             self.showingEditor = true
         }
         
+        /// Creates a new Author.
         private func createAuthor() {
             let newAuthor = Author(context: storage.context)
             newAuthor.id = UUID()
@@ -66,6 +73,7 @@ extension AuthorSelectionView {
             }
         }
         
+        /// Updates a selected Author.
         private func updateAuthor() {
             guard let authorSelected else { return }
             
@@ -80,6 +88,7 @@ extension AuthorSelectionView {
             }
         }
         
+        /// Save the changes will be in some Author Model.
         func saveChanges() {
             if authorSelected == nil {
                 self.createAuthor()
@@ -88,6 +97,8 @@ extension AuthorSelectionView {
             }
         }
         
+        /// Deletes an Author selected.
+        /// - Parameter author: An Author that was selected for perform de deletion action.
         func deleteAuthor(_ author: Author) {
             do {
                 storage.context.delete(author)
@@ -100,6 +111,8 @@ extension AuthorSelectionView {
             }
         }
         
+        /// Initializes the View Model to execute the actions proposed in the View.
+        /// - Parameter storage: The type that contains the default container and viewContext types, of Core Data.
         init(storage: Storage) {
             self.storage = storage
         }

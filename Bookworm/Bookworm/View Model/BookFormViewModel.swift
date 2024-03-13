@@ -10,11 +10,15 @@ import SwiftUI
 import PhotosUI
 
 extension BookFormView {
+    /// Brings together all BookFormView execution logic and business logic.
     final class BookFormViewModel: ObservableObject {
+        // MARK: - Properties
         let storage: Storage
         
         var bookSelected: Book? = nil
         
+        
+        /// Observe if there is any image selected and display it in the View.
         @Published var pickerItemSelect: PhotosPickerItem? = nil {
             didSet {
                 if let pickerItemSelect {
@@ -40,12 +44,16 @@ extension BookFormView {
         
         @Published var showingAuthorSelectionView = false
         
+        /// Checks if there is a book selected and displays an appropriate title for each case.
         var navTitle: String {
             let prefix = (self.bookSelected == nil) ? "Add New" : "Edit"
             
-            return "\(prefix) Author"
+            return "\(prefix) Book"
         }
         
+        // MARK: - Methods
+        
+        /// Creates a New book in Core Data.
         private func createBook() {
             let newBook = Book(context: storage.context)
             newBook.id = UUID()
@@ -65,6 +73,7 @@ extension BookFormView {
             }
         }
         
+        /// Updates an existing Book in Core Data.
         private func updateBook() {
             guard let bookSelected else { return }
             
@@ -84,6 +93,7 @@ extension BookFormView {
             }
         }
         
+        /// Saves the changes will be occur in the Model.
         func save() {
             if self.bookSelected == nil {
                 createBook()
@@ -100,6 +110,8 @@ extension BookFormView {
             }
         }
         
+        /// Gets and displays an image selected from the user's gallery.
+        /// - Parameter pickerItemSelected: Represents an image item that has been selected.
         func getImage(_ pickerItemSelected: PhotosPickerItem) {
             Task {
                 if let pickerItemSelect,
@@ -113,22 +125,28 @@ extension BookFormView {
             }
         }
         
+        /// Initializes the View Model to execute the actions proposed in the View.
+        /// - Parameters:
+        ///   - storage: The type that contains the default container and viewContext types, of Core Data.
+        ///   - book: An existing book that will be updated
+        ///   - Warning: A book should only be passed in the parameter if it already exists in Core Data,
+        ///    in order to update it. Otherwise, this parameter must remain set to nil.
         init(storage: Storage, book: Book? = nil) {
             self.storage = storage
             
-            if let bookSelected = book {
-                self.bookSelected = bookSelected
-                _title = Published(initialValue: bookSelected.wrappedTitle)
-                _author = Published(initialValue: bookSelected.author)
-                _releaseDate = Published(initialValue: bookSelected.wrappedReleaseDare)
-                _genre = Published(initialValue: Genre(rawValue: bookSelected.wrappedGenre) ?? .fantasy)
-                _review = Published(initialValue: bookSelected.wrappedReview)
-                _rating = Published(initialValue: Int(bookSelected.rating))
-                _startOfReading = Published(initialValue: bookSelected.wrappedStartOfReading)
-                _endOfReading = Published(initialValue: bookSelected.wrappedEndOfReading)
-                _isFinished = Published(initialValue: bookSelected.isFinished)
+            if let book {
+                self.bookSelected = book
+                _title = Published(initialValue: book.wrappedTitle)
+                _author = Published(initialValue: book.author)
+                _releaseDate = Published(initialValue: book.wrappedReleaseDare)
+                _genre = Published(initialValue: Genre(rawValue: book.wrappedGenre) ?? .fantasy)
+                _review = Published(initialValue: book.wrappedReview)
+                _rating = Published(initialValue: Int(book.rating))
+                _startOfReading = Published(initialValue: book.wrappedStartOfReading)
+                _endOfReading = Published(initialValue: book.wrappedEndOfReading)
+                _isFinished = Published(initialValue: book.isFinished)
                 
-                if let imageData = book?.cover {
+                if let imageData = book.cover {
                     let image = UIImage(data: imageData)
                     _coverImage = Published(initialValue: image)
                 }

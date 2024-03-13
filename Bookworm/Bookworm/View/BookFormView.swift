@@ -9,12 +9,17 @@ import SwiftUI
 import PhotosUI
 
 struct BookFormView: View {
+    // MARK: - View Properties
     @Environment(\.dismiss) var dismiss
     @StateObject private var viewModel: BookFormViewModel
     
+    // MARK: - View
     var body: some View {
+        // START: NAV
         NavigationStack {
+            // START: FORM
             Form {
+                // START: SECTION 1
                 Section {
                     VStack {
                         Cover(
@@ -27,7 +32,9 @@ struct BookFormView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
                 .listRowBackground(Color.listLightGray)
+                // END: SECTION 1
                 
+                // START: SECTION 2
                 Section("More Information") {
                     LabeledContent("Title:") {
                         TextField("Insert the title here...", text: $viewModel.title)
@@ -35,6 +42,8 @@ struct BookFormView: View {
                     }
                     
                     Button {
+                        // Moves to the Author View.
+                        
                         viewModel.showingAuthorSelectionView = true
                     } label: {
                         LabeledContent("Author") {
@@ -60,8 +69,10 @@ struct BookFormView: View {
                             Text($0.rawValue)
                         }
                     }
-                }
+                } 
+                // END: SECTION: 2
                 
+                // START: SECTION 3
                 Section("Reading Information") {
                     DatePicker(
                         "Starting of Reading:",
@@ -82,8 +93,10 @@ struct BookFormView: View {
                     Toggle("Have you finished reading yet?", isOn: $viewModel.isFinished.animation(.spring()))
                     
                 }
+                // END: SECTION 3
                 
                 if viewModel.isFinished {
+                    // START: SECTION 4
                     Section("Review") {
                         LabeledContent("Rating:") {
                             RatingStars(rating: $viewModel.rating)
@@ -91,11 +104,15 @@ struct BookFormView: View {
                         
                         TextField("Insert the revire here...", text: $viewModel.review, axis: .vertical)
                     }
+                    // END: SECTION 4
                 }
             }
             .navigationTitle(viewModel.navTitle)
             .navigationBarTitleDisplayMode(.inline)
             .onChange(of: viewModel.author) { oldAuthor, newAuthor in
+                // If the authors property has some change
+                // the UI will be updated.
+                
                 if viewModel.author != oldAuthor {
                     viewModel.author = newAuthor
                 }
@@ -109,6 +126,8 @@ struct BookFormView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
+                        // Dismiss the View
+                        
                         dismiss()
                     } label: {
                         HStack {
@@ -121,6 +140,9 @@ struct BookFormView: View {
                 
                 ToolbarItem {
                     Button {
+                        // Saves the changes
+                        // and dismiss the view
+                        
                         viewModel.save()
                         dismiss()
                     } label: {
@@ -132,9 +154,18 @@ struct BookFormView: View {
             } message: {
                 Text(viewModel.errorMessage)
             }
+            // END: FORM
         }
+        // END: NAV
     }
     
+    
+    /// The view shows the form for user will be create or update some book.
+    /// - Parameters:
+    ///   - storage: The type that contains the default container and viewContext types, of Core Data.
+    ///   - book: An existing book that will be updated
+    ///   - Warning: A book should only be passed in the parameter if it already exists in Core Data,
+    ///    in order to update it. Otherwise, this parameter must remain set to nil.
     init(storage: Storage, book: Book? = nil) {
         _viewModel = StateObject(wrappedValue: BookFormViewModel(storage: storage, book: book))
     }
