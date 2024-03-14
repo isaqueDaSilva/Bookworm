@@ -105,9 +105,13 @@ struct BookDetailView: View {
         }
         .navigationTitle("Details")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            // MARK: - Check this logic later
-            viewModel.fetchChanges()
+        .onChange(of: viewModel.book) { oldValue, newValue in
+            if oldValue != newValue {
+                // Sets a new value for the book
+                // when some update occur.
+                
+                viewModel.book = newValue
+            }
         }
         .toolbar {
             Button("Edit") {
