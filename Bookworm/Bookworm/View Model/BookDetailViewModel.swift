@@ -12,7 +12,8 @@ import UIKit
 extension BookDetailView {
     final class BookDetailViewModel: ObservableObject {
         let storage: Storage
-        var book: Book
+        
+        @Published var book: Book
         
         @Published var showingEditView = false
         
@@ -104,7 +105,7 @@ extension BookDetailView {
         }
         
         init(storage: Storage, book: Book) {
-            self.book = book
+            _book = Published(initialValue: book)
             self.storage = storage
         }
     }
