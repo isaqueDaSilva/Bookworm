@@ -7,9 +7,10 @@
 
 import Foundation
 
-let dummyBook = Book(context: Storage.preview.context)
-
+// Sample data for use in Xcode Preview
 extension Storage {
+    static let dummyBook = Book(context: Storage.preview.context)
+    
     static var preview: Storage {
         let storageProvider = Storage(inMemory: true)
         let context = storageProvider.context

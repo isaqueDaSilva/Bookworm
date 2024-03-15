@@ -31,14 +31,18 @@ extension Book {
     @NSManaged public var annotations: NSSet?
     @NSManaged public var author: Author?
     
+    /// Returns the wrapped title of this book.
     public var wrappedTitle: String {
         self.title ?? "No title saved."
     }
     
+    /// Returns the author name of this book.
     public var wrappedAuthorName: String {
         self.author?.wrappedName ?? "No Author saved."
     }
     
+    /// Returns the cover image saved for this book, 
+    /// in case the user saved in the creation time.
     public var coverImage: UIImage? {
         guard let imageData = self.cover else {
             return nil
@@ -47,30 +51,37 @@ extension Book {
         return UIImage(data: imageData)
     }
     
+    /// Returns the wrapped release date of this Book.
     public var wrappedReleaseDare: Date {
         self.releaseDate ?? Date.now
     }
     
+    /// Returns the wrapped genre of this Book.
     public var wrappedGenre: String {
         self.genre ?? "No genre saved."
     }
     
+    /// Returns the wrapped review of this Book.
     public var wrappedReview: String {
         self.review ?? "No review saved."
     }
     
+    /// Returns the wrapped date of starting of reading of this Book.
     public var wrappedStartOfReading: Date {
         self.startOfReading ?? Date.now
     }
     
+    /// Returns the wrapped date of end of reading of this Book.
     public var wrappedEndOfReading: Date {
         self.endOfReading ?? Date.now
     }
     
+    /// Returns the wrapped date creation of this Book.
     public var wrappedCreation: Date {
         self.creation ?? Date.now
     }
     
+    /// Returns a list of Annotations that has been saved for this book.
     public var wrappedAnnotations: [Annotation] {
         let list = annotations as? Set<Annotation> ?? []
         return list.sorted { $0.wrappedCreation < $1.wrappedCreation }

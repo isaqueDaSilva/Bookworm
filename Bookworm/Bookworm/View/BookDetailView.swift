@@ -153,6 +153,6 @@ struct BookDetailView: View {
 
 #Preview {
     NavigationStack {
-        BookDetailView(storage: .preview, book: dummyBook)
+        BookDetailView(storage: .preview, book: Storage.dummyBook)
     }
 }

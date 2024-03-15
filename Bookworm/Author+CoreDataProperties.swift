@@ -21,10 +21,13 @@ extension Author {
     @NSManaged public var books: NSSet?
 
     
+    /// Returns the wrapped name of the author.
     public var wrappedName: String {
         self.name ?? "No name saved."
     }
     
+    
+    /// Returns a list of books that has been saved with this author.
     public var wrappedBooks: [Book] {
         let list = books as? Set<Book> ?? []
         return list.sorted { $0.wrappedCreation < $1.wrappedCreation }

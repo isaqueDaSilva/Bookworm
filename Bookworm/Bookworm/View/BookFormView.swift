@@ -135,7 +135,6 @@ struct BookFormView: View {
                             Text("Back")
                         }
                     }
-
                 }
                 
                 ToolbarItem {
@@ -148,6 +147,7 @@ struct BookFormView: View {
                     } label: {
                         Text("Save")
                     }
+                    .disabled(viewModel.isDisabled)
                 }
             }
             .alert(viewModel.errorTitle, isPresented: $viewModel.showingError) {
@@ -159,14 +159,17 @@ struct BookFormView: View {
         // END: NAV
     }
     
+    /// The view shows the form for user will be create a new book.
+    /// - Parameter storage: The type that contains the default container and viewContext types, of Core Data.
+    init(storage: Storage) {
+        _viewModel = StateObject(wrappedValue: BookFormViewModel(storage: storage))
+    }
     
-    /// The view shows the form for user will be create or update some book.
+    /// The view shows the form for user will be update an existing book.
     /// - Parameters:
     ///   - storage: The type that contains the default container and viewContext types, of Core Data.
     ///   - book: An existing book that will be updated
-    ///   - Warning: A book should only be passed in the parameter if it already exists in Core Data,
-    ///    in order to update it. Otherwise, this parameter must remain set to nil.
-    init(storage: Storage, book: Book? = nil) {
+    init(storage: Storage, book: Book) {
         _viewModel = StateObject(wrappedValue: BookFormViewModel(storage: storage, book: book))
     }
 }

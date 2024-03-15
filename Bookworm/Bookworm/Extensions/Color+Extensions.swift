@@ -16,7 +16,7 @@ extension Color {
     /// with a specific color indicating whether it was voted well or badly.
     /// - Parameter book: The book that will receive the outline on its cover.
     /// - Returns: Returns a specific color depending on its rating.
-    public static func overlayColor(_ book: Book) -> Color {
+    static func overlayColor(_ book: Book) -> Color {
         if book.isFinished {
             
             switch Int(book.rating) {

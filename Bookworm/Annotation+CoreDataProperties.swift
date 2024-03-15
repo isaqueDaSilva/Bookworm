@@ -23,18 +23,22 @@ extension Annotation {
     @NSManaged public var title: String?
     @NSManaged public var book: Book?
     
+    /// Returns the wrapped title of this Annotation.
     public var wrappedTitle: String {
         self.title ?? "No title saved"
     }
     
+    /// Returns the wrapped comment description  of this Annotation.
     public var wrappedCommentDescription: String {
         self.commentDescription ?? "No comment saved."
     }
     
+    /// Returns the wrapped the creation date of this Annotation.
     public var wrappedCreation: Date {
         self.creation ?? Date.now
     }
     
+    /// Returns the wrapped last modification date of this Annotation.
     public var wrappedLastModification: Date {
         self.lastModification ?? Date.now
     }

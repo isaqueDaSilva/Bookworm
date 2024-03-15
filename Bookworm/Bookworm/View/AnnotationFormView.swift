@@ -75,6 +75,7 @@ struct AnnotationFormView: View {
     }
     
     /// The view shows the form for user will be create or update some annotation of the some book.
+    /// 
     /// - Parameters:
     ///   - storage: An association with an Author value that determines whether there are any authors selected or not.
     ///   - annotation: A saved note, which will be used to perform some updates.
@@ -89,5 +90,5 @@ struct AnnotationFormView: View {
 }
 
 #Preview {
-    AnnotationFormView(storage: .preview, book: dummyBook)
+    AnnotationFormView(storage: .preview, book: Storage.dummyBook)
 }
