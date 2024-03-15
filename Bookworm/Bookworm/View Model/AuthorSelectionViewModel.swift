@@ -9,7 +9,6 @@ import CoreData
 import Foundation
 
 extension AuthorSelectionView {
-    /// Initializes the View Model to execute the actions proposed in the View.
     final class AuthorSelectionViewModel: ObservableObject {
         // MARK: - Properties
         let storage: Storage
@@ -31,14 +30,14 @@ extension AuthorSelectionView {
         // MARK: - Methods
         private func save() throws {
             try self.storage.save()
-            fetchAuthors()
+            self.fetchAuthors()
         }
         
         /// Performs a search for saved authors.
         func fetchAuthors() {
             do {
                 let request = Author.fetchRequest()
-                self.authorList = try storage.context.fetch(request)
+                self.authorList = try storage.fetch(request)
             } catch let error {
                 self.errorTitle = "Falied to Fetch Authors"
                 self.errorMessage = error.localizedDescription
@@ -101,9 +100,8 @@ extension AuthorSelectionView {
         /// - Parameter author: An Author that was selected for perform de deletion action.
         func deleteAuthor(_ author: Author) {
             do {
-                storage.context.delete(author)
-                
-                try self.save()
+                try self.storage.delete(author)
+                self.fetchAuthors()
             } catch let error {
                 self.errorTitle = "Falied to Update the Authors"
                 self.errorMessage = error.localizedDescription

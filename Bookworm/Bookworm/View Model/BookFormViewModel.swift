@@ -10,13 +10,11 @@ import SwiftUI
 import PhotosUI
 
 extension BookFormView {
-    /// Brings together all BookFormView execution logic and business logic.
     final class BookFormViewModel: ObservableObject {
         // MARK: - Properties
         let storage: Storage
         
-        var bookSelected: Book? = nil
-        
+        private var book: Book?
         
         /// Observe if there is any image selected and display it in the View.
         @Published var pickerItemSelect: PhotosPickerItem? = nil {
@@ -46,16 +44,22 @@ extension BookFormView {
         
         /// Checks if there is a book selected and displays an appropriate title for each case.
         var navTitle: String {
-            let prefix = (self.bookSelected == nil) ? "Add New" : "Edit"
-            
-            return "\(prefix) Book"
+            if book != nil {
+                return "Edit Book"
+            } else {
+                return "Create Book"
+            }
+        }
+        
+        var isDisabled: Bool {
+            (self.title.isEmpty || self.title == book?.wrappedTitle) || (self.author == nil)
         }
         
         // MARK: - Methods
         
-        /// Creates a New book in Core Data.
+        /// Creates a new Book instance.
         private func createBook() {
-            let newBook = Book(context: storage.context)
+            let newBook = Book(context: self.storage.context)
             newBook.id = UUID()
             newBook.title = self.title
             newBook.author = self.author
@@ -73,32 +77,32 @@ extension BookFormView {
             }
         }
         
-        /// Updates an existing Book in Core Data.
-        private func updateBook() {
-            guard let bookSelected else { return }
+        /// Edit an exiting Book instance.
+        private func editBook() {
+            guard let book else { return }
             
-            bookSelected.title = self.title
-            bookSelected.author = self.author
-            bookSelected.releaseDate = self.releaseDate
-            bookSelected.genre = self.genre.rawValue
-            bookSelected.startOfReading = self.startOfReading
-            bookSelected.isFinished = self.isFinished
-            bookSelected.review = self.review
-            bookSelected.rating = Int16(self.rating)
-            bookSelected.endOfReading = self.endOfReading
+            book.title = self.title
+            book.author = self.author
+            book.releaseDate = self.releaseDate
+            book.genre = self.genre.rawValue
+            book.startOfReading = self.startOfReading
+            book.isFinished = self.isFinished
+            book.review = self.review
+            book.rating = Int16(self.rating)
+            book.endOfReading = self.endOfReading
             
             if let coverImage {
                 let imageData = coverImage.jpegData(compressionQuality: 0.6)
-                bookSelected.cover = imageData
+                book.cover = imageData
             }
         }
         
         /// Saves the changes will be occur in the Model.
         func save() {
-            if self.bookSelected == nil {
-                createBook()
+            if book != nil {
+                self.editBook()
             } else {
-                updateBook()
+                self.createBook()
             }
             
             do {
@@ -125,32 +129,38 @@ extension BookFormView {
             }
         }
         
-        /// Initializes the View Model to execute the actions proposed in the View.
+        // MARK: - Initializers
+        
+        /// nitializes the View Model to create a new Book.
+        /// - Parameter storage: The type that contains the default container and viewContext types, of Core Data.
+        init(storage: Storage) {
+            self.storage = storage
+        }
+        
+        /// Initializes the View Model to update an existing Book.
         /// - Parameters:
         ///   - storage: The type that contains the default container and viewContext types, of Core Data.
         ///   - book: An existing book that will be updated
-        ///   - Warning: A book should only be passed in the parameter if it already exists in Core Data,
-        ///    in order to update it. Otherwise, this parameter must remain set to nil.
-        init(storage: Storage, book: Book? = nil) {
+        init(storage: Storage, book: Book) {
             self.storage = storage
             
-            if let book {
-                self.bookSelected = book
-                _title = Published(initialValue: book.wrappedTitle)
-                _author = Published(initialValue: book.author)
-                _releaseDate = Published(initialValue: book.wrappedReleaseDare)
-                _genre = Published(initialValue: Genre(rawValue: book.wrappedGenre) ?? .fantasy)
-                _review = Published(initialValue: book.wrappedReview)
-                _rating = Published(initialValue: Int(book.rating))
-                _startOfReading = Published(initialValue: book.wrappedStartOfReading)
-                _endOfReading = Published(initialValue: book.wrappedEndOfReading)
-                _isFinished = Published(initialValue: book.isFinished)
-                
-                if let imageData = book.cover {
-                    let image = UIImage(data: imageData)
-                    _coverImage = Published(initialValue: image)
-                }
+            self.book = book
+            _title = Published(initialValue: book.wrappedTitle)
+            _author = Published(initialValue: book.author)
+            _releaseDate = Published(initialValue: book.wrappedReleaseDare)
+            _genre = Published(initialValue: Genre(rawValue: book.wrappedGenre) ?? .fantasy)
+            _review = Published(initialValue: book.wrappedReview)
+            _rating = Published(initialValue: Int(book.rating))
+            _startOfReading = Published(initialValue: book.wrappedStartOfReading)
+            _endOfReading = Published(initialValue: book.wrappedEndOfReading)
+            _isFinished = Published(initialValue: book.isFinished)
+            
+            if let imageData = book.cover {
+                let image = UIImage(data: imageData)
+                _coverImage = Published(initialValue: image)
             }
+            
+            print(isDisabled.description)
         }
     }
 }

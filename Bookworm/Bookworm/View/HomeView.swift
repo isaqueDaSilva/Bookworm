@@ -79,7 +79,10 @@ struct HomeView: View {
                 .navigationDestination(for: Book.self) { book in
                     BookDetailView(storage: viewModel.storage, book: book)
                 }
-                .sheet(isPresented: $viewModel.showingAddNewBook, onDismiss: viewModel.fetchBooks) {
+                .sheet(
+                    isPresented: $viewModel.showingAddNewBook,
+                    onDismiss: viewModel.fetchBooks
+                ) {
                     BookFormView(storage: viewModel.storage)
                 }
                 .alert(viewModel.alertTitle, isPresented: $viewModel.showingAlert) {

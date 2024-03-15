@@ -26,7 +26,7 @@ extension HomeView {
         func fetchBooks() {
             do {
                 let request = Book.fetchRequest()
-                self.books = try storage.context.fetch(request)
+                self.books = try storage.fetch(request)
                 
             } catch let error {
                 self.alertTitle = "Falied to Fetch Books"
@@ -39,9 +39,7 @@ extension HomeView {
         /// - Parameter book: A Book selected for perform delete action.
         func deleteBook(_ book: Book) {
             do {
-                self.storage.context.delete(book)
-                
-                try storage.save()
+                try self.storage.delete(book)
                 self.fetchBooks()
             } catch let error {
                 self.alertTitle = "Falied to Delete Book"

@@ -48,14 +48,6 @@ struct AnnotationListView: View {
             
             viewModel.fetchAnnotations()
         }
-        .onChange(of: viewModel.annotations) { oldValue, newValue in
-            // If there is any change in the list of notes,
-            // this change will be reflected in the View
-            
-            if viewModel.annotations != oldValue {
-                viewModel.annotations = newValue
-            }
-        }
         .toolbar {
             Button {
                 // Displays the AnnotationFormView
@@ -66,7 +58,10 @@ struct AnnotationListView: View {
                 Icons.plus.systemImage
             }
         }
-        .sheet(isPresented: $viewModel.showingAddAnotationView) {
+        .sheet(
+            isPresented: $viewModel.showingAddAnotationView,
+            onDismiss: viewModel.fetchAnnotations
+        ) {
             AnnotationFormView(
                 storage: viewModel.storage,
                 annotation: viewModel.annotationSelected,
@@ -92,6 +87,6 @@ struct AnnotationListView: View {
 
 #Preview {
     NavigationStack {
-        AnnotationListView(storage: .preview, book: dummyBook)
+        AnnotationListView(storage: .preview, book: Storage.dummyBook)
     }
 }

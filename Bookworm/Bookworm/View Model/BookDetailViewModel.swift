@@ -11,18 +11,16 @@ import UIKit
 
 extension BookDetailView {
     final class BookDetailViewModel: ObservableObject {
+        // MARK: - Properties
+        
         let storage: Storage
         
         @Published var book: Book
-        
         @Published var showingEditView = false
-        
         @Published var showingAnnotationView = false
-        
         @Published var alertTitle = ""
         @Published var alertMessage = ""
         @Published var showingAlert = false
-        
         @Published var isDeletingAlert = false
         
         var title: String {
@@ -69,6 +67,9 @@ extension BookDetailView {
             book.wrappedAnnotations.count
         }
         
+        // MARK: Methods
+        
+        /// Displays the delete alert for user confirm your intention.
         func displayDeleteAlert() {
             self.isDeletingAlert = true
             self.alertTitle = "Delete Book"
@@ -76,27 +77,10 @@ extension BookDetailView {
             self.showingAlert = true
         }
         
-        func fetchChanges() {
-            do {
-                let request = NSFetchRequest<Book>(entityName: EntityNames.book.rawValue)
-                let books = try storage.context.fetch(request)
-                
-                for bookFetched in books {
-                    if bookFetched.id == self.book.id {
-                        self.book = bookFetched
-                    }
-                }
-            } catch let error {
-                self.alertTitle = "Falied to Fetch Book changes"
-                self.alertMessage = error.localizedDescription
-                self.showingAlert = true
-            }
-        }
-        
+        /// Delete the current book instace from Core Data.
         func deleteBook() {
             do {
-                storage.context.delete(self.book)
-                try self.storage.save()
+                try self.storage.delete(self.book)
             } catch let error {
                 self.alertTitle = "Falied to Delete Books"
                 self.alertMessage = error.localizedDescription
@@ -104,6 +88,10 @@ extension BookDetailView {
             }
         }
         
+        /// Initializes the View Model to execute the actions proposed in the View.
+        /// - Parameters:
+        ///   - storage: The type that contains the default container and viewContext types, of Core Data.
+        ///   - book: An Book instance selected by user for display your information.
         init(storage: Storage, book: Book) {
             _book = Published(initialValue: book)
             self.storage = storage
