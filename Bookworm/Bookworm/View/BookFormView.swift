@@ -13,6 +13,7 @@ struct BookFormView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject private var viewModel: BookFormViewModel
     
+    var action: (() -> Void)?
     // MARK: - View
     var body: some View {
         // START: NAV
@@ -143,6 +144,11 @@ struct BookFormView: View {
                         // and dismiss the view
                         
                         viewModel.save()
+                        
+                        if let action {
+                            action()
+                        }
+                        
                         dismiss()
                     } label: {
                         Text("Save")
@@ -161,8 +167,9 @@ struct BookFormView: View {
     
     /// The view shows the form for user will be create a new book.
     /// - Parameter storage: The type that contains the default container and viewContext types, of Core Data.
-    init(storage: Storage) {
+    init(storage: Storage, _ action: @escaping () -> Void) {
         _viewModel = StateObject(wrappedValue: BookFormViewModel(storage: storage))
+        self.action = action
     }
     
     /// The view shows the form for user will be update an existing book.
@@ -171,9 +178,10 @@ struct BookFormView: View {
     ///   - book: An existing book that will be updated
     init(storage: Storage, book: Book) {
         _viewModel = StateObject(wrappedValue: BookFormViewModel(storage: storage, book: book))
+        self.action = nil
     }
 }
 
 #Preview {
-    BookFormView(storage: .preview)
+    BookFormView(storage: .preview) { }
 }
