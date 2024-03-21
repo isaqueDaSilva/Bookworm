@@ -52,7 +52,7 @@ extension BookFormView {
         }
         
         var isDisabled: Bool {
-            (self.title.isEmpty || self.title == book?.wrappedTitle) || (self.author == nil)
+            return (title.isEmpty) || (author == nil)
         }
         
         // MARK: - Methods
@@ -61,6 +61,7 @@ extension BookFormView {
         private func createBook() {
             let newBook = Book(context: self.storage.context)
             newBook.id = UUID()
+            newBook.creation = Date.now
             newBook.title = self.title
             newBook.author = self.author
             newBook.releaseDate = self.releaseDate
@@ -159,8 +160,6 @@ extension BookFormView {
                 let image = UIImage(data: imageData)
                 _coverImage = Published(initialValue: image)
             }
-            
-            print(isDisabled.description)
         }
     }
 }
