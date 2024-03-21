@@ -10,6 +10,7 @@ import SwiftUI
 struct BookDetailView: View {
     // MARK: View Properties
     @Environment(\.dismiss) var dismiss
+    @Environment(\.horizontalSizeClass) var sizeClass
     @StateObject private var viewModel: BookDetailViewModel
     
     // MARK: View
@@ -18,16 +19,20 @@ struct BookDetailView: View {
         List {
             // START: SECTION 1
             Section {
-                VStack {
+                let layout = (sizeClass == .compact) ? AnyLayout(VStackLayout()) : AnyLayout(HStackLayout())
+                
+                layout {
                     Cover(
                         coverImage: viewModel.coverImage,
                         title: viewModel.title
                     )
                     
-                    Description(
-                        title: viewModel.title,
-                        author: viewModel.author
-                    )
+                    VStack(alignment: (sizeClass == .compact) ? .center : .leading) {
+                        Description(
+                            title: viewModel.title,
+                            author: viewModel.author
+                        )
+                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .center)
