@@ -17,6 +17,8 @@ enum Icons: String {
     case chevronLeft = "chevron.left"
     case chevronRight = "chevron.right"
     case bookFill = "book.fill"
+    case bookVertical = "books.vertical.circle"
+    case squareAndPencil = "square.and.pencil"
     
     /// Returns the selected value of the enum in an image of type SF Symbol, as the representation of the symbol.
     var systemImage: Image {
