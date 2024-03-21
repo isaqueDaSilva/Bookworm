@@ -26,7 +26,8 @@ extension HomeView {
         func fetchBooks() {
             do {
                 let request = Book.fetchRequest()
-                self.books = try storage.fetch(request)
+                let booksFeched = try storage.fetch(request)
+                books = booksFeched.sorted { $0.wrappedCreation > $1.wrappedCreation }
                 
             } catch let error {
                 self.alertTitle = "Falied to Fetch Books"
