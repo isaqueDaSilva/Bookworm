@@ -60,7 +60,7 @@ extension AnnotationListView {
         func deleteAnnotation(_ annotation: Annotation) {
             do {
                 try self.storage.delete(annotation)
-                
+                try save()
             } catch let error {
                 self.alertTitle = "Falied to delete the annotation."
                 self.alertMessage = error.localizedDescription
