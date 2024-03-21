@@ -9,7 +9,8 @@ import SwiftUI
 
 /// The representation of the cover of a book cover.
 struct Cover: View {
-    // If the book has a saved cover, it will be displayed in place of the custom cover.
+    // If the book has a saved cover,
+    // it will be displayed in place of the custom cover.
     var coverImage: UIImage?
     
     // Get's the title of Book.

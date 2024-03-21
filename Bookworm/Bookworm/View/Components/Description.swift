@@ -16,7 +16,9 @@ struct Description: View {
         Group {
             Text(title)
                 .font(.title3)
+                .fontWeight(.semibold)
                 .bold()
+                .multilineTextAlignment(.leading)
             
             Text(author)
                 .font(.headline)
