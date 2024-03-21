@@ -5,4 +5,17 @@
 //  Created by Isaque da Silva on 16/03/24.
 //
 
-import Foundation
+import SwiftUI
+
+struct NavigationStackButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(0.9)
+    }
+}
+
+extension View {
+    func navigationStackButtonStyle() -> some View {
+        buttonStyle(NavigationStackButtonStyle())
+    }
+}
