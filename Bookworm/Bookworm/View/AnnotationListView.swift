@@ -13,30 +13,16 @@ struct AnnotationListView: View {
     
     // MARK: - View
     var body: some View {
-        // START: LIST
-        List(viewModel.annotations) { annotation in
-            VStack(alignment: .leading) {
-                Text(annotation.wrappedTitle)
-                    .font(.title3)
-                    .bold()
-                Text(annotation.wrappedCommentDescription)
-                    .font(.headline)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-            }
-            .onTapGesture {
-                // When an annotation is tapped,
-                // the AnnotationFormView must be displayed
-                // so that it can be edited.
-                
-                viewModel.showingFormView(annotation)
-            }
-            .contextMenu {
-                Button("Delete Annotation", systemImage: Icons.trash.rawValue, role: .destructive) {
-                    // Peforms the deletion of the annotation Selected.
-                    
-                    viewModel.deleteAnnotation(annotation)
-                }
+        Group {
+            if viewModel.annotations.isEmpty {
+                ContentUnavailableView(
+                    "No Annotation Saved",
+                    systemImage: Icons.squareAndPencil.rawValue,
+                    description:
+                        Text("Tap the + Button to create one.").bold()
+                )
+            } else {
+                AnnotationPopulaedView()
             }
         }
         .navigationTitle("Annotations")
@@ -82,6 +68,43 @@ struct AnnotationListView: View {
         _viewModel = StateObject(
             wrappedValue: AnnotationListViewModel(storage: storage, book: book)
         )
+    }
+}
+
+// MARK: - View Populated State
+
+extension AnnotationListView {
+    @ViewBuilder
+    func AnnotationPopulaedView() -> some View {
+        // START: LIST
+        List(viewModel.annotations) { annotation in
+            Button {
+                // When an annotation is tapped,
+                // the AnnotationFormView must be displayed
+                // so that it can be edited.
+                
+                viewModel.showingFormView(annotation)
+            } label: {
+                VStack(alignment: .leading) {
+                    Text(annotation.wrappedTitle)
+                        .font(.title3)
+                        .bold()
+                    Text(annotation.wrappedCommentDescription)
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
+                .contextMenu {
+                    Button("Delete Annotation", systemImage: Icons.trash.rawValue, role: .destructive) {
+                        // Peforms the deletion of the annotation Selected.
+                        
+                        viewModel.deleteAnnotation(annotation)
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+        }
+        // END: List
     }
 }
 
