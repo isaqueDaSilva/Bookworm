@@ -15,43 +15,16 @@ struct AuthorSelectionView: View {
     
     // MARK: - View
     var body: some View {
-        // START: LIST
-        List(viewModel.authorList) { author in
-            HStack {
-                Text(author.wrappedName)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Spacer()
-                if author == authorSelected {
-                    Image(systemName: "checkmark")
-                        .foregroundStyle(.tint)
-                        .font(.body.weight(.semibold))
-                }
-            }
-            .onTapGesture {
-                // When an author is tapped,
-                //"authorSelected" must be set to the same value
-                // contained in the author that was tapped.
-                // and after that the View should be dismiss.
-                
-                authorSelected = author
-                dismiss()
-            }
-            .contextMenu {
-                Button {
-                    // Opens the Editor for update an existing Author.
-                    
-                    viewModel.showingEditor(author)
-                } label: {
-                    Label("Edit", systemImage: Icons.pencil.rawValue)
-                }
-                
-                Button(role: .destructive) {
-                    // Delete the author selected
-                    
-                    viewModel.deleteAuthor(author)
-                } label: {
-                    Label("Delete", systemImage: Icons.trash.rawValue)
-                }
+        Group {
+            if viewModel.authorList.isEmpty {
+                ContentUnavailableView(
+                    "No Authors Saved",
+                    systemImage: Icons.person.rawValue,
+                    description:
+                        Text("Tap the + Button to create one.").bold()
+                )
+            } else {
+                AuthorPopulatedView()
             }
         }
         .navigationTitle("Choice an Author")
@@ -97,6 +70,56 @@ struct AuthorSelectionView: View {
     init(authorSelected: Binding<Author?>, storage: Storage) {
         _viewModel = StateObject(wrappedValue: AuthorSelectionViewModel(storage: storage))
         _authorSelected = authorSelected
+    }
+}
+
+// MARK: - View Populated State
+
+extension AuthorSelectionView {
+    @ViewBuilder
+    func AuthorPopulatedView() -> some View {
+        // START: LIST
+        List(viewModel.authorList) { author in
+            Button {
+                // When an author is tapped,
+                //"authorSelected" must be set to the same value
+                // contained in the author that was tapped.
+                // and after that the View should be dismiss.
+                
+                authorSelected = author
+                dismiss()
+            } label: {
+                HStack {
+                    Text(author.wrappedName)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Spacer()
+                    if author == authorSelected {
+                        Image(systemName: "checkmark")
+                            .foregroundStyle(.tint)
+                            .font(.body.weight(.semibold))
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .contextMenu {
+                    Button {
+                        // Opens the Editor for update an existing Author.
+                        
+                        viewModel.showingEditor(author)
+                    } label: {
+                        Label("Edit", systemImage: Icons.pencil.rawValue)
+                    }
+                    
+                    Button(role: .destructive) {
+                        // Delete the author selected
+                        
+                        viewModel.deleteAuthor(author)
+                    } label: {
+                        Label("Delete", systemImage: Icons.trash.rawValue)
+                    }
+                }
+            }
+            .buttonStyle(.plain)
+        }
     }
 }
 
