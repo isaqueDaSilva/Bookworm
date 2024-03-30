@@ -9,11 +9,14 @@ import CoreData
 import Foundation
 
 extension AnnotationListView {
-    final class AnnotationListViewModel: ObservableObject {
+    @MainActor
+    final class AnnotationListViewModel: NSObject, ObservableObject {
         // MARK: - Properties
         
         let storage: Storage
         let book: Book
+        
+        private let fetchedResultController: NSFetchedResultsController<Annotation>
         
         @Published var showingAddAnotationView = false
         
@@ -26,28 +29,19 @@ extension AnnotationListView {
         
         // MARK: - Methods
         
-        /// Displays the AnotationFormView for create or update some annotation.
-        /// - Parameter annotation: An instance of Annotation for make some update.
-        /// - Warning: Only pass an Annotation as argument in this method,
-        /// if you that's make some update, otherwise leave this argument with `nil` value.
         func showingFormView(_ annotation: Annotation? = nil) {
             self.annotationSelected = annotation
             self.showingAddAnotationView = true
         }
         
-        /// Saves changes in Core Data, and after this,
-        /// perform a search for this updates and returns the result for user.
         private func save() throws {
             try self.storage.save()
-            self.fetchAnnotations()
         }
         
-        ///Performs a search for instances of saved Annotations.
-        func fetchAnnotations() {
+        private func fetchAnnotations() {
             do {
-                let request = Annotation.fetchRequest()
-                request.predicate = NSPredicate(format: "book == %@", book)
-                self.annotations = try storage.fetch(request)
+                let annotations = try storage.fetch(fetchedResultController)
+                self.annotations = annotations
             } catch let error {
                 self.alertTitle = "Falied to Fetch Annotations"
                 self.alertMessage = error.localizedDescription
@@ -55,8 +49,6 @@ extension AnnotationListView {
             }
         }
         
-        /// Deletes an Annotation selected.
-        /// - Parameter annotation: An Annotation selected for perform a delete action.
         func deleteAnnotation(_ annotation: Annotation) {
             do {
                 try self.storage.delete(annotation)
@@ -68,13 +60,27 @@ extension AnnotationListView {
             }
         }
         
-        /// Initializes the View Model to execute the actions proposed in the View.
-        /// - Parameters:
-        ///   - storage: The type that contains the default container and viewContext types, of Core Data.
-        ///   - book: A book instance that will be used to create, read, update and delete an Annotation instance
         init(storage: Storage, book: Book) {
             self.storage = storage
             self.book = book
+            
+            let request = Annotation.fetchRequest()
+            request.sortDescriptors = []
+            request.predicate = NSPredicate(format: "book == %@", book)
+            
+            fetchedResultController = storage.fetchedResultController(request)
+            
+            super.init()
+            
+            fetchedResultController.delegate = self
+            
+            fetchAnnotations()
         }
+    }
+}
+
+extension AnnotationListView.AnnotationListViewModel: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<any NSFetchRequestResult>) {
+        annotations = storage.fetchChanges(controller, by: Annotation.self)
     }
 }
