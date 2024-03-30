@@ -7,10 +7,12 @@
 
 import SwiftUI
 
-/// A custom type to store all the icons that the App uses.
 enum Icons: String {
     case person = "person"
-    case plus = "plus"
+    case plusCircle = "plus.circle"
+    case line3 = "line.3.horizontal.decrease.circle"
+    case list = "list.bullet"
+    case grid = "square.grid.2x2"
     case trash = "trash"
     case house = "house"
     case pencil = "pencil"
@@ -20,7 +22,6 @@ enum Icons: String {
     case bookVertical = "books.vertical.circle"
     case squareAndPencil = "square.and.pencil"
     
-    /// Returns the selected value of the enum in an image of type SF Symbol, as the representation of the symbol.
     var systemImage: Image {
         Image(systemName: self.rawValue)
     }
