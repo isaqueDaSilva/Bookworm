@@ -9,10 +9,12 @@ import CoreData
 import Foundation
 
 extension HomeView {
-    /// Brings together all HomeView execution logic and business logic.
-    final class HomeViewModel: ObservableObject {
+    
+    @MainActor
+    final class HomeViewModel: NSObject, ObservableObject {
         // MARK: - Properties
         let storage: Storage
+        private let fetchedResultController: NSFetchedResultsController<Book>
         
         @Published var books = [Book]()
         @Published var alertTitle = ""
@@ -22,12 +24,11 @@ extension HomeView {
         
         // MARK: - Methods
         
-        /// Performs a search for books saved in Core Data.
-        func fetchBooks() {
+        private func fetchBooks() {
             do {
-                let request = Book.fetchRequest()
-                let booksFeched = try storage.fetch(request)
-                books = booksFeched.sorted { $0.wrappedCreation > $1.wrappedCreation }
+                let fetchBooks = try storage.fetch(fetchedResultController)
+                
+                self.books = fetchBooks.sorted { $0.wrappedCreation > $1.wrappedCreation }
                 
             } catch let error {
                 self.alertTitle = "Falied to Fetch Books"
@@ -36,12 +37,9 @@ extension HomeView {
             }
         }
         
-        /// Performs a deletion action for book selected.
-        /// - Parameter book: A Book selected for perform delete action.
         func deleteBook(_ book: Book) {
             do {
                 try self.storage.delete(book)
-                self.fetchBooks()
             } catch let error {
                 self.alertTitle = "Falied to Delete Book"
                 self.alertMessage = error.localizedDescription
@@ -49,10 +47,43 @@ extension HomeView {
             }
         }
         
-        /// Initializes the View Model to execute the actions proposed in the View.
-        /// - Parameter storage: The type that contains the default container and viewContext types, of Core Data.
         init(storage: Storage) {
             self.storage = storage
+            
+            let request = Book.fetchRequest()
+            request.sortDescriptors = []
+            
+            fetchedResultController = storage.fetchedResultController(request)
+            
+            super.init()
+            
+            fetchedResultController.delegate = self
+            
+            fetchBooks()
         }
+    }
+}
+
+extension HomeView.HomeViewModel: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        books = storage.fetchChanges(controller, by: Book.self)
+    }
+}
+
+extension HomeView {
+    enum DisplayingMode: String, CaseIterable, Identifiable {
+        case icons = "Icons"
+        case list = "List"
+        
+        var systemImageName: String {
+            switch self {
+            case .icons:
+                Icons.grid.rawValue
+            case .list:
+                Icons.list.rawValue
+            }
+        }
+        
+        var id: Self { self }
     }
 }

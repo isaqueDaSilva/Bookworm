@@ -9,9 +9,12 @@ import CoreData
 import Foundation
 
 extension AuthorSelectionView {
-    final class AuthorSelectionViewModel: ObservableObject {
+    
+    @MainActor
+    final class AuthorSelectionViewModel: NSObject, ObservableObject {
         // MARK: - Properties
         let storage: Storage
+        private let fetchedResultController: NSFetchedResultsController<Author>
         
         private var authorSelected: Author?
         @Published var authorList = [Author]()
@@ -30,14 +33,13 @@ extension AuthorSelectionView {
         // MARK: - Methods
         private func save() throws {
             try self.storage.save()
-            self.fetchAuthors()
         }
         
-        /// Performs a search for saved authors.
-        func fetchAuthors() {
+        private func fetchAuthors() {
             do {
-                let request = Author.fetchRequest()
-                self.authorList = try storage.fetch(request)
+                let authors = try storage.fetch(fetchedResultController)
+                
+                authorList = authors
             } catch let error {
                 self.errorTitle = "Falied to Fetch Authors"
                 self.errorMessage = error.localizedDescription
@@ -45,8 +47,6 @@ extension AuthorSelectionView {
             }
         }
         
-        /// Displays the editor for create or update author.
-        /// - Parameter author: An Author value to perform an update action.
         func showingEditor(_ author: Author? = nil) {
             self.authorSelected = author
             
@@ -57,7 +57,6 @@ extension AuthorSelectionView {
             self.showingEditor = true
         }
         
-        /// Creates a new Author.
         private func createAuthor() {
             let newAuthor = Author(context: storage.context)
             newAuthor.id = UUID()
@@ -72,7 +71,6 @@ extension AuthorSelectionView {
             }
         }
         
-        /// Updates a selected Author.
         private func updateAuthor() {
             guard let authorSelected else { return }
             
@@ -87,7 +85,6 @@ extension AuthorSelectionView {
             }
         }
         
-        /// Save the changes will be in some Author Model.
         func saveChanges() {
             if authorSelected == nil {
                 self.createAuthor()
@@ -96,8 +93,6 @@ extension AuthorSelectionView {
             }
         }
         
-        /// Deletes an Author selected.
-        /// - Parameter author: An Author that was selected for perform de deletion action.
         func deleteAuthor(_ author: Author) {
             do {
                 try self.storage.delete(author)
@@ -109,10 +104,25 @@ extension AuthorSelectionView {
             }
         }
         
-        /// Initializes the View Model to execute the actions proposed in the View.
-        /// - Parameter storage: The type that contains the default container and viewContext types, of Core Data.
         init(storage: Storage) {
             self.storage = storage
+            
+            let request = Author.fetchRequest()
+            request.sortDescriptors = []
+            
+            fetchedResultController = storage.fetchedResultController(request)
+            
+            super.init()
+            
+            fetchedResultController.delegate = self
+            
+            fetchAuthors()
         }
+    }
+}
+
+extension AuthorSelectionView.AuthorSelectionViewModel: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<any NSFetchRequestResult>) {
+        authorList = storage.fetchChanges(controller, by: Author.self)
     }
 }
