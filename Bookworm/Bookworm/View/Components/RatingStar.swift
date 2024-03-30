@@ -31,9 +31,6 @@ struct RatingStars: View {
         }
     }
     
-    /// Returns a filled or unfilled star icon depending on the rating value..
-    /// - Parameter numeber: TThe maximum value for rating.
-    /// - Returns: Returns a filled or unfilled SF Symbol `star` icon depending on the rating value
     private func image(for numeber: Int) -> Image {
         if numeber > rating {
             return offImage ?? onImage
@@ -42,8 +39,6 @@ struct RatingStars: View {
         }
     }
     
-    /// Creates the Rating View
-    /// - Parameter rating: An association with an Int value that will determine the number of stars that will be displayed with padding or not.
     init(rating: Binding<Int>) {
         _rating = rating
     }

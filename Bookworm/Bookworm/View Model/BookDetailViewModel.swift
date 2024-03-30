@@ -69,7 +69,6 @@ extension BookDetailView {
         
         // MARK: Methods
         
-        /// Displays the delete alert for user confirm your intention.
         func displayDeleteAlert() {
             self.isDeletingAlert = true
             self.alertTitle = "Delete Book"
@@ -77,7 +76,6 @@ extension BookDetailView {
             self.showingAlert = true
         }
         
-        /// Delete the current book instace from Core Data.
         func deleteBook() {
             do {
                 try self.storage.delete(self.book)
@@ -88,10 +86,6 @@ extension BookDetailView {
             }
         }
         
-        /// Initializes the View Model to execute the actions proposed in the View.
-        /// - Parameters:
-        ///   - storage: The type that contains the default container and viewContext types, of Core Data.
-        ///   - book: An Book instance selected by user for display your information.
         init(storage: Storage, book: Book) {
             _book = Published(initialValue: book)
             self.storage = storage

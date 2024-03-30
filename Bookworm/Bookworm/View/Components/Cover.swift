@@ -7,14 +7,13 @@
 
 import SwiftUI
 
-/// The representation of the cover of a book cover.
 struct Cover: View {
-    // If the book has a saved cover,
-    // it will be displayed in place of the custom cover.
     var coverImage: UIImage?
     
-    // Get's the title of Book.
     let title: String
+    
+    let width: CGFloat
+    let height: CGFloat
     
     var body: some View {
         Group {
@@ -22,22 +21,27 @@ struct Cover: View {
                 Image(uiImage: coverImage)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 150, height: 200)
+                    .frame(width: width, height: height)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
             } else {
                 VStack(alignment: .center) {
-                    Icons.bookFill.systemImage
-                        .font(.system(size: 40))
-                        .foregroundStyle(.blue.gradient)
-                        .padding(.bottom, 5)
-                    
-                    Text(title)
-                        .font(.title)
-                        .fontWeight(.heavy)
-                        .fontDesign(.serif)
+                    GeometryReader { geo in
+                        VStack {
+                            Icons.bookFill.systemImage
+                                .font(.system(size: geo.size.width * 0.6))
+                                .foregroundStyle(.blue.gradient)
+                                .ignoresSafeArea()
+                            Text(title)
+                                .font(.system(size: geo.size.width * 0.2))
+                                .fontWeight(.heavy)
+                                .fontDesign(.serif)
+                                .lineLimit(2)
+                        }
+                        .frame(maxWidth: geo.size.width, maxHeight: geo.size.height)
+                    }
                 }
                 .multilineTextAlignment(.center)
-                .frame(width: 150, height: 200)
+                .frame(width: width, height: height)
                 .background(
                     RoundedRectangle(cornerRadius: 10)
                         .foregroundStyle(Color(.systemGray3))
@@ -45,12 +49,26 @@ struct Cover: View {
             }
         }
     }
+    
+    init(
+        coverImage: UIImage? = nil,
+        title: String,
+        width: CGFloat = 150,
+        height: CGFloat = 200
+    ) {
+        self.coverImage = coverImage
+        self.title = title
+        self.width = width
+        self.height = height
+    }
 }
 
 #Preview {
     VStack {
         Cover(title: "Harry Potter")
         
-        Cover(coverImage: UIImage(systemName: Icons.plus.rawValue), title: "Hary Potter")
+        Cover(title: "Harry Potter", width: 75, height: 100)
+        
+        Cover(coverImage: UIImage(systemName: Icons.plusCircle.rawValue), title: "Hary Potter")
     }
 }

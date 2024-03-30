@@ -16,7 +16,6 @@ extension BookFormView {
         
         private var book: Book?
         
-        /// Observe if there is any image selected and display it in the View.
         @Published var pickerItemSelect: PhotosPickerItem? = nil {
             didSet {
                 if let pickerItemSelect {
@@ -42,7 +41,6 @@ extension BookFormView {
         
         @Published var showingAuthorSelectionView = false
         
-        /// Checks if there is a book selected and displays an appropriate title for each case.
         var navTitle: String {
             if book != nil {
                 return "Edit Book"
@@ -57,7 +55,6 @@ extension BookFormView {
         
         // MARK: - Methods
         
-        /// Creates a new Book instance.
         private func createBook() {
             let newBook = Book(context: self.storage.context)
             newBook.id = UUID()
@@ -78,7 +75,6 @@ extension BookFormView {
             }
         }
         
-        /// Edit an exiting Book instance.
         private func editBook() {
             guard let book else { return }
             
@@ -98,7 +94,6 @@ extension BookFormView {
             }
         }
         
-        /// Saves the changes will be occur in the Model.
         func save() {
             if book != nil {
                 self.editBook()
@@ -115,8 +110,6 @@ extension BookFormView {
             }
         }
         
-        /// Gets and displays an image selected from the user's gallery.
-        /// - Parameter pickerItemSelected: Represents an image item that has been selected.
         func getImage(_ pickerItemSelected: PhotosPickerItem) {
             Task {
                 if let pickerItemSelect,
@@ -132,16 +125,10 @@ extension BookFormView {
         
         // MARK: - Initializers
         
-        /// nitializes the View Model to create a new Book.
-        /// - Parameter storage: The type that contains the default container and viewContext types, of Core Data.
         init(storage: Storage) {
             self.storage = storage
         }
         
-        /// Initializes the View Model to update an existing Book.
-        /// - Parameters:
-        ///   - storage: The type that contains the default container and viewContext types, of Core Data.
-        ///   - book: An existing book that will be updated
         init(storage: Storage, book: Book) {
             self.storage = storage
             

@@ -15,9 +15,7 @@ struct BookDetailView: View {
     
     // MARK: View
     var body: some View {
-        // START: LIST
         List {
-            // START: SECTION 1
             Section {
                 let layout = (sizeClass == .compact) ? AnyLayout(VStackLayout()) : AnyLayout(HStackLayout())
                 
@@ -37,9 +35,7 @@ struct BookDetailView: View {
             }
             .frame(maxWidth: .infinity, alignment: .center)
             .listRowBackground(Color.listLightGray)
-            // END: SECTION 1
             
-            // START: SECTION 2
             Section("More Information") {
                 LabeledContent("Release Date:") {
                     Text(viewModel.releaseDate)
@@ -49,9 +45,7 @@ struct BookDetailView: View {
                     Text(viewModel.genre)
                 }
             }
-            // END: SECTION 2
-            
-            // START: SECTION 3
+           
             Section("Reading Information") {
                 LabeledContent("Stating of Reading:") {
                     Text(viewModel.startOfReading)
@@ -62,7 +56,6 @@ struct BookDetailView: View {
                     }
                 }
             }
-            // END: SECTION 3
             
             if viewModel.isFinished {
                 // START: SECTION 4
@@ -75,10 +68,8 @@ struct BookDetailView: View {
                         Text(viewModel.review)
                     }
                 }
-                // END: SECTION 4
             }
             
-            // START: SECTION 5
             Section {
                 Button {
                     viewModel.showingAnnotationView = true
@@ -92,35 +83,25 @@ struct BookDetailView: View {
                 }
                 .buttonStyle(.plain)
             }
-            // END: SECTION 5
             
-            // START: SECTION 6
             Section {
                 Button(role: .destructive) {
-                    // Displays an Alert to confirm
-                    // whether the user wants to delete this book.
-                    
                     viewModel.displayDeleteAlert()
                 } label: {
                     Label("Delete Book", systemImage: Icons.trash.rawValue)
                         .foregroundStyle(.red)
                 }
             }
-            // END: SECTION 6
         }
         .navigationTitle("Details")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: viewModel.book) { oldValue, newValue in
             if oldValue != newValue {
-                // Sets a new value for the book
-                // when some update occur.
-                
                 viewModel.book = newValue
             }
         }
         .toolbar {
             Button("Edit") {
-                // Displays the BookFormView.
                 viewModel.showingEditView = true
             }
         }
@@ -132,8 +113,6 @@ struct BookDetailView: View {
                 Button("Cancel", role: .cancel) { }
                 
                 Button("OK", role: .destructive) {
-                    // Performs the book deletion and dismiss this View.
-                    
                     viewModel.deleteBook()
                     dismiss()
                 }
@@ -144,13 +123,8 @@ struct BookDetailView: View {
         .navigationDestination(isPresented: $viewModel.showingAnnotationView) {
             AnnotationListView(storage: viewModel.storage, book: viewModel.book)
         }
-        // END: LIST
     }
     
-    /// This view displays the all book selected information.
-    /// - Parameters:
-    ///   - storage: The type that contains the default container and viewContext types, of Core Data.
-    ///   - book: The book that will have its information displayed.
     init(storage: Storage, book: Book) {
         _viewModel = StateObject(wrappedValue: BookDetailViewModel(storage: storage, book: book))
     }

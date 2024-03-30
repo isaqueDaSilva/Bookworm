@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// Display a specific scene for iOS devices
 struct iOSScene: Scene {
     private var storage: Storage
     
@@ -17,8 +16,6 @@ struct iOSScene: Scene {
         }
     }
     
-    /// Initializes a scene for iOS Devices
-    /// - Parameter storage: The type that contains the default container and viewContext types, of Core Data.
     init(storage: Storage) {
         self.storage = storage
     }

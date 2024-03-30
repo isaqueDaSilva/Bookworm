@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// Displays the title and reader's name below the cover.
 struct Description: View {
     let title: String
     let author: String

@@ -27,15 +27,12 @@ extension AnnotationFormView {
             annotation.wrappedLastModification.dateString()
         }
         
-        // MARK: Methods
+        // MARK: - Methods
         
-        /// Saves changes in Core Data.
         private func save() throws {
             try self.storage.save()
         }
         
-        
-        /// Saves the change that will be occur.
         func saveChanges() {
             self.annotation.id = UUID()
             self.annotation.title = self.title
@@ -53,7 +50,6 @@ extension AnnotationFormView {
             }
         }
         
-        /// Deletes an Annotation from Core Data.
         func deleteAnnotation() {
             do {
                 self.storage.context.delete(self.annotation)
@@ -65,13 +61,6 @@ extension AnnotationFormView {
             }
         }
         
-        /// Initializes the View Model to execute the actions proposed in the View.
-        /// - Parameters:
-        ///   - storage: The type that contains the default container and viewContext types, of Core Data.
-        ///   - annotation: An instance of Annotation for make some update.
-        ///   - book: A book instance that will be used to create, read, update and delete an Annotation instance
-        /// - Warning: Only pass an Annotation as argument in this method,
-        ///   if you that's make some update, otherwise leave this argument with `nil` value.
         init(
             storage: Storage,
             annotation: Annotation? = nil,

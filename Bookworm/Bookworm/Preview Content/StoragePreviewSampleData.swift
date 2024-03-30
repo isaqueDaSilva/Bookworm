@@ -7,7 +7,6 @@
 
 import Foundation
 
-// Sample data for use in Xcode Preview
 extension Storage {
     static let dummyBook = Book(context: Storage.preview.context)
     
