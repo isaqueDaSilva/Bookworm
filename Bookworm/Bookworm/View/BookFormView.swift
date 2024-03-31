@@ -96,11 +96,6 @@ struct BookFormView: View {
             }
             .navigationTitle(viewModel.navTitle)
             .navigationBarTitleDisplayMode(.inline)
-            .onChange(of: viewModel.author) { oldAuthor, newAuthor in
-                if viewModel.author != oldAuthor {
-                    viewModel.author = newAuthor
-                }
-            }
             .navigationDestination(isPresented: $viewModel.showingAuthorSelectionView) {
                 AuthorSelectionView(
                     authorSelected: $viewModel.author,

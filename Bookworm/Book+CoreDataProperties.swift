@@ -47,7 +47,7 @@ extension Book {
         return UIImage(data: imageData)
     }
     
-    public var wrappedReleaseDare: Date {
+    public var wrappedReleaseDate: Date {
         self.releaseDate ?? Date.now
     }
     

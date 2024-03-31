@@ -36,7 +36,7 @@ extension BookDetailView {
         }
         
         var releaseDate: String {
-            book.wrappedReleaseDare.dateString()
+            book.wrappedReleaseDate.dateString()
         }
         
         var genre: String {

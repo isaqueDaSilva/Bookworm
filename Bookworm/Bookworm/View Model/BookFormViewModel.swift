@@ -135,7 +135,7 @@ extension BookFormView {
             self.book = book
             _title = Published(initialValue: book.wrappedTitle)
             _author = Published(initialValue: book.author)
-            _releaseDate = Published(initialValue: book.wrappedReleaseDare)
+            _releaseDate = Published(initialValue: book.wrappedReleaseDate)
             _genre = Published(initialValue: Genre(rawValue: book.wrappedGenre) ?? .fantasy)
             _review = Published(initialValue: book.wrappedReview)
             _rating = Published(initialValue: Int(book.rating))

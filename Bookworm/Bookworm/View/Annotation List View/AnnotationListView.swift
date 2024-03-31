@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AnnotationListView: View {
     // MARK: - View Properties
-    @StateObject private var viewModel: AnnotationListViewModel
+    @StateObject var viewModel: AnnotationListViewModel
     
     // MARK: - View
     var body: some View {
@@ -52,36 +52,6 @@ struct AnnotationListView: View {
         _viewModel = StateObject(
             wrappedValue: AnnotationListViewModel(storage: storage, book: book)
         )
-    }
-}
-
-// MARK: - View Populated State
-
-extension AnnotationListView {
-    @ViewBuilder
-    func AnnotationPopulaedView() -> some View {
-        List(viewModel.annotations) { annotation in
-            Button {
-                viewModel.showingFormView(annotation)
-            } label: {
-                VStack(alignment: .leading) {
-                    Text(annotation.wrappedTitle)
-                        .font(.title3)
-                        .bold()
-                    Text(annotation.wrappedCommentDescription)
-                        .font(.headline)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                }
-                .contextMenu {
-                    Button("Delete Annotation", systemImage: Icons.trash.rawValue, role: .destructive) {
-                        
-                        viewModel.deleteAnnotation(annotation)
-                    }
-                }
-            }
-            .buttonStyle(.plain)
-        }
     }
 }
 

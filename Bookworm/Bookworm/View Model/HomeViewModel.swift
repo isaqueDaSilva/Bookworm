@@ -5,6 +5,7 @@
 //  Created by Isaque da Silva on 27/02/24.
 //
 
+import Combine
 import CoreData
 import Foundation
 
@@ -17,10 +18,19 @@ extension HomeView {
         private let fetchedResultController: NSFetchedResultsController<Book>
         
         @Published var books = [Book]()
+        @Published var searchText = ""
+        
         @Published var alertTitle = ""
         @Published var alertMessage = ""
         @Published var showingAlert = false
+        
         @Published var showingAddNewBook = false
+        
+        var booksFiltered: [Book] {
+            guard !searchText.isEmpty else { return books }
+            
+            return books.filter { $0.wrappedTitle.localizedCaseInsensitiveContains(searchText) }
+        }
         
         // MARK: - Methods
         
@@ -67,23 +77,5 @@ extension HomeView {
 extension HomeView.HomeViewModel: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         books = storage.fetchChanges(controller, by: Book.self)
-    }
-}
-
-extension HomeView {
-    enum DisplayingMode: String, CaseIterable, Identifiable {
-        case icons = "Icons"
-        case list = "List"
-        
-        var systemImageName: String {
-            switch self {
-            case .icons:
-                Icons.grid.rawValue
-            case .list:
-                Icons.list.rawValue
-            }
-        }
-        
-        var id: Self { self }
     }
 }

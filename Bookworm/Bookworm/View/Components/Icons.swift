@@ -21,6 +21,10 @@ enum Icons: String {
     case bookFill = "book.fill"
     case bookVertical = "books.vertical.circle"
     case squareAndPencil = "square.and.pencil"
+    case star = "star.fill"
+    case checkmark = "checkmark"
+    case xmark = "xmark"
+    case magnifyingglass = "magnifyingglass"
     
     var systemImage: Image {
         Image(systemName: self.rawValue)

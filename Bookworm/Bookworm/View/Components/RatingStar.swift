@@ -16,7 +16,7 @@ struct RatingStars: View {
     private var label = ""
     private var maximumRating = 5
     private var offImage: Image?
-    private var onImage = Image(systemName: "star.fill")
+    private var onImage = Image(systemName: Icons.star.rawValue)
     private var offColor = Color.gray
     private var onColor = Color.yellow
     
