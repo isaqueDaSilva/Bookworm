@@ -11,8 +11,6 @@ struct HomeView: View {
     // MARK: - View Properties
     @AppStorage("displaying_mode") var displayingMode: DisplayingMode = .icons
     
-    @Environment(\.isSearching) var isSearching
-    
     @Namespace private var transition
     @Namespace private var transitionDisplayingMode
     @StateObject var viewModel: HomeViewModel
@@ -28,7 +26,11 @@ struct HomeView: View {
                         "No Books",
                         systemImage: Icons.bookVertical.rawValue,
                         description: 
-                            Text("Tap the + Button to create one.").bold()
+                            Text(
+                                viewModel.searchText.isEmpty ?
+                                "Tap the + Button to create one." : "No books saved with the title corresponding to the '\(viewModel.searchText)'"
+                            )
+                            .bold()
                     )
                     .transition(AnyTransition.opacity)
                     .matchedGeometryEffect(id: "transition", in: transition)
