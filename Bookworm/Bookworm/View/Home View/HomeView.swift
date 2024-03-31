@@ -28,7 +28,7 @@ struct HomeView: View {
                         description: 
                             Text(
                                 viewModel.searchText.isEmpty ?
-                                "Tap the + Button to create one." : "No books saved with the title corresponding to the '\(viewModel.searchText)'"
+                                "Tap the + Button to create one." : "No book's title corresponding to the '\(viewModel.searchText)'"
                             )
                             .bold()
                     )
