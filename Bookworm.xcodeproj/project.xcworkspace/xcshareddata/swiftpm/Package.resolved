@@ -1,0 +1,15 @@
+{
+  "originHash" : "907b72f1ca961082cf7f1be584dd6135178824cfed5e6c4713981acf5d39475e",
+  "pins" : [
+    {
+      "identity" : "errorwrapper",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/isaqueDaSilva/ErrorWrapper.git",
+      "state" : {
+        "revision" : "8272eb3005d6d09fb459ec21313fe2c9053933ae",
+        "version" : "1.0.7"
+      }
+    }
+  ],
+  "version" : 3
+}
